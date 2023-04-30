@@ -12,7 +12,7 @@
 
 .DEFAULT_GOAL := all
 
-NAME		= miniRT
+NAME		= minirt
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
@@ -27,20 +27,20 @@ MLX_DIR		= -L./minilibx
 LIB			= libft/libft.a
 LIB_DIR		= libft
 
-SRC_DIR		= src/
-OBJ_DIR		= obj/
+SRC_DIR		= src
+OBJ_DIR		= obj
 
 SRC			= main.c
 
 SRC_BONUS	= main_bonus.c
 
-OBJS		= $(addprefix $(OBJ_DIR), $(OBJ))
+OBJS		= $(addprefix $(OBJ_DIR)/, $(OBJ))
 
 ifeq ($(MAKECMDGOALS), bonus)
-SRCS		= $(addprefix $(SRC_DIR), $(SRC_BONUS))
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_BONUS))
 OBJ			= $(SRC_BONUS:.c=.o)
 else
-SRCS		= $(addprefix $(SRC_DIR), $(SRC))
+SRCS		= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJ			= $(SRC:.c=.o)
 endif
 
@@ -50,7 +50,7 @@ bonus: $(OBJ_DIR) $(NAME)
 $(NAME): $(OBJS) $(LIB)
 	$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(IMLX) $(HEADER)
 
 $(OBJ_DIR):
