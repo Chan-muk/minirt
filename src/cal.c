@@ -82,6 +82,16 @@ t_vector	cal_multiply_vec(t_vector *vec, double ratio)
 	return (vector);
 }
 
+t_vector	ray_at(t_ray *ray, double ratio)
+{
+	t_vector vector;
+
+	vector.x = ray->org.x + (ratio * ray->dir.x);
+	vector.y = ray->org.y + (ratio * ray->dir.y);
+	vector.z = ray->org.z + (ratio * ray->dir.z);
+	return (vector);
+}
+
 double	cal_inner_vec(t_vector *vec_1, t_vector *vec_2)
 {
 	double	result;

@@ -30,7 +30,8 @@ LIB_DIR		= libft
 SRC_DIR		= src
 OBJ_DIR		= obj
 
-SRC			= main.c
+SRC			= \
+			main.c init.c cal.c utils.c
 
 SRC_BONUS	= main_bonus.c
 
