@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chajung <chajung@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 08:57:27 by chajung           #+#    #+#             */
 /*   Updated: 2023/05/01 08:57:28 by chajung          ###   ########.fr       */

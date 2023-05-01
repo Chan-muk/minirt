@@ -94,6 +94,9 @@ typedef struct s_ray
 /* init */
 void	initialize(int argc, char **argv, t_mlx *mlx);
 
+/* hooks */
+void	set_hooks(t_mlx *mlx);
+
 /* utils */
 void	exit_with_str(const char *str, int exit_code);
 

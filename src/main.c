@@ -47,24 +47,24 @@ int	setting_color(t_color *color, int i)
 	return (result);
 }
 
-int	which_fractal(t_mlx *mlx, int width, int height)
-{
-	if (mlx->fractal_number == JULIA_SET)
-		return (julia_set(&mlx->num, width, height));
-	else if (mlx->fractal_number == MANDELBROT_SET)
-		return (mandelbrot_set(&mlx->num, width, height));
-	else if (mlx->fractal_number == BURNING_SHIP)
-		return (burning_ship(&mlx->num, width, height));
-	else if (mlx->fractal_number == TRICORN)
-		return (tricorn(&mlx->num, width, height));
-	else
-		exit_after_print("choose fail");
-	return (0);
-}
+// int	which_fractal(t_mlx *mlx, int width, int height)
+// {
+// 	if (mlx->fractal_number == JULIA_SET)
+// 		return (julia_set(&mlx->num, width, height));
+// 	else if (mlx->fractal_number == MANDELBROT_SET)
+// 		return (mandelbrot_set(&mlx->num, width, height));
+// 	else if (mlx->fractal_number == BURNING_SHIP)
+// 		return (burning_ship(&mlx->num, width, height));
+// 	else if (mlx->fractal_number == TRICORN)
+// 		return (tricorn(&mlx->num, width, height));
+// 	else
+// 		exit_after_print("choose fail");
+// 	return (0);
+// }
 
 void	put_color_in_pixel(t_mlx *mlx)
 {
-	int	i;
+	// int	i;
 	int	width;
 	int	height;
 
@@ -74,12 +74,12 @@ void	put_color_in_pixel(t_mlx *mlx)
 		width = -1;
 		while (++width < WIN_WIDTH)
 		{
-			i = which_fractal(mlx, width, height);
-			if (i < DIVERGENCE_CONDITION)
-				my_mlx_pixel_put(&mlx->img, width, height, \
-					setting_color(&mlx->color, i));
-			else
-				my_mlx_pixel_put(&mlx->img, width, height, 0x00000000);
+			// i = which_fractal(mlx, width, height);
+			// if (i < DIVERGENCE_CONDITION)
+			// 	my_mlx_pixel_put(&mlx->img, width, height, \
+			// 		setting_color(&mlx->color, i));
+			// else
+			my_mlx_pixel_put(&mlx->img, width, height, 0x00FFFFFF);
 		}
 	}
 }
@@ -98,7 +98,7 @@ int	main(int argc, char **argv)
 	// arguments_check(argc, argv, &mlx);
 	initialize(argc, argv, &mlx);
 	// put_fractals_to_window(&mlx);
-	// setting_hooks(&mlx);
-	// mlx_loop(mlx.mlx_ptr);
+	set_hooks(&mlx);
+	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }

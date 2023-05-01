@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cal.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chajung <chajung@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 12:28:08 by chajung           #+#    #+#             */
 /*   Updated: 2023/04/28 12:28:13 by chajung          ###   ########.fr       */
