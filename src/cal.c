@@ -82,7 +82,7 @@ t_vector	cal_multiply_vec(t_vector *vec, double ratio)
 	return (vector);
 }
 
-t_vector	ray_at(t_ray *ray, double ratio)
+t_vector	cal_ray(t_ray *ray, double ratio)
 {
 	t_vector vector;
 
