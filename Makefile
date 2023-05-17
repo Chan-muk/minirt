@@ -49,10 +49,17 @@ all: $(OBJ_DIR) $(NAME)
 bonus: $(OBJ_DIR) $(NAME)
 
 $(NAME): $(OBJS) $(LIB)
-	$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
+	$(CC) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(IMLX) $(HEADER)
+	$(CC) -c $< -o $@ $(IMLX) $(HEADER)
+
+
+# $(NAME): $(OBJS) $(LIB)
+# 	$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
+
+# $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+# 	$(CC) $(CFLAGS) -c $< -o $@ $(IMLX) $(HEADER)
 
 $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
