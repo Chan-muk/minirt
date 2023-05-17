@@ -20,15 +20,40 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+t_vector	color(t_ray r)
+{
+	t_vector	unit_dir;
+
+	unit_dir = unit_vec(&r.dir);
+	double	t = 0.5*((unit_dir.y) + 1.0);
+	unit_dir.x = (1.0-t)*(1.0) + t*0.5;
+	unit_dir.y = (1.0-t)*(1.0) + t*0.7;
+	unit_dir.z = (1.0-t)*(1.0) + t*1.0;
+	return (unit_dir);
+}
+
 void	color_pixels(t_mlx *mlx)
 {
 	t_vector	vec;
 	int			result;
 
+	t_vector	lower_left_corner = {-2.0, -1.0, -1.0};
+	t_vector	horizontal = {4.0, 0.0, 0.0};
+	t_vector	vertical = {0.0, 2.0, 0.0};
+	t_vector	origin = {0.0, 0.0, 0.0};
 	for (int j = WIN_HEIGHT - 1; j >= 0; j--) {
 		for (int i = 0; i < WIN_WIDTH; i++) {
-			vec = \
-			new_vec((double)i / (double)WIN_WIDTH, (double)j / (double)WIN_HEIGHT, 0.2);
+			double u = (double)i / (double)WIN_WIDTH;
+			double v = (double)j / (double)WIN_HEIGHT;
+			t_ray r = \
+			{{0.0, 0.0, 0.0}, {
+				lower_left_corner.x + u*horizontal.x + v*vertical.x,
+				lower_left_corner.y + u*horizontal.y + v*vertical.y,
+				lower_left_corner.z + u*horizontal.z + v*vertical.z,
+			}};
+			vec = color(r);
+			// vec = \
+			// new_vec((double)i / (double)WIN_WIDTH, (double)j / (double)WIN_HEIGHT, 0.2);
 			result = \
 			(((int)(255.99 * vec.x) << 16) + ((int)(255.99 * vec.y) << 8) + (int)(255.99 * vec.z));
 			color_each_pixel(&mlx->img, i, j, result);
@@ -55,34 +80,34 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-vec3 color(const ray& r) {
-	vec3 unit_direction = unit_vector(r.direction());
-	float t = 0.5 * (unit_direction.y() + 1.0);
-	return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
-}
+// vec3 color(const ray& r) {
+// 	vec3 unit_direction = unit_vector(r.direction());
+// 	float t = 0.5 * (unit_direction.y() + 1.0);
+// 	return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+// }
 
-int main() {
-	int nx = 200;
-	int ny = 100;
-	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
-	vec3 lower_left_corner(-2.0, -1.0, -1.0);
-	vec3 horizontal(4.0, 0.0, 0.0);
-	vec3 vertical(0.0, 2.0, 0.0);
-	vec3 origin(0.0, 0.0, 0.0);
+// int main() {
+// 	int nx = 200;
+// 	int ny = 100;
+// 	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
+// 	vec3 lower_left_corner(-2.0, -1.0, -1.0);
+// 	vec3 horizontal(4.0, 0.0, 0.0);
+// 	vec3 vertical(0.0, 2.0, 0.0);
+// 	vec3 origin(0.0, 0.0, 0.0);
 
-	for (int j = ny - 1; j >= 0; j--) {
-		for (int i = 0; i < nx; i++) {
-			float u = float(i) / float(nx);
-			float v = float(j) / float(ny);
-			ray r(origin, lower_left_corner + u * horizontal + v * vertical);
-			vec3 col = color(r);
-			int ir = (int)(255.99 * col[0]);
-			int ig = (int)(255.99 * col[1]);
-			int ib = (int)(255.99 * col[2]);
-			std::cout << ir << " " << ig << " " << ib << "\n";
-		}
-	}
-}
+// 	for (int j = ny - 1; j >= 0; j--) {
+// 		for (int i = 0; i < nx; i++) {
+// 			float u = float(i) / float(nx);
+// 			float v = float(j) / float(ny);
+// 			ray r(origin, lower_left_corner + u * horizontal + v * vertical);
+// 			vec3 col = color(r);
+// 			int ir = (int)(255.99 * col[0]);
+// 			int ig = (int)(255.99 * col[1]);
+// 			int ib = (int)(255.99 * col[2]);
+// 			std::cout << ir << " " << ig << " " << ib << "\n";
+// 		}
+// 	}
+// }
 
 // int	setting_color(t_color *color, int i)
 // {
