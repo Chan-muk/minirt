@@ -20,7 +20,6 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-
 // bool hit_sphere(const vec3& center, float radius, const ray& r) {
 // 	vec3 oc = r.origin() - center;
 // 	float a = dot(r.direction(), r.direction());
@@ -30,7 +29,22 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 // 	return (discriminant > 0);
 // }
 
-bool hit_sphere(t_vector center, double radius, t_ray r) {
+// bool hit_sphere(t_vector center, double radius, t_ray r) {
+// 	t_vector	oc;
+// 	double		a;
+// 	double		b;
+// 	double		c;
+// 	double		discriminant;
+	
+// 	oc = cal_subtract_vec(&(r.org), &center);
+// 	a = cal_inner_vec(&r.dir, &r.dir);
+// 	b = 2.0 * cal_inner_vec(&oc, &r.dir);
+// 	c = cal_inner_vec(&oc, &oc) - radius * radius;
+// 	discriminant = b * b - 4 * a * c;
+// 	return (discriminant > 0);
+// }
+
+double hit_sphere(t_vector center, double radius, t_ray r) {
 	t_vector	oc;
 	double		a;
 	double		b;
@@ -42,31 +56,61 @@ bool hit_sphere(t_vector center, double radius, t_ray r) {
 	b = 2.0 * cal_inner_vec(&oc, &r.dir);
 	c = cal_inner_vec(&oc, &oc) - radius * radius;
 	discriminant = b * b - 4 * a * c;
-	return (discriminant > 0);
+	if (discriminant < 0)
+		return (-1.0);
+	// else
+	return (((-b -sqrt(discriminant)) / (2.0 * a)));
 }
 
 // vec3 color(const ray& r) {
-// 	if (hit_sphere(vec3(0,0,-1), 0.5, r))
-// 		return (vec3(1, 0, 0));
-
 // 	vec3 unit_direction = unit_vector(r.direction());
 // 	float t = 0.5 * (unit_direction.y() + 1.0);
 // 	return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
 // }
 
+// vec3 color(const ray& r) {
+// 	if (hit_sphere(vec3(0,0,-1), 0.5, r))
+// 		return (vec3(1, 0, 0));
+// 	vec3 unit_direction = unit_vector(r.direction());
+// 	float t = 0.5 * (unit_direction.y() + 1.0);
+// 	return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+// }
+
+// vec3 color(const ray& r) {
+// 	float t = hit_sphere(vec3(0,0,-1), 0.5, r);
+// 	if (t > 0.0) {
+// 		vec3 N = unit_vector(r.point_at_parameter(t) - vec3(0,0,-1));
+// 		return 0.5*vec3(N.x()+1, N.y()+1, N.z()+1);
+// 	}
+// 	vec3 unit_direction = unit_vector(r.direction());
+// 	t = 0.5 * (unit_direction.y() + 1.0);
+// 	return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+// }
+
 t_vector	color(t_ray r)
 {
-	t_vector	unit_dir;
+	t_vector	unit_vector;
+	t_vector	N;
+	t_vector	tmp1;
+	double		t;
 
-	if (hit_sphere(new_vec(0, 0, -1), 0.5, r))
-		return (new_vec(1, 0, 0));
-	
-	unit_dir = unit_vec(&r.dir);
-	double	t = 0.5 * ((unit_dir.y) + 1.0);
-	unit_dir.x = (1.0 - t) * (1.0) + t * 0.5;
-	unit_dir.y = (1.0 - t) * (1.0) + t * 0.7;
-	unit_dir.z = (1.0 - t) * (1.0) + t * 1.0;
-	return (unit_dir);
+	t = hit_sphere(new_vec(0, 0, -1), 0.5, r);
+	if (t > 0.0)
+	{
+		tmp1 = cal_ray(&r, t);
+		N = new_vec(0.0, 0.0, -1);
+		tmp1 = cal_subtract_vec(&tmp1, &N);
+		N = unit_vec(&tmp1);
+		tmp1 = new_vec(1.0, 1.0 ,1.0);
+		N = cal_add_vec(&N, &tmp1);
+		return (cal_multiply_vec(&N, 0.5));
+	}
+	unit_vector = unit_vec(&r.dir);
+	t = 0.5 * ((unit_vector.y) + 1.0);
+	unit_vector.x = (1.0 - t) * (1.0) + t * 0.5;
+	unit_vector.y = (1.0 - t) * (1.0) + t * 0.7;
+	unit_vector.z = (1.0 - t) * (1.0) + t * 1.0;
+	return (unit_vector);
 }
 
 void	color_pixels(t_mlx *mlx)
