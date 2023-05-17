@@ -20,15 +20,52 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+
+// bool hit_sphere(const vec3& center, float radius, const ray& r) {
+// 	vec3 oc = r.origin() - center;
+// 	float a = dot(r.direction(), r.direction());
+// 	float b = 2.0 * dot(oc, r.direction());
+// 	float c = dot(oc, oc) - radius * radius;
+// 	float discriminant = b * b - 4 * a * c;
+// 	return (discriminant > 0);
+// }
+
+bool hit_sphere(t_vector center, double radius, t_ray r) {
+	t_vector	oc;
+	double		a;
+	double		b;
+	double		c;
+	double		discriminant;
+	
+	oc = cal_subtract_vec(&(r.org), &center);
+	a = cal_inner_vec(&r.dir, &r.dir);
+	b = 2.0 * cal_inner_vec(&oc, &r.dir);
+	c = cal_inner_vec(&oc, &oc) - radius * radius;
+	discriminant = b * b - 4 * a * c;
+	return (discriminant > 0);
+}
+
+// vec3 color(const ray& r) {
+// 	if (hit_sphere(vec3(0,0,-1), 0.5, r))
+// 		return (vec3(1, 0, 0));
+
+// 	vec3 unit_direction = unit_vector(r.direction());
+// 	float t = 0.5 * (unit_direction.y() + 1.0);
+// 	return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+// }
+
 t_vector	color(t_ray r)
 {
 	t_vector	unit_dir;
 
+	if (hit_sphere(new_vec(0, 0, -1), 0.5, r))
+		return (new_vec(1, 0, 0));
+	
 	unit_dir = unit_vec(&r.dir);
-	double	t = 0.5*((unit_dir.y) + 1.0);
-	unit_dir.x = (1.0-t)*(1.0) + t*0.5;
-	unit_dir.y = (1.0-t)*(1.0) + t*0.7;
-	unit_dir.z = (1.0-t)*(1.0) + t*1.0;
+	double	t = 0.5 * ((unit_dir.y) + 1.0);
+	unit_dir.x = (1.0 - t) * (1.0) + t * 0.5;
+	unit_dir.y = (1.0 - t) * (1.0) + t * 0.7;
+	unit_dir.z = (1.0 - t) * (1.0) + t * 1.0;
 	return (unit_dir);
 }
 
@@ -47,9 +84,9 @@ void	color_pixels(t_mlx *mlx)
 			double v = (double)j / (double)WIN_HEIGHT;
 			t_ray r = \
 			{{0.0, 0.0, 0.0}, {
-				lower_left_corner.x + u*horizontal.x + v*vertical.x,
-				lower_left_corner.y + u*horizontal.y + v*vertical.y,
-				lower_left_corner.z + u*horizontal.z + v*vertical.z,
+				lower_left_corner.x + u * horizontal.x + v * vertical.x,
+				lower_left_corner.y + u * horizontal.y + v * vertical.y,
+				lower_left_corner.z + u * horizontal.z + v * vertical.z,
 			}};
 			vec = color(r);
 			// vec = \

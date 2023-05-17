@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <fcntl.h>
 # include <math.h>
 # include <mlx.h>
