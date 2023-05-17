@@ -25,7 +25,7 @@
 # define EXIT_SUCCESS			0
 # define EXIT_FAILURE			1
 # define WIN_WIDTH				800
-# define WIN_HEIGHT				800
+# define WIN_HEIGHT				400
 # define DIVERGENCE_CONDITION	300
 # define KEYPRESS				2
 # define DESTROYNOTIFY			17
@@ -91,6 +91,20 @@ typedef struct s_ray
 	struct s_vector	org;
 	struct s_vector	dir;
 }	t_ray;
+
+// typedef struct s_hit_record
+// {
+// 	double			t;
+// 	struct s_vector	p;
+// 	struct s_vector	normal;
+// }	t_hit_record;
+
+// typedef struct s_sphere
+// {
+// 	t_vector	center;
+// 	double 		r;
+// 	int			(*hit)(struct s_world *this, t_ray *ray, double min, double max, t_hit_record *out);
+// }	t_sphere;
 
 /* init */
 void	initialize(int argc, char **argv, t_mlx *mlx);
