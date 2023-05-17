@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void	put_color_in_pixel(t_img *img, int x, int y, int color)
+void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
@@ -20,29 +20,26 @@ void	put_color_in_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	put_colors(t_mlx *mlx)
+void	color_pixels(t_mlx *mlx)
 {
-	double	r;
-	double	g;
-	double	b;
-	int		result;
-	
+	t_vector	vec;
+	int			result;
+
 	for (int j = WIN_HEIGHT - 1; j >= 0; j--) {
 		for (int i = 0; i < WIN_WIDTH; i++) {
-			r = (double)i / (double)WIN_WIDTH;
-			g = (double)j / (double)WIN_HEIGHT;
-			b = 0.2;
+			vec = \
+			new_vec((double)i / (double)WIN_WIDTH, (double)j / (double)WIN_HEIGHT, 0.2);
 			result = \
-			(((int)(255.99 * r) << 16) + ((int)(255.99 * g) << 8) + (int)(255.99 * b));
-			put_color_in_pixel(&mlx->img, i, j, result);
+			(((int)(255.99 * vec.x) << 16) + ((int)(255.99 * vec.y) << 8) + (int)(255.99 * vec.z));
+			color_each_pixel(&mlx->img, i, j, result);
 		}
 	}
 }
 
-void	put_fractals_to_window(t_mlx *mlx)
+void	color_window(t_mlx *mlx)
 {
 	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
-	put_colors(mlx);
+	color_pixels(mlx);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 }
 
@@ -52,10 +49,39 @@ int	main(int argc, char **argv)
 
 	// arguments_check(argc, argv, &mlx);
 	initialize(argc, argv, &mlx);
-	put_fractals_to_window(&mlx);
+	color_window(&mlx);
 	set_hooks(&mlx);
 	mlx_loop(mlx.mlx_ptr);
 	return (0);
+}
+
+vec3 color(const ray& r) {
+	vec3 unit_direction = unit_vector(r.direction());
+	float t = 0.5 * (unit_direction.y() + 1.0);
+	return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+}
+
+int main() {
+	int nx = 200;
+	int ny = 100;
+	std::cout << "P3\n" << nx << " " << ny << "\n255\n";
+	vec3 lower_left_corner(-2.0, -1.0, -1.0);
+	vec3 horizontal(4.0, 0.0, 0.0);
+	vec3 vertical(0.0, 2.0, 0.0);
+	vec3 origin(0.0, 0.0, 0.0);
+
+	for (int j = ny - 1; j >= 0; j--) {
+		for (int i = 0; i < nx; i++) {
+			float u = float(i) / float(nx);
+			float v = float(j) / float(ny);
+			ray r(origin, lower_left_corner + u * horizontal + v * vertical);
+			vec3 col = color(r);
+			int ir = (int)(255.99 * col[0]);
+			int ig = (int)(255.99 * col[1]);
+			int ib = (int)(255.99 * col[2]);
+			std::cout << ir << " " << ig << " " << ib << "\n";
+		}
+	}
 }
 
 // int	setting_color(t_color *color, int i)
