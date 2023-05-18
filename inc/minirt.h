@@ -109,22 +109,22 @@ typedef	struct s_hitarg
 
 typedef struct s_sphere
 {
-	t_vector	center;
-	double 		r;
-	bool		(*hit)(void *this, struct s_hitarg h);
+	bool			(*hit)(void *this, struct s_hitarg h);
+	t_vector		center;
+	double 			r;
 }	t_sphere;
 
 typedef struct s_hitable
 {
-	bool	(*hit)(void *this, struct s_hitarg h);
+	bool				(*hit)(void *this, struct s_hitarg h);
 }	t_hitable;
 
 
 typedef struct s_hitable_list
 {
-	struct s_hitable	**list;
-	int					list_size;
-	bool				(*hit)(void *this, struct s_hitarg h);
+	bool			(*hit)(void *this, struct s_hitarg h);
+	struct s_sphere	**list;
+	int				list_size;
 }	t_hitable_list;
 
 /* init */
