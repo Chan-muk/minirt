@@ -113,18 +113,42 @@ t_vector	color(t_ray r, t_hitable *world)
 		out.normal = cal_add_vec(&out.normal, &tmp);
 		return (cal_multiply_vec(&out.normal, 0.5));
 	}
-	unit_vector = unit_vec(&r.dir);
-	t = 0.5 * ((unit_vector.y) + 1.0);
-	unit_vector.x = (1.0 - t) * (1.0) + t * 0.5;
-	unit_vector.y = (1.0 - t) * (1.0) + t * 0.7;
-	unit_vector.z = (1.0 - t) * (1.0) + t * 1.0;
 	return (unit_vector);
+}
+
+t_ray	get_ray(double x, double y)
+{
+	t_ray		ray;
+	t_vector	lower_left_corner;
+	t_vector	horizontal;
+	t_vector	vertical;
+	t_vector	origin;
+
+	double		u;
+	double		v;
+
+	u = x / (double)WIN_WIDTH;
+	v = y / (double)WIN_HEIGHT;
+
+	lower_left_corner = new_vec(-2.0, -1.0, -1.0);
+	horizontal = new_vec(4.0, 0.0, 0.0);
+	vertical = new_vec(0.0, 2.0, 0.0);
+	origin = new_vec(0.0, 0.0, 0.0);
+
+	ray = new_ray(new_vec(0.0, 0.0, 0.0), \
+	new_vec(lower_left_corner.x + u * horizontal.x + v * vertical.x,
+	lower_left_corner.y + u * horizontal.y + v * vertical.y,
+	lower_left_corner.z + u * horizontal.z + v * vertical.z));
+	return (ray);
 }
 
 void	color_pixels(t_mlx *mlx)
 {
-	t_vector	vec;
+	int 		x;
+	int		 	y;
 	int			result;
+	t_ray 		ray;
+	t_vector	vec;
 
 	t_vector	lower_left_corner = {-2.0, -1.0, -1.0};
 	t_vector	horizontal = {4.0, 0.0, 0.0};
@@ -151,8 +175,10 @@ void	color_pixels(t_mlx *mlx)
 			// new_vec((double)i / (double)WIN_WIDTH, (double)j / (double)WIN_HEIGHT, 0.2);
 			result = \
 			(((int)(255.99 * vec.x) << 16) + ((int)(255.99 * vec.y) << 8) + (int)(255.99 * vec.z));
-			color_each_pixel(&mlx->img, i, j, result);
+			color_each_pixel(&mlx->img, x, y, result);
+			x++;
 		}
+		y--;
 	}
 }
 
