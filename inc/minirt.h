@@ -50,33 +50,11 @@ typedef struct s_img
 	int		endian;
 }	t_img;	
 
-typedef struct s_num
-{
-	double	a;
-	double	b;
-	double	x;
-	double	y;
-	double	scale;
-	double	offset_x;
-	double	offset_y;
-}	t_num;
-
-typedef struct s_color
-{
-	int		i;
-	double	r;
-	double	g;
-	double	b;
-	double	offset;
-}	t_color;
-
 typedef struct s_mlx
 {
 	void			*mlx_ptr;
 	void			*win_ptr;
 	struct s_img	img;
-	struct s_num	num;
-	struct s_color	color;
 }	t_mlx;
 
 typedef struct s_vector
@@ -109,14 +87,14 @@ typedef	struct s_hitarg
 
 typedef struct s_sphere
 {
-	bool			(*hit)(void *this, struct s_hitarg h);
-	t_vector		center;
-	double 			r;
+	bool		(*hit)(void *this, struct s_hitarg h);
+	t_vector	center;
+	double 		r;
 }	t_sphere;
 
 typedef struct s_hitable
 {
-	bool				(*hit)(void *this, struct s_hitarg h);
+	bool	(*hit)(void *this, struct s_hitarg h);
 }	t_hitable;
 
 
@@ -139,6 +117,7 @@ t_vector	cal_add_vec(t_vector vec_1, t_vector vec_2);
 t_vector	cal_subtract_vec(t_vector vec_1, t_vector vec_2);
 t_vector	cal_inverse_vec(t_vector vec);
 t_vector	cal_multiply_vec(t_vector vec, double ratio);
+t_vector	cal_divide_vec(t_vector vec, double ratio);
 t_vector	cal_arithmetic_vec(t_vector vec_1, t_vector vec_2, double ratio);
 t_vector	cal_ray(t_ray ray, double ratio);
 double		cal_inner_vec(t_vector vec_1, t_vector vec_2);
