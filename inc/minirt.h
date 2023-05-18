@@ -92,19 +92,40 @@ typedef struct s_ray
 	struct s_vector	dir;
 }	t_ray;
 
-// typedef struct s_hit_record
-// {
-// 	double			t;
-// 	struct s_vector	p;
-// 	struct s_vector	normal;
-// }	t_hit_record;
+typedef struct s_hit_record
+{
+	double			t;
+	struct s_vector	p;
+	struct s_vector	normal;
+}	t_hit_record;
 
-// typedef struct s_sphere
-// {
-// 	t_vector	center;
-// 	double 		r;
-// 	int			(*hit)(struct s_world *this, t_ray *ray, double min, double max, t_hit_record *out);
-// }	t_sphere;
+typedef	struct s_hitarg
+{
+	t_ray			*ray;
+	double			min;
+	double			max;
+	t_hit_record	*out;
+}	t_hitarg;
+
+typedef struct s_sphere
+{
+	t_vector	center;
+	double 		r;
+	bool		(*hit)(void *this, struct s_hitarg h);
+}	t_sphere;
+
+typedef struct s_hitable
+{
+	bool	(*hit)(void *this, struct s_hitarg h);
+}	t_hitable;
+
+
+typedef struct s_hitable_list
+{
+	struct s_hitable	**list;
+	int					list_size;
+	bool				(*hit)(void *this, struct s_hitarg h);
+}	t_hitable_list;
 
 /* init */
 void	initialize(int argc, char **argv, t_mlx *mlx);

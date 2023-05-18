@@ -39,42 +39,79 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 // 		return (((-b -sqrt(discriminant)) / (2.0 * a)));
 // }
 
-double hit_sphere(t_vector center, double radius, t_ray ray)
+bool	hit_hitable_list(void *this, t_hitarg h)
 {
-	t_vector	r_center;
+	t_hitable_list	*t;
+	t_hit_record	temp_out;
+	bool			hit_anything;
+	double			closest_so_far;
+
+	t = (t_hitable_list *)this;
+	hit_anything = false;
+	closest_so_far = h.max;
+	for (int i = 0; i < t->list_size; i++)
+	{
+		if (t->list[i]->hit(&t->list[i], (t_hitarg){h.ray, h.min, closest_so_far, &temp_out}))
+		{
+			hit_anything = true;
+			closest_so_far = temp_out.t;
+			*h.out = temp_out;
+		}
+	}
+	return (hit_anything);
+}
+
+bool	hit_sphere(void *this, t_hitarg h)
+{
+	t_sphere	*t;
+	t_vector	oc;
 	double		a;
 	double		b;
 	double		c;
 	double		discriminant;
-	
-	r_center = cal_subtract_vec(&(ray.org), &center);
-	a = cal_inner_vec(&ray.dir, &ray.dir);
-	b = cal_inner_vec(&r_center, &ray.dir);
-	c = cal_inner_vec(&r_center, &r_center) - radius * radius;
+
+	t = (t_sphere *)this;
+	oc = cal_subtract_vec(&h.ray->org, &t->center);
+	a = cal_inner_vec(&h.ray->dir, &h.ray->dir);
+	b = 2.0 * cal_inner_vec(&oc, &h.ray->dir);
+	c = cal_inner_vec(&oc, &oc) - t->r * t->r;
 	discriminant = b * b - a * c;
-	if (discriminant < 0)
-		return (-1.0);
-	else
-		return (((-b -sqrt(discriminant)) / a));
+	if (discriminant > 0)
+	{
+		double temp = (-b - sqrt(b * b - a * c)) / a;
+		if (temp < h.max && temp > h.min)
+		{
+			h.out->t = temp;
+			h.out->p = cal_ray(h.ray, h.out->t);
+			h.out->normal = cal_subtract_vec(&h.out->p, &t->center);
+			h.out->normal = cal_multiply_vec(&h.out->normal, 1 / t->r);
+			return (true);
+		}
+		temp = (-b + sqrt(b * b - a * c)) / a;
+		if (temp < h.max && temp > h.min)
+		{
+			h.out->t = temp;
+			h.out->p = cal_ray(h.ray, h.out->t);
+			h.out->normal = cal_subtract_vec(&h.out->p, &t->center);
+			h.out->normal = cal_multiply_vec(&h.out->normal, 1 / t->r);
+			return (true);
+		}
+	}
+	return (false);
 }
 
-t_vector	color(t_ray r)
+t_vector	color(t_ray r, t_hitable *world)
 {
-	t_vector	unit_vector;
-	t_vector	N;
-	t_vector	tmp1;
-	double		t;
+	t_hit_record	out;
+	t_vector		unit_vector;
+	t_vector		tmp;
+	double			t;
 
-	t = hit_sphere(new_vec(0, 0, -1), 0.5, r);
-	if (t > 0.0)
+	if (world->hit(world, (t_hitarg){&r, 0.0, MAXFLOAT, &out}))
 	{
-		tmp1 = cal_ray(&r, t);
-		N = new_vec(0.0, 0.0, -1);
-		tmp1 = cal_subtract_vec(&tmp1, &N);
-		N = unit_vec(&tmp1);
-		tmp1 = new_vec(1.0, 1.0 ,1.0);
-		N = cal_add_vec(&N, &tmp1);
-		return (cal_multiply_vec(&N, 0.5));
+		tmp = new_vec(1.0, 1.0 ,1.0);
+		out.normal = cal_add_vec(&out.normal, &tmp);
+		return (cal_multiply_vec(&out.normal, 0.5));
 	}
 	unit_vector = unit_vec(&r.dir);
 	t = 0.5 * ((unit_vector.y) + 1.0);
@@ -93,6 +130,12 @@ void	color_pixels(t_mlx *mlx)
 	t_vector	horizontal = {4.0, 0.0, 0.0};
 	t_vector	vertical = {0.0, 2.0, 0.0};
 	t_vector	origin = {0.0, 0.0, 0.0};
+	t_hitable	*list[2];
+	t_sphere	sphere1 = {{0, 0, -1}, 0.5, hit_sphere};
+	t_sphere	sphere2 = {{0, -100.5, -1}, 100, hit_sphere};
+	list[0] = &sphere1;
+	list[1] = &sphere2;
+	t_hitable	*world = (t_hitable_list *){list, 2};
 	for (int j = WIN_HEIGHT - 1; j >= 0; j--) {
 		for (int i = 0; i < WIN_WIDTH; i++) {
 			double u = (double)i / (double)WIN_WIDTH;
@@ -103,7 +146,7 @@ void	color_pixels(t_mlx *mlx)
 				lower_left_corner.y + u * horizontal.y + v * vertical.y,
 				lower_left_corner.z + u * horizontal.z + v * vertical.z,
 			}};
-			vec = color(r);
+			vec = color(r, world);
 			// vec = \
 			// new_vec((double)i / (double)WIN_WIDTH, (double)j / (double)WIN_HEIGHT, 0.2);
 			result = \
