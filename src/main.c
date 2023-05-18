@@ -78,6 +78,32 @@ bool	hit_sphere(void *this, t_hitarg arg)
 	return (false);
 }
 
+bool	hit_hitable_list(void *this, t_hitarg arg)
+{
+	t_hitable_list	*hit;
+	t_hit_record	temp_rec;
+	bool			hit_anything;
+	double			closet_so_far;
+	t_hitarg		temp_arg;
+
+	hit = (t_hitable_list *)this;
+	hit_anything = false;
+	closet_so_far = arg.max;
+	temp_arg = arg;
+	temp_arg.max = closet_so_far;
+	temp_arg.rec = &temp_rec;
+	for (int i = 0; i < hit->list_size; i++)
+	{
+		if (hit->list[i]->hit(hit->list[i], temp_arg))
+		{
+			hit_anything = true;
+			closet_so_far = temp_rec.t;
+			*arg.rec = temp_rec;
+		}
+	}
+	return (hit_anything);
+}
+
 t_vector	color(t_ray ray)
 {
 	t_vector	unit_vector;
@@ -97,9 +123,9 @@ t_vector	color(t_ray ray)
 	arg.max = MAXFLOAT;
 	arg.rec = &rec;
 
-
 	t = old_hit_sphere(new_vec(0.0, 0.0, -1.0), 0.5, ray);
-	test = hit_sphere(&sphere, arg);
+	// test = hit_sphere(&sphere, arg);
+	test = sphere.hit(&sphere, arg);
 	
 	// if (t > 0.0)
 	if (test == true)
