@@ -20,63 +20,63 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-// double hit_sphere(t_vector center, double radius, t_ray ray)
-// {
-// 	t_vector	r_center;
-// 	double		a;
-// 	double		b;
-// 	double		c;
-// 	double		discriminant;
-	
-// 	r_center = cal_subtract_vec(ray.org, center);
-// 	a = cal_inner_vec(ray.dir, ray.dir);
-// 	b = cal_inner_vec(r_center, ray.dir);
-// 	c = cal_inner_vec(r_center, r_center) - (radius * radius);
-// 	discriminant = (b * b) - (a * c);
-// 	if (discriminant < 0)
-// 		return (-1.0);
-// 	else
-// 		return ((-b - sqrt(discriminant)) / a);
-// }
-
-// bool __hit_sphere(t_vector center, double radius, t_ray ray, double min, double max, t_hit_record *rec)
-bool	hit_sphere(void *this, t_hitarg h)
+double hit_sphere(t_vector center, double radius, t_ray ray)
 {
-	t_sphere	*t;
 	t_vector	r_center;
 	double		a;
 	double		b;
 	double		c;
 	double		discriminant;
-	double		temp;
 	
-	t = (t_sphere *)this;
-	r_center = cal_subtract_vec(h.ray->org, t->center);
-	a = cal_inner_vec(h.ray->dir, h.ray->dir);
-	b = cal_inner_vec(r_center, h.ray->dir);
-	c = cal_inner_vec(r_center, r_center) - (t->r * t->r);
+	r_center = cal_subtract_vec(ray.org, center);
+	a = cal_inner_vec(ray.dir, ray.dir);
+	b = cal_inner_vec(r_center, ray.dir);
+	c = cal_inner_vec(r_center, r_center) - (radius * radius);
 	discriminant = (b * b) - (a * c);
-	if (discriminant > 0)
-	{
-		temp = (-b - sqrt(discriminant)) / a;
-		if (temp < h.max && temp > h.min)
-		{
-			h.out->t = temp;
-			h.out->p = cal_ray(h.ray, h.out->t);
-			h.out->normal = cal_divide_vec(cal_subtract_vec(h.out->p, t->center), t->r);
-			return (true);
-		}
-		temp = (-b + sqrt(discriminant)) / a;
-		if (temp < h.max && temp > h.min)
-		{
-			h.out->t = temp;
-			h.out->p = cal_ray(h.ray, h.out->t);
-			h.out->normal = cal_divide_vec(cal_subtract_vec(h.out->p, t->center), t->r);
-			return (true);
-		}
-	}
-	return (false);
+	if (discriminant < 0)
+		return (-1.0);
+	else
+		return ((-b - sqrt(discriminant)) / a);
 }
+
+// bool __hit_sphere(t_vector center, double radius, t_ray ray, double min, double max, t_hit_record *rec)
+// bool	hit_sphere(void *this, t_hitarg h)
+// {
+// 	t_sphere	*t;
+// 	t_vector	r_center;
+// 	double		a;
+// 	double		b;
+// 	double		c;
+// 	double		discriminant;
+// 	double		temp;
+	
+// 	t = (t_sphere *)this;
+// 	r_center = cal_subtract_vec(h.ray->org, t->center);
+// 	a = cal_inner_vec(h.ray->dir, h.ray->dir);
+// 	b = cal_inner_vec(r_center, h.ray->dir);
+// 	c = cal_inner_vec(r_center, r_center) - (t->r * t->r);
+// 	discriminant = (b * b) - (a * c);
+// 	if (discriminant > 0)
+// 	{
+// 		temp = (-b - sqrt(discriminant)) / a;
+// 		if (temp < h.max && temp > h.min)
+// 		{
+// 			h.out->t = temp;
+// 			h.out->p = cal_ray(h.ray, h.out->t);
+// 			h.out->normal = cal_divide_vec(cal_subtract_vec(h.out->p, t->center), t->r);
+// 			return (true);
+// 		}
+// 		temp = (-b + sqrt(discriminant)) / a;
+// 		if (temp < h.max && temp > h.min)
+// 		{
+// 			h.out->t = temp;
+// 			h.out->p = cal_ray(h.ray, h.out->t);
+// 			h.out->normal = cal_divide_vec(cal_subtract_vec(h.out->p, t->center), t->r);
+// 			return (true);
+// 		}
+// 	}
+// 	return (false);
+// }
 
 t_vector	color(t_ray ray)
 {
