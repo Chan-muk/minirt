@@ -107,24 +107,26 @@ typedef struct s_ray
 // }	t_sphere;
 
 /* init */
-void	initialize(int argc, char **argv, t_mlx *mlx);
+void		initialize(int argc, char **argv, t_mlx *mlx);
 
 /* calculate */
-double		size_vec(t_vector *vec);
+double		size_vec(t_vector vec);
 t_vector	new_vec(double x, double y, double z);
-t_vector	unit_vec(t_vector *vec);
-t_vector	cal_add_vec(t_vector *vec_1, t_vector *vec_2);
-t_vector	cal_subtract_vec(t_vector *vec_1, t_vector *vec_2);
-t_vector	cal_inverse_vec(t_vector *vec);
-t_vector	cal_multiply_vec(t_vector *vec, double ratio);
-t_vector	cal_ray(t_ray *ray, double ratio);
-double		cal_inner_vec(t_vector *vec_1, t_vector *vec_2);
-t_vector	cal_outer_vec(t_vector *vec_1, t_vector *vec_2);
+t_ray		new_ray(t_vector org, t_vector dir);
+t_vector	unit_vec(t_vector vec);
+t_vector	cal_add_vec(t_vector vec_1, t_vector vec_2);
+t_vector	cal_subtract_vec(t_vector vec_1, t_vector vec_2);
+t_vector	cal_inverse_vec(t_vector vec);
+t_vector	cal_multiply_vec(t_vector vec, double ratio);
+t_vector	cal_arithmetic_vec(t_vector vec_1, t_vector vec_2, double ratio);
+t_vector	cal_ray(t_ray ray, double ratio);
+double		cal_inner_vec(t_vector vec_1, t_vector vec_2);
+t_vector	cal_outer_vec(t_vector vec_1, t_vector vec_2);
 
 /* hooks */
-void	set_hooks(t_mlx *mlx);
+void		set_hooks(t_mlx *mlx);
 
 /* utils */
-void	exit_with_str(const char *str, int exit_code);
+void		exit_with_str(const char *str, int exit_code);
 
 #endif

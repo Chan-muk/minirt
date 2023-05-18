@@ -20,25 +20,6 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-// double hit_sphere(t_vector center, double radius, t_ray r)
-// {
-// 	t_vector	oc;
-// 	double		a;
-// 	double		b;
-// 	double		c;
-// 	double		discriminant;
-	
-// 	oc = cal_subtract_vec(&(r.org), &center);
-// 	a = cal_inner_vec(&r.dir, &r.dir);
-// 	b = 2.0 * cal_inner_vec(&oc, &r.dir);
-// 	c = cal_inner_vec(&oc, &oc) - radius * radius;
-// 	discriminant = b * b - 4 * a * c;
-// 	if (discriminant < 0)
-// 		return (-1.0);
-// 	else
-// 		return (((-b -sqrt(discriminant)) / (2.0 * a)));
-// }
-
 double hit_sphere(t_vector center, double radius, t_ray ray)
 {
 	t_vector	r_center;
@@ -47,69 +28,88 @@ double hit_sphere(t_vector center, double radius, t_ray ray)
 	double		c;
 	double		discriminant;
 	
-	r_center = cal_subtract_vec(&(ray.org), &center);
-	a = cal_inner_vec(&ray.dir, &ray.dir);
-	b = cal_inner_vec(&r_center, &ray.dir);
-	c = cal_inner_vec(&r_center, &r_center) - radius * radius;
-	discriminant = b * b - a * c;
+	r_center = cal_subtract_vec(ray.org, center);
+	a = cal_inner_vec(ray.dir, ray.dir);
+	b = cal_inner_vec(r_center, ray.dir);
+	c = cal_inner_vec(r_center, r_center) - (radius * radius);
+	discriminant = (b * b) - (a * c);
 	if (discriminant < 0)
 		return (-1.0);
 	else
-		return (((-b -sqrt(discriminant)) / a));
+		return ((-b - sqrt(discriminant)) / a);
 }
 
-t_vector	color(t_ray r)
+t_vector	color(t_ray ray)
 {
 	t_vector	unit_vector;
-	t_vector	N;
-	t_vector	tmp1;
 	double		t;
 
-	t = hit_sphere(new_vec(0, 0, -1), 0.5, r);
+	t = hit_sphere(new_vec(0.0, 0.0, -1.0), 0.5, ray);
 	if (t > 0.0)
 	{
-		tmp1 = cal_ray(&r, t);
-		N = new_vec(0.0, 0.0, -1);
-		tmp1 = cal_subtract_vec(&tmp1, &N);
-		N = unit_vec(&tmp1);
-		tmp1 = new_vec(1.0, 1.0 ,1.0);
-		N = cal_add_vec(&N, &tmp1);
-		return (cal_multiply_vec(&N, 0.5));
+		unit_vector = cal_arithmetic_vec(\
+		unit_vec(cal_subtract_vec(cal_ray(ray, t), new_vec(0.0, 0.0, -1.0))), \
+		new_vec(1.0, 1.0, 1.0), 0.5);
 	}
-	unit_vector = unit_vec(&r.dir);
-	t = 0.5 * ((unit_vector.y) + 1.0);
-	unit_vector.x = (1.0 - t) * (1.0) + t * 0.5;
-	unit_vector.y = (1.0 - t) * (1.0) + t * 0.7;
-	unit_vector.z = (1.0 - t) * (1.0) + t * 1.0;
+	else
+	{
+		unit_vector = unit_vec(ray.dir);
+		t = 0.5 * ((unit_vector.y) + 1.0);
+		unit_vector.x = ((1.0 - t) * 1.0) + (t * 0.5);
+		unit_vector.y = ((1.0 - t) * 1.0) + (t * 0.7);
+		unit_vector.z = ((1.0 - t) * 1.0) + (t * 1.0);
+	}
 	return (unit_vector);
+}
+
+t_ray	get_ray(double x, double y)
+{
+	t_ray		ray;
+	t_vector	lower_left_corner;
+	t_vector	horizontal;
+	t_vector	vertical;
+	t_vector	origin;
+
+	double		u;
+	double		v;
+
+	u = x / (double)WIN_WIDTH;
+	v = y / (double)WIN_HEIGHT;
+
+	lower_left_corner = new_vec(-2.0, -1.0, -1.0);
+	horizontal = new_vec(4.0, 0.0, 0.0);
+	vertical = new_vec(0.0, 2.0, 0.0);
+	origin = new_vec(0.0, 0.0, 0.0);
+
+	ray = new_ray(new_vec(0.0, 0.0, 0.0), \
+	new_vec(lower_left_corner.x + u * horizontal.x + v * vertical.x,
+	lower_left_corner.y + u * horizontal.y + v * vertical.y,
+	lower_left_corner.z + u * horizontal.z + v * vertical.z));
+	return (ray);
 }
 
 void	color_pixels(t_mlx *mlx)
 {
-	t_vector	vec;
+	int 		x;
+	int		 	y;
 	int			result;
+	t_ray 		ray;
+	t_vector	vec;
 
-	t_vector	lower_left_corner = {-2.0, -1.0, -1.0};
-	t_vector	horizontal = {4.0, 0.0, 0.0};
-	t_vector	vertical = {0.0, 2.0, 0.0};
-	t_vector	origin = {0.0, 0.0, 0.0};
-	for (int j = WIN_HEIGHT - 1; j >= 0; j--) {
-		for (int i = 0; i < WIN_WIDTH; i++) {
-			double u = (double)i / (double)WIN_WIDTH;
-			double v = (double)j / (double)WIN_HEIGHT;
-			t_ray r = \
-			{{0.0, 0.0, 0.0}, {
-				lower_left_corner.x + u * horizontal.x + v * vertical.x,
-				lower_left_corner.y + u * horizontal.y + v * vertical.y,
-				lower_left_corner.z + u * horizontal.z + v * vertical.z,
-			}};
-			vec = color(r);
-			// vec = \
-			// new_vec((double)i / (double)WIN_WIDTH, (double)j / (double)WIN_HEIGHT, 0.2);
+	y = WIN_HEIGHT;
+	while (y >= 0)
+	{
+		x = 0;
+		while (x < WIN_WIDTH)
+		{
+			ray = get_ray((double)x, (double)y);
+			vec = color(ray);
 			result = \
 			(((int)(255.99 * vec.x) << 16) + ((int)(255.99 * vec.y) << 8) + (int)(255.99 * vec.z));
-			color_each_pixel(&mlx->img, i, j, result);
+			color_each_pixel(&mlx->img, x, y, result);
+			x++;
 		}
+		y--;
 	}
 }
 
