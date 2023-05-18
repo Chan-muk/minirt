@@ -88,6 +88,16 @@ t_vector	cal_multiply_vec(t_vector vec, double ratio)
 	return (vector);
 }
 
+t_vector	cal_divide_vec(t_vector vec, double ratio)
+{
+	t_vector	vector;
+
+	vector.x = vec.x / ratio;
+	vector.y = vec.y / ratio;
+	vector.z = vec.z / ratio;
+	return (vector);
+}
+
 t_vector	cal_arithmetic_vec(t_vector vec_1, t_vector vec_2, double ratio)
 {
 	t_vector	vector;
