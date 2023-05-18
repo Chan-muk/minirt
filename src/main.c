@@ -100,7 +100,7 @@ bool	hit_sphere(void *this, t_hitarg h)
 	return (false);
 }
 
-t_vector	color(t_ray r, t_hitable *world)
+t_vector	color(t_ray r, t_hitable_list *world)
 {
 	t_hit_record	out;
 	t_vector		unit_vector;
@@ -155,11 +155,11 @@ void	color_pixels(t_mlx *mlx)
 	t_vector	vertical = {0.0, 2.0, 0.0};
 	t_vector	origin = {0.0, 0.0, 0.0};
 	t_hitable	*list[2];
-	t_sphere	sphere1 = {{0, 0, -1}, 0.5, hit_sphere};
-	t_sphere	sphere2 = {{0, -100.5, -1}, 100, hit_sphere};
+	t_sphere	sphere1 = {hit_sphere, {0, 0, -1}, 0.5};
+	t_sphere	sphere2 = {hit_sphere, {0, -100.5, -1}, 100};
 	list[0] = &sphere1;
 	list[1] = &sphere2;
-	t_hitable	*world = (t_hitable_list *){list, 2};
+	t_hitable_list	world = {hit_hitable_list, list, 2};
 	for (int j = WIN_HEIGHT - 1; j >= 0; j--) {
 		for (int i = 0; i < WIN_WIDTH; i++) {
 			double u = (double)i / (double)WIN_WIDTH;
@@ -170,7 +170,7 @@ void	color_pixels(t_mlx *mlx)
 				lower_left_corner.y + u * horizontal.y + v * vertical.y,
 				lower_left_corner.z + u * horizontal.z + v * vertical.z,
 			}};
-			vec = color(r, world);
+			vec = color(r, &world);
 			// vec = \
 			// new_vec((double)i / (double)WIN_WIDTH, (double)j / (double)WIN_HEIGHT, 0.2);
 			result = \
