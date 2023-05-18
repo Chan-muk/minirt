@@ -20,7 +20,7 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-double hit_sphere(t_vector center, double radius, t_ray ray)
+double old_hit_sphere(t_vector center, double radius, t_ray ray)
 {
 	t_vector	r_center;
 	double		a;
@@ -40,51 +40,69 @@ double hit_sphere(t_vector center, double radius, t_ray ray)
 }
 
 // bool __hit_sphere(t_vector center, double radius, t_ray ray, double min, double max, t_hit_record *rec)
-// bool	hit_sphere(void *this, t_hitarg h)
-// {
-// 	t_sphere	*t;
-// 	t_vector	r_center;
-// 	double		a;
-// 	double		b;
-// 	double		c;
-// 	double		discriminant;
-// 	double		temp;
+bool	hit_sphere(void *this, t_hitarg arg)
+{
+	t_sphere	*sphere;
+	t_vector	r_center;
+	double		a;
+	double		b;
+	double		c;
+	double		discriminant;
+	double		temp;
 	
-// 	t = (t_sphere *)this;
-// 	r_center = cal_subtract_vec(h.ray->org, t->center);
-// 	a = cal_inner_vec(h.ray->dir, h.ray->dir);
-// 	b = cal_inner_vec(r_center, h.ray->dir);
-// 	c = cal_inner_vec(r_center, r_center) - (t->r * t->r);
-// 	discriminant = (b * b) - (a * c);
-// 	if (discriminant > 0)
-// 	{
-// 		temp = (-b - sqrt(discriminant)) / a;
-// 		if (temp < h.max && temp > h.min)
-// 		{
-// 			h.out->t = temp;
-// 			h.out->p = cal_ray(h.ray, h.out->t);
-// 			h.out->normal = cal_divide_vec(cal_subtract_vec(h.out->p, t->center), t->r);
-// 			return (true);
-// 		}
-// 		temp = (-b + sqrt(discriminant)) / a;
-// 		if (temp < h.max && temp > h.min)
-// 		{
-// 			h.out->t = temp;
-// 			h.out->p = cal_ray(h.ray, h.out->t);
-// 			h.out->normal = cal_divide_vec(cal_subtract_vec(h.out->p, t->center), t->r);
-// 			return (true);
-// 		}
-// 	}
-// 	return (false);
-// }
+	sphere = (t_sphere *)this;
+	r_center = cal_subtract_vec(arg.ray->org, sphere->center);
+	a = cal_inner_vec(arg.ray->dir, arg.ray->dir);
+	b = cal_inner_vec(r_center, arg.ray->dir);
+	c = cal_inner_vec(r_center, r_center) - (sphere->radius * sphere->radius);
+	discriminant = (b * b) - (a * c);
+	if (discriminant > 0)
+	{
+		temp = (-b - sqrt(discriminant)) / a;
+		if (temp < arg.max && temp > arg.min)
+		{
+			arg.rec->t = temp;
+			arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
+			arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+			return (true);
+		}
+		temp = (-b + sqrt(discriminant)) / a;
+		if (temp < arg.max && temp > arg.min)
+		{
+			arg.rec->t = temp;
+			arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
+			arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+			return (true);
+		}
+	}
+	return (false);
+}
 
 t_vector	color(t_ray ray)
 {
 	t_vector	unit_vector;
 	double		t;
 
-	t = hit_sphere(new_vec(0.0, 0.0, -1.0), 0.5, ray);
-	if (t > 0.0)
+	t_sphere		sphere;
+	t_hitarg 		arg;
+	t_hit_record	rec;
+	bool			test;
+
+	sphere.hit = hit_sphere;
+	sphere.center = new_vec(0, 0, -1);
+	sphere.radius = 0.5;
+
+	arg.ray = &ray;
+	arg.min = 0.0;
+	arg.max = MAXFLOAT;
+	arg.rec = &rec;
+
+
+	t = old_hit_sphere(new_vec(0.0, 0.0, -1.0), 0.5, ray);
+	test = hit_sphere(&sphere, arg);
+	
+	// if (t > 0.0)
+	if (test == true)
 	{
 		unit_vector = cal_arithmetic_vec(\
 		unit_vec(cal_subtract_vec(cal_ray(ray, t), new_vec(0.0, 0.0, -1.0))), \
