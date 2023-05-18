@@ -61,6 +61,7 @@ bool	hit_hitable_list(void *this, t_hitarg h)
 	return (hit_anything);
 }
 
+
 bool	hit_sphere(void *this, t_hitarg h)
 {
 	t_sphere	*t;

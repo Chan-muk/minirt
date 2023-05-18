@@ -142,6 +142,7 @@ t_vector	cal_ray(t_ray *ray, double ratio);
 double		cal_inner_vec(t_vector *vec_1, t_vector *vec_2);
 t_vector	cal_outer_vec(t_vector *vec_1, t_vector *vec_2);
 
+
 /* hooks */
 void	set_hooks(t_mlx *mlx);
 
