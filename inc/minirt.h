@@ -82,19 +82,19 @@ typedef	struct s_hitarg
 	t_ray			*ray;
 	double			min;
 	double			max;
-	t_hit_record	*out;
+	t_hit_record	*rec;
 }	t_hitarg;
 
 typedef struct s_sphere
 {
 	bool		(*hit)(void *this, struct s_hitarg h);
 	t_vector	center;
-	double 		r;
+	double 		radius;
 }	t_sphere;
 
 typedef struct s_hitable
 {
-	bool	(*hit)(void *this, struct s_hitarg h);
+	bool		(*hit)(void *this, struct s_hitarg h);
 }	t_hitable;
 
 
