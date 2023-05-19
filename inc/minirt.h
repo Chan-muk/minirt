@@ -72,11 +72,19 @@ typedef struct s_ray
 	struct s_vector	dir;
 }	t_ray;
 
+// typedef struct s_hit_record
+// {
+// 	double			t;
+// 	struct s_vector	p;
+// 	struct s_vector	normal;
+// }	t_hit_record;
+
 typedef struct s_hit_record
 {
-	double			t;
-	struct s_vector	p;
-	struct s_vector	normal;
+	double				t;
+	struct s_vector		p;
+	struct s_vector		normal;
+	struct s_material	*mat_ptr;
 }	t_hit_record;
 
 typedef	struct s_hitarg
@@ -89,9 +97,10 @@ typedef	struct s_hitarg
 
 typedef struct s_sphere
 {
-	bool		(*hit)(void *this, struct s_hitarg arg);
-	t_vector	center;
-	double 		radius;
+	bool				(*hit)(void *this, struct s_hitarg arg);
+	t_vector			center;
+	double 				radius;
+	struct s_material	*mat_ptr;
 }	t_sphere;
 
 typedef struct s_hitable
@@ -113,8 +122,32 @@ typedef struct s_camera
 	struct s_vector	vertical;
 	struct s_vector	origin;
 	t_ray			(*_get_ray)(void *this, double u, double v);
-
 }	t_camera;
+
+typedef	struct s_material_arg
+{
+	t_ray			*ray_in;
+	t_hit_record	*rec;
+	t_vector		*attenuation;
+	t_ray			*scattered;
+}	t_material_arg;
+
+typedef struct s_material
+{
+	bool	(*scatter)(void *this, struct s_material_arg arg);
+}	t_material;
+
+typedef struct s_lambertian
+{
+	bool		(*scatter)(void *this, struct s_material_arg arg);
+	t_vector	albedo;
+}	t_lambertian;
+
+typedef struct s_metal
+{
+	bool		(*scatter)(void *this, struct s_material_arg arg);
+	t_vector	albedo;
+}	t_metal;
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
@@ -129,6 +162,7 @@ t_vector	cal_add3_vec(t_vector vec_1, t_vector vec_2, t_vector vec_3);
 t_vector	cal_subtract_vec(t_vector vec_1, t_vector vec_2);
 t_vector	cal_inverse_vec(t_vector vec);
 t_vector	cal_multiply_vec(t_vector vec, double ratio);
+t_vector	cal_multi_vec(t_vector vec_1, t_vector vec_2);
 t_vector	cal_divide_vec(t_vector vec, double ratio);
 t_vector	cal_arithmetic_vec(t_vector vec_1, t_vector vec_2, double ratio);
 t_vector	cal_ray(t_ray ray, double ratio);

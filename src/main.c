@@ -14,6 +14,43 @@
 
 t_vector	random_in_unit_sphere(void);
 
+/* Chapter 8: Metal*/
+bool	scatter_lambertian(void *this, struct s_material_arg arg)
+{
+	t_vector		target;
+	t_ray			ray;
+	t_lambertian	*lambertian;
+
+	lambertian = (t_lambertian *)this;
+	ray = new_ray(arg.rec->p, cal_subtract_vec(target, arg.rec->p));
+	arg.scattered = &ray;
+	arg.attenuation = &lambertian->albedo;
+	return (true);
+}
+
+t_vector	reflect(t_vector vec_v, t_vector vec_n)
+{
+	return (cal_subtract_vec(vec_v, cal_multiply_vec(vec_n, (2 * cal_inner_vec(vec_v, vec_n)))));
+}
+
+bool	scatter_metal(void *this, struct s_material_arg arg)
+{
+	t_metal		*metal;
+	t_vector	reflected;
+	t_ray		ray;
+	
+	metal = (t_metal *)this;
+	reflected = reflect(unit_vec(arg.ray_in->dir), arg.rec->normal);
+	ray = new_ray(arg.rec->p, reflected);
+	arg.scattered = &ray;
+	arg.attenuation = &metal->albedo;
+	if (cal_inner_vec(arg.scattered->dir, arg.rec->normal) > 0)
+		return (true);
+	else
+		return (false);
+}
+/* Chapter 8: Metal*/
+
 void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
@@ -85,30 +122,44 @@ bool	hit_hitable_list(void *this, t_hitarg arg)
 	return (hit_anything);
 }
 
-t_vector	color(t_ray *ray, t_hitable *world)
+#include <stdio.h>
+t_vector	color(t_ray *ray, t_hitable *world, int depth)
 {
 	t_hit_record	rec;
 	t_vector		unit_vector;
 	double			t;
-	t_hitarg 		arg;
+	t_hitarg 		hit_arg;
 
-	arg.ray = ray;
-	// arg.min = 0.0;
-	arg.min = 0.001;
-	arg.max = MAXFLOAT;
-	arg.rec = &rec;
-	if (world->hit(world, arg))
+	hit_arg.ray = ray;
+	hit_arg.min = 0.001;
+	hit_arg.max = MAXFLOAT;
+	hit_arg.rec = &rec;
+
+	t_material_arg	mat_arg;
+	t_ray			scatterd;
+	t_vector		attenuation;
+	mat_arg.ray_in = ray;
+	mat_arg.rec = &rec;
+	mat_arg.attenuation = &attenuation;
+	mat_arg.scattered = &scatterd;
+
+	// printf("error - 1\n");
+	if (world->hit(world, hit_arg))
 	{
-		t_vector	target;
-		t_ray		ray;
-
-		target = cal_add3_vec(arg.rec->p, arg.rec->normal, random_in_unit_sphere());
-		// unit_vector = cal_arithmetic_vec(rec.normal ,new_vec(1.0, 1.0, 1.0), 0.5);
-		ray = new_ray(arg.rec->p, cal_subtract_vec(target, arg.rec->p));
-		return (cal_multiply_vec(color(&ray, world), 0.5));
+		if (depth < 50 && rec.mat_ptr->scatter(&rec.mat_ptr, mat_arg))
+		{
+			// printf("error - 2\n");
+			return (cal_multi_vec(attenuation, color(&scatterd, world, depth + 1)));
+		}
+		else
+		{
+			// printf("error - 2\n");
+			return (new_vec(0.0, 0.0, 0.0));
+		}
 	}
 	else
 	{
+		// printf("error - 2\n");
 		unit_vector = unit_vec(ray->dir);
 		t = 0.5 * ((unit_vector.y) + 1.0);
 		unit_vector.x = ((1.0 - t) * 1.0) + (t * 0.5);
@@ -117,6 +168,39 @@ t_vector	color(t_ray *ray, t_hitable *world)
 	}
 	return (unit_vector);
 }
+
+// t_vector	color(t_ray *ray, t_hitable *world)
+// {
+// 	t_hit_record	rec;
+// 	t_vector		unit_vector;
+// 	double			t;
+// 	t_hitarg 		arg;
+
+// 	arg.ray = ray;
+// 	// arg.min = 0.0;
+// 	arg.min = 0.001;
+// 	arg.max = MAXFLOAT;
+// 	arg.rec = &rec;
+// 	if (world->hit(world, arg))
+// 	{
+// 		t_vector	target;
+// 		t_ray		ray;
+
+// 		target = cal_add3_vec(arg.rec->p, arg.rec->normal, random_in_unit_sphere());
+// 		// unit_vector = cal_arithmetic_vec(rec.normal ,new_vec(1.0, 1.0, 1.0), 0.5);
+// 		ray = new_ray(arg.rec->p, cal_subtract_vec(target, arg.rec->p));
+// 		return (cal_multiply_vec(color(&ray, world), 0.5));
+// 	}
+// 	else
+// 	{
+// 		unit_vector = unit_vec(ray->dir);
+// 		t = 0.5 * ((unit_vector.y) + 1.0);
+// 		unit_vector.x = ((1.0 - t) * 1.0) + (t * 0.5);
+// 		unit_vector.y = ((1.0 - t) * 1.0) + (t * 0.7);
+// 		unit_vector.z = ((1.0 - t) * 1.0) + (t * 1.0);
+// 	}
+// 	return (unit_vector);
+// }
 
 t_ray	get_ray(double x, double y)
 {
@@ -195,10 +279,12 @@ void	color_pixels(t_mlx *mlx)
 	t_camera	cam;
 	cam._get_ray = _get_ray;
 
-	t_hitable	*list[2];
-	t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 2};
-	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5};
-	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100};
+	t_hitable	*list[4];
+	t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 4};
+	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5, &(t_lambertian){{scatter_lambertian, {0.8, 0.3, 0.3}}}};
+	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100, &(t_lambertian){scatter_lambertian, {0.8, 0.8, 0.0}}};
+	list[2] = &(t_sphere){hit_sphere, {1, 0, -1}, 0.5, &(t_metal){scatter_metal, {0.8, 0.6, 0.2}}};
+	list[3] = &(t_sphere){hit_sphere, {-1, 0, -1}, 0.5, &(t_metal){scatter_metal, {0.8, 0.8, 0.8}}};
 	y = WIN_HEIGHT;
 	while (y >= 0)
 	{
@@ -212,14 +298,12 @@ void	color_pixels(t_mlx *mlx)
 
 				t_ray	ray = cam._get_ray(&cam, u, v);
 				t_vector p = cal_ray(ray, 2.0);
-				col = cal_add_vec(col, color(&ray, world));
+				col = cal_add_vec(col, color(&ray, world, 0));
 			}
 			col = cal_divide_vec(col, (double)CAMERA_NS);
-
 			col = new_vec(sqrt(col.x), sqrt(col.y), sqrt(col.z));
 			// ray = get_ray((double)x, (double)y);
 			// vec = color(&ray, world);
-
 			result = \
 			(((int)(255.99 * col.x) << 16) + ((int)(255.99 * col.y) << 8) + (int)(255.99 * col.z));			
 			// result = \

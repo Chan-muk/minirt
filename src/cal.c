@@ -98,6 +98,16 @@ t_vector	cal_multiply_vec(t_vector vec, double ratio)
 	return (vector);
 }
 
+t_vector	cal_multi_vec(t_vector vec_1, t_vector vec_2)
+{
+	t_vector	vector;
+
+	vector.x = vec_1.x * vec_2.x;
+	vector.y = vec_1.y * vec_2.y;
+	vector.z = vec_1.z * vec_2.z;
+	return (vector);
+}
+
 t_vector	cal_divide_vec(t_vector vec, double ratio)
 {
 	t_vector	vector;
