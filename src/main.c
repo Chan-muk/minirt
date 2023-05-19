@@ -16,6 +16,7 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
+	y = WIN_HEIGHT - y;
 	dst = img->data_addr + (x * img->bits_per_pixel / 8) + (y * img->size_line);
 	*(unsigned int *)dst = color;
 }
@@ -163,38 +164,10 @@ void	color_pixels(t_mlx *mlx)
 	}
 }
 
-void	swap(t_mlx *mlx)
-{
-	int		x;
-	int		y;
-	t_img	*img;
-	char	*dst;
-	char	*src;
-	int		color;
-
-	img = &mlx->img;
-	y = WIN_HEIGHT / 2;
-	while (y >= 0)
-	{
-		x = 0;
-		while (x < WIN_WIDTH)
-		{
-			dst = img->data_addr + (x * img->bits_per_pixel / 8) + (y * img->size_line);
-			src = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y) * img->size_line);
-			color = *(unsigned int *)dst;
-			*(unsigned int *)dst = *(unsigned int *)src;
-			*(unsigned int *)src = color;
-			x++;
-		}
-		y--;
-	}
-}
-
 void	color_window(t_mlx *mlx)
 {
 	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
 	color_pixels(mlx);
-	swap(mlx);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 }
 
