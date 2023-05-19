@@ -93,7 +93,8 @@ t_vector	color(t_ray *ray, t_hitable *world)
 	t_hitarg 		arg;
 
 	arg.ray = ray;
-	arg.min = 0.0;
+	// arg.min = 0.0;
+	arg.min = 0.001;
 	arg.max = MAXFLOAT;
 	arg.rec = &rec;
 	if (world->hit(world, arg))
@@ -215,6 +216,7 @@ void	color_pixels(t_mlx *mlx)
 			}
 			col = cal_divide_vec(col, (double)CAMERA_NS);
 
+			col = new_vec(sqrt(col.x), sqrt(col.y), sqrt(col.z));
 			// ray = get_ray((double)x, (double)y);
 			// vec = color(&ray, world);
 
