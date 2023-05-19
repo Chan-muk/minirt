@@ -20,13 +20,14 @@
 # include <fcntl.h>
 # include <math.h>
 # include <mlx.h>
+# include <time.h>
 # include "../libft/inc/libft.h"
 
 # define EXIT_SUCCESS			0
 # define EXIT_FAILURE			1
-# define WIN_WIDTH				400
+# define WIN_WIDTH				800
 # define WIN_HEIGHT				400
-# define CAMERA_NS				200
+# define CAMERA_NS				400
 # define DIVERGENCE_CONDITION	300
 # define KEYPRESS				2
 # define DESTROYNOTIFY			17

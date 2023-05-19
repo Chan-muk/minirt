@@ -153,11 +153,6 @@ t_ray	_get_ray(void *this, double u, double v)
 	return (ray);
 }
 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
 double drandom48(void)
 {
 	return (double)rand() / (double)RAND_MAX;
