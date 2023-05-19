@@ -135,13 +135,48 @@ t_ray	get_ray(double x, double y)
 	return (ray);
 }
 
+t_ray	_get_ray(void *this, double u, double v)
+{
+	t_camera	camera;
+	t_ray		ray;
+
+	camera = *(t_camera *)this;
+	camera.lower_left_corner = new_vec(-2.0, -1.0, -1.0);
+	camera.horizontal = new_vec(2.0, 0.0, 0.0);
+	camera.vertical = new_vec(0.0, 2.0, 0.0);
+	camera.origin = new_vec(0.0, 0.0, 0.0);
+
+	ray.org = camera.origin;
+	ray.dir = cal_subtract_vec(cal_add_vec(cal_add_vec(camera.lower_left_corner, \
+	cal_multiply_vec(camera.horizontal, u)), \
+	cal_multiply_vec(camera.vertical, v)), camera.origin);
+	return (ray);
+}
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+double drandom48(void)
+{
+	return (double)rand() / (double)RAND_MAX;
+}
+
 void	color_pixels(t_mlx *mlx)
 {
+	// srand((unsigned int)time(NULL));
+	srand(time(NULL));
+
+	double		random;
 	int 		x;
 	int		 	y;
 	int			result;
 	t_ray 		ray;
 	t_vector	vec;
+
+	t_camera	cam;
+	cam._get_ray = _get_ray;
 
 	t_hitable	*list[2];
 	t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 2};
@@ -153,10 +188,24 @@ void	color_pixels(t_mlx *mlx)
 		x = 0;
 		while (x < WIN_WIDTH)
 		{
-			ray = get_ray((double)x, (double)y);
-			vec = color(&ray, world);
+			t_vector	col = new_vec(0.0, 0.0, 0.0);
+			for (int s = 0; s < CAMERA_NS; s++) {
+				double u = ((double)x + drandom48()) / (double)CAMERA_NS;
+				double v = ((double)y + drandom48()) / (double)CAMERA_NS;
+
+				t_ray	ray = cam._get_ray(&cam, u, v);
+				t_vector p = cal_ray(ray, 2.0);
+				col = cal_add_vec(col, color(&ray, world));
+			}
+			col = cal_divide_vec(col, (double)CAMERA_NS);
+
+			// ray = get_ray((double)x, (double)y);
+			// vec = color(&ray, world);
+
 			result = \
-			(((int)(255.99 * vec.x) << 16) + ((int)(255.99 * vec.y) << 8) + (int)(255.99 * vec.z));
+			(((int)(255.99 * col.x) << 16) + ((int)(255.99 * col.y) << 8) + (int)(255.99 * col.z));			
+			// result = \
+			// (((int)(255.99 * vec.x) << 16) + ((int)(255.99 * vec.y) << 8) + (int)(255.99 * vec.z));
 			color_each_pixel(&mlx->img, x, y, result);
 			x++;
 		}

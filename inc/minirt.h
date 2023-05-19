@@ -24,8 +24,9 @@
 
 # define EXIT_SUCCESS			0
 # define EXIT_FAILURE			1
-# define WIN_WIDTH				800
+# define WIN_WIDTH				400
 # define WIN_HEIGHT				400
+# define CAMERA_NS				200
 # define DIVERGENCE_CONDITION	300
 # define KEYPRESS				2
 # define DESTROYNOTIFY			17
@@ -97,13 +98,22 @@ typedef struct s_hitable
 	bool		(*hit)(void *this, struct s_hitarg arg);
 }	t_hitable;
 
-
 typedef struct s_hitable_list
 {
 	bool				(*hit)(void *this, struct s_hitarg arg);
 	struct s_hitable	**list;
 	int					list_size;
 }	t_hitable_list;
+
+typedef struct s_camera
+{
+	struct s_vector	lower_left_corner;
+	struct s_vector	horizontal;
+	struct s_vector	vertical;
+	struct s_vector	origin;
+	t_ray			(*_get_ray)(void *this, double u, double v);
+
+}	t_camera;
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
