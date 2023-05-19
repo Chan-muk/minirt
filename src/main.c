@@ -16,27 +16,9 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
+	y = WIN_HEIGHT - y;
 	dst = img->data_addr + (x * img->bits_per_pixel / 8) + (y * img->size_line);
 	*(unsigned int *)dst = color;
-}
-
-double old_hit_sphere(t_vector center, double radius, t_ray ray)
-{
-	t_vector	r_center;
-	double		a;
-	double		b;
-	double		c;
-	double		discriminant;
-	
-	r_center = cal_subtract_vec(ray.org, center);
-	a = cal_inner_vec(ray.dir, ray.dir);
-	b = cal_inner_vec(r_center, ray.dir);
-	c = cal_inner_vec(r_center, r_center) - (radius * radius);
-	discriminant = (b * b) - (a * c);
-	if (discriminant < 0)
-		return (-1.0);
-	else
-		return ((-b - sqrt(discriminant)) / a);
 }
 
 // bool __hit_sphere(t_vector center, double radius, t_ray ray, double min, double max, t_hit_record *rec)
@@ -49,7 +31,7 @@ bool	hit_sphere(void *this, t_hitarg arg)
 	double		c;
 	double		discriminant;
 	double		temp;
-	
+
 	sphere = (t_sphere *)this;
 	r_center = cal_subtract_vec(arg.ray->org, sphere->center);
 	a = cal_inner_vec(arg.ray->dir, arg.ray->dir);
@@ -80,63 +62,45 @@ bool	hit_sphere(void *this, t_hitarg arg)
 
 bool	hit_hitable_list(void *this, t_hitarg arg)
 {
-	t_hitable_list	*hit;
+	t_hitable_list	*world;
 	t_hit_record	temp_rec;
 	bool			hit_anything;
-	double			closet_so_far;
 	t_hitarg		temp_arg;
 
-	hit = (t_hitable_list *)this;
+	world = (t_hitable_list *)this;
 	hit_anything = false;
-	closet_so_far = arg.max;
 	temp_arg = arg;
-	temp_arg.max = closet_so_far;
 	temp_arg.rec = &temp_rec;
-	for (int i = 0; i < hit->list_size; i++)
+	for (int i = 0; i < world->list_size; i++)
 	{
-		if (hit->list[i]->hit(hit->list[i], temp_arg))
+		if (world->list[i]->hit(world->list[i], temp_arg))
 		{
 			hit_anything = true;
-			closet_so_far = temp_rec.t;
+			temp_arg.max = temp_rec.t;
 			*arg.rec = temp_rec;
 		}
 	}
 	return (hit_anything);
 }
 
-t_vector	color(t_ray ray)
+t_vector	color(t_ray *ray, t_hitable *world)
 {
-	t_vector	unit_vector;
-	double		t;
-
-	t_sphere		sphere;
-	t_hitarg 		arg;
 	t_hit_record	rec;
-	bool			test;
+	t_vector		unit_vector;
+	double			t;
+	t_hitarg 		arg;
 
-	sphere.hit = hit_sphere;
-	sphere.center = new_vec(0, 0, -1);
-	sphere.radius = 0.5;
-
-	arg.ray = &ray;
+	arg.ray = ray;
 	arg.min = 0.0;
 	arg.max = MAXFLOAT;
 	arg.rec = &rec;
-
-	t = old_hit_sphere(new_vec(0.0, 0.0, -1.0), 0.5, ray);
-	// test = hit_sphere(&sphere, arg);
-	test = sphere.hit(&sphere, arg);
-	
-	// if (t > 0.0)
-	if (test == true)
+	if (world->hit(world, arg))
 	{
-		unit_vector = cal_arithmetic_vec(\
-		unit_vec(cal_subtract_vec(cal_ray(ray, t), new_vec(0.0, 0.0, -1.0))), \
-		new_vec(1.0, 1.0, 1.0), 0.5);
+		unit_vector = cal_arithmetic_vec(rec.normal ,new_vec(1.0, 1.0, 1.0), 0.5);
 	}
 	else
 	{
-		unit_vector = unit_vec(ray.dir);
+		unit_vector = unit_vec(ray->dir);
 		t = 0.5 * ((unit_vector.y) + 1.0);
 		unit_vector.x = ((1.0 - t) * 1.0) + (t * 0.5);
 		unit_vector.y = ((1.0 - t) * 1.0) + (t * 0.7);
@@ -179,6 +143,10 @@ void	color_pixels(t_mlx *mlx)
 	t_ray 		ray;
 	t_vector	vec;
 
+	t_hitable	*list[2];
+	t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 2};
+	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5};
+	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100};
 	y = WIN_HEIGHT;
 	while (y >= 0)
 	{
@@ -186,7 +154,7 @@ void	color_pixels(t_mlx *mlx)
 		while (x < WIN_WIDTH)
 		{
 			ray = get_ray((double)x, (double)y);
-			vec = color(ray);
+			vec = color(&ray, world);
 			result = \
 			(((int)(255.99 * vec.x) << 16) + ((int)(255.99 * vec.y) << 8) + (int)(255.99 * vec.z));
 			color_each_pixel(&mlx->img, x, y, result);
