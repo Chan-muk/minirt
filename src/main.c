@@ -12,6 +12,8 @@
 
 #include "minirt.h"
 
+t_vector	random_in_unit_sphere(void);
+
 void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
@@ -96,7 +98,13 @@ t_vector	color(t_ray *ray, t_hitable *world)
 	arg.rec = &rec;
 	if (world->hit(world, arg))
 	{
-		unit_vector = cal_arithmetic_vec(rec.normal ,new_vec(1.0, 1.0, 1.0), 0.5);
+		t_vector	target;
+		t_ray		ray;
+
+		target = cal_add3_vec(arg.rec->p, arg.rec->normal, random_in_unit_sphere());
+		// unit_vector = cal_arithmetic_vec(rec.normal ,new_vec(1.0, 1.0, 1.0), 0.5);
+		ray = new_ray(arg.rec->p, cal_subtract_vec(target, arg.rec->p));
+		return (cal_multiply_vec(color(&ray, world), 0.5));
 	}
 	else
 	{
@@ -158,11 +166,24 @@ double drandom48(void)
 	return (double)rand() / (double)RAND_MAX;
 }
 
+t_vector	random_in_unit_sphere(void)
+{
+	t_vector	p;
+
+	p = cal_subtract_vec(\
+	cal_multiply_vec(new_vec(drandom48(), drandom48(), drandom48()), 2.0), \
+	new_vec(1.0, 1.0, 1.0));
+	while ((size_vec(p) * size_vec(p)) >= 1.0)
+	{
+		p = cal_subtract_vec(\
+		cal_multiply_vec(new_vec(drandom48(), drandom48(), drandom48()), 2.0), \
+		new_vec(1.0, 1.0, 1.0));
+	}
+	return (p);
+}
+
 void	color_pixels(t_mlx *mlx)
 {
-	// srand((unsigned int)time(NULL));
-	srand(time(NULL));
-
 	double		random;
 	int 		x;
 	int		 	y;
@@ -220,6 +241,9 @@ int	main(int argc, char **argv)
 	t_mlx	mlx;
 
 	// arguments_check(argc, argv, &mlx);
+	
+	srand(time(NULL));
+
 	initialize(argc, argv, &mlx);
 	color_window(&mlx);
 	set_hooks(&mlx);

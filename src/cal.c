@@ -58,6 +58,16 @@ t_vector	cal_add_vec(t_vector vec_1, t_vector vec_2)
 	return (vector);
 }
 
+t_vector	cal_add3_vec(t_vector vec_1, t_vector vec_2, t_vector vec_3)
+{
+	t_vector	vector;
+
+	vector.x = vec_1.x + vec_2.x + vec_3.x;
+	vector.y = vec_1.y + vec_2.y + vec_3.y;
+	vector.z = vec_1.z + vec_2.z + vec_3.z;
+	return (vector);
+}
+
 t_vector	cal_subtract_vec(t_vector vec_1, t_vector vec_2)
 {
 	t_vector	vector;

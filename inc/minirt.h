@@ -125,6 +125,7 @@ t_vector	new_vec(double x, double y, double z);
 t_ray		new_ray(t_vector org, t_vector dir);
 t_vector	unit_vec(t_vector vec);
 t_vector	cal_add_vec(t_vector vec_1, t_vector vec_2);
+t_vector	cal_add3_vec(t_vector vec_1, t_vector vec_2, t_vector vec_3);
 t_vector	cal_subtract_vec(t_vector vec_1, t_vector vec_2);
 t_vector	cal_inverse_vec(t_vector vec);
 t_vector	cal_multiply_vec(t_vector vec, double ratio);
