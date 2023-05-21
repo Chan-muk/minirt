@@ -128,7 +128,8 @@ t_vector	__get_color_vec(t_ray *ray, t_hitable *world, int depth) //ray_color
 
 	if (world->hit(world, arg))
 	{
-		__ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add3_vec(arg.rec->p, arg.rec->normal, random_in_unit_sphere()), arg.rec->p));
+		// __ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add3_vec(arg.rec->p, arg.rec->normal, random_unit_vecter()), arg.rec->p)); // Lam Diffusion in Chapter 8
+		__ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add_vec(arg.rec->p, random_in_hemisphere(arg.rec->normal)), arg.rec->p)); // Alternative Diffusion in Chapter 8
 		return (cal_multiply_vec(__get_color_vec(&__ray, world, (depth - 1)), 0.5));
 	}
 	unit_vector = unit_vec(ray->dir);

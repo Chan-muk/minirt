@@ -158,6 +158,8 @@ int		_get_color(t_vector vec);
 
 /* random */
 double		drandom48(void);
+t_vector	random_in_hemisphere(t_vector normal);
+t_vector	random_unit_vecter(void);
 t_vector	random_in_unit_sphere(void);
 
 /* calculate */
