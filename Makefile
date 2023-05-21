@@ -14,8 +14,8 @@
 
 NAME		= minirt
 
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CC			= cc -g3
+CFLAGS		= -Wall -Wextra -Werror -g3
 RMFLAGS		= -r
 
 HEADER		= -I./inc
@@ -31,7 +31,7 @@ SRC_DIR		= src
 OBJ_DIR		= obj
 
 SRC			= \
-			main.c init.c hook.c cal.c utils.c
+			main.c color.c random.c init.c hook.c cal.c utils.c
 
 SRC_BONUS	= main_bonus.c
 
