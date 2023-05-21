@@ -21,14 +21,13 @@ t_vector	random_in_unit_sphere(void)
 {
 	t_vector	p;
 
-	p = cal_subtract_vec(\
-	cal_multiply_vec(new_vec(drandom48(), drandom48(), drandom48()), 2.0), \
-	new_vec(1.0, 1.0, 1.0));
-	while ((size_vec(p) * size_vec(p)) >= 1.0)
+	while (true)
 	{
 		p = cal_subtract_vec(\
 		cal_multiply_vec(new_vec(drandom48(), drandom48(), drandom48()), 2.0), \
 		new_vec(1.0, 1.0, 1.0));
+		if ((size_vec(p) * size_vec(p)) < 1.0)
+			break ;
 	}
 	return (p);
 }
