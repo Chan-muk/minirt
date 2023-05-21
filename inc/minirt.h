@@ -23,25 +23,24 @@
 # include <time.h>
 # include "../libft/inc/libft.h"
 
-# define EXIT_SUCCESS			0
-# define EXIT_FAILURE			1
-# define WIN_WIDTH				800
-# define WIN_HEIGHT				400
-# define CAMERA_NS				100
-# define DIVERGENCE_CONDITION	300
-# define KEYPRESS				2
-# define DESTROYNOTIFY			17
-# define ESC					53
-# define LEFT_CLICK				1
-# define RIGHT_CLICK			2
-# define MIDDLE_CLICK			3
-# define SCROLL_UP				4
-# define SCROLL_DOWN			5
-# define UP						126
-# define DOWN					125
-# define LEFT					123
-# define RIGHT					124
-# define R_KEY					15
+# define EXIT_SUCCESS	0
+# define EXIT_FAILURE	1
+# define WIN_WIDTH		800
+# define WIN_HEIGHT		400
+# define CAMERA_NS		100
+# define KEYPRESS		2
+# define DESTROYNOTIFY	17
+# define ESC			53
+# define LEFT_CLICK		1
+# define RIGHT_CLICK	2
+# define MIDDLE_CLICK	3
+# define SCROLL_UP		4
+# define SCROLL_DOWN	5
+# define UP				126
+# define DOWN			125
+# define LEFT			123
+# define RIGHT			124
+# define R_KEY			15
 
 typedef struct s_img
 {
@@ -72,15 +71,10 @@ typedef struct s_ray
 	struct s_vector	dir;
 }	t_ray;
 
-// typedef struct s_hit_record
-// {
-// 	double			t;
-// 	struct s_vector	p;
-// 	struct s_vector	normal;
-// }	t_hit_record;
-
 typedef struct s_hit_record
 {
+	bool				(*set_face_normal)(void *this, struct s_ray ray, struct s_vector outward_normal);
+	bool				front_face;
 	double				t;
 	struct s_vector		p;
 	struct s_vector		normal;
@@ -149,6 +143,10 @@ typedef struct s_metal
 	t_vector	albedo;
 }	t_metal;
 
+
+void	set_face_normal(void *this, t_ray ray, t_vector outward_normal);
+
+
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
 
@@ -178,7 +176,6 @@ t_vector	cal_arithmetic_vec(t_vector vec_1, t_vector vec_2, double ratio);
 t_vector	cal_ray(t_ray ray, double ratio);
 double		cal_inner_vec(t_vector vec_1, t_vector vec_2);
 t_vector	cal_outer_vec(t_vector vec_1, t_vector vec_2);
-
 
 /* hooks */
 void		set_hooks(t_mlx *mlx);

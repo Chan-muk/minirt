@@ -12,6 +12,23 @@
 
 #include "minirt.h"
 
+void	check_face_normal(void *this, t_ray ray, t_vector outward_normal)
+{
+	t_hit_record	*record;
+
+	record = (t_hit_record *)this;
+	if (cal_inner_vec(ray.dir, outward_normal) > 0.0)
+	{
+		record->normal = cal_inverse_vec(outward_normal);
+		record->front_face = false;
+	}
+	else
+	{
+		record->normal = outward_normal;
+		record->front_face = true;
+	}
+}
+
 /* Chapter 8: Metal*/
 bool	scatter_lambertian(void *this, struct s_material_arg arg)
 {
@@ -57,7 +74,7 @@ bool	hit_sphere(void *this, t_hitarg arg)
 	double		b;
 	double		c;
 	double		discriminant;
-	double		temp;
+	double		root;
 
 	sphere = (t_sphere *)this;
 	r_center = cal_subtract_vec(arg.ray->org, sphere->center);
@@ -65,26 +82,26 @@ bool	hit_sphere(void *this, t_hitarg arg)
 	b = cal_inner_vec(r_center, arg.ray->dir);
 	c = cal_inner_vec(r_center, r_center) - (sphere->radius * sphere->radius);
 	discriminant = (b * b) - (a * c);
-	if (discriminant > 0)
-	{
-		temp = (-b - sqrt(discriminant)) / a;
-		if (temp < arg.max && temp > arg.min)
-		{
-			arg.rec->t = temp;
-			arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-			arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
-			return (true);
-		}
-		temp = (-b + sqrt(discriminant)) / a;
-		if (temp < arg.max && temp > arg.min)
-		{
-			arg.rec->t = temp;
-			arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-			arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
-			return (true);
-		}
+	if (discriminant < 0.0)
+		return (false);
+	root = (-b - sqrt(discriminant)) / a;
+	if (root < arg.min || arg.max < root) {
+		root = (-b + sqrt(discriminant)) / a;
+		if (root < arg.min || arg.max < root)
+			return (false);
 	}
-	return (false);
+	arg.rec->t = root;
+	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
+	arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+
+	/* Surface check */
+	// t_vector	outward_normal;
+	// outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+	// arg.rec->set_face_normal(&arg.rec, *arg.ray, outward_normal);
+
+	arg.rec->mat_ptr = sphere->mat_ptr;
+	
+	return (true);
 }
 
 bool	hit_hitable_list(void *this, t_hitarg arg)
@@ -98,6 +115,7 @@ bool	hit_hitable_list(void *this, t_hitarg arg)
 	hit_anything = false;
 	temp_arg = arg;
 	temp_arg.rec = &temp_rec;
+	temp_rec.set_face_normal = check_face_normal;
 	for (int i = 0; i < world->list_size; i++)
 	{
 		if (world->list[i]->hit(world->list[i], temp_arg))
@@ -125,6 +143,7 @@ t_vector	__get_color_vec(t_ray *ray, t_hitable *world, int depth) //ray_color
 	arg.min = 0.001;
 	arg.max = MAXFLOAT;
 	arg.rec = &rec;
+	rec.set_face_normal = check_face_normal;
 
 	if (world->hit(world, arg))
 	{
