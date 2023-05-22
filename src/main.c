@@ -12,6 +12,55 @@
 
 #include "minirt.h"
 
+/* Chapter 9.4.: Mirrored Light Reflection */
+t_vector	reflect(t_vector vec_1, t_vector vec_2)
+{
+	return (cal_subtract_vec(vec_1, cal_multiply_vec(vec_2, 2 * cal_inner_vec(vec_1, vec_2))));
+}
+
+bool	scatter_metal(void *this, struct s_material_arg arg)
+{
+	t_metal		*metal;
+	t_vector	reflected;
+	t_ray		ray;
+	
+	metal = (t_metal *)this;
+	reflected = reflect(unit_vec(arg.ray_in->dir), arg.rec->normal);
+	*arg.scattered = new_ray(arg.rec->p, reflected);
+	arg.attenuation = &metal->albedo;
+	if (cal_inner_vec(arg.scattered->dir, arg.rec->normal) > 0)
+		return (true);
+	else
+		return (false);
+}
+/* Chapter 9.4.: Mirrored Light Reflection */
+
+/* Chapter 9.3.: Modeling Light Scatter and Reflectance */
+bool	near_zero(void *this)
+{	// Returns true if the vector is very close to zero in all dimensions
+	t_vector	*vec;
+	double 		s;
+
+	vec = (t_vector *)this;
+	s = 0.00000001;
+	return (fabs(vec->x) < s) && (fabs(vec->y) < s) && (fabs(vec->z) < s);
+}
+
+bool	scatter_lambertian(void *this, t_material_arg arg)
+{	// color
+	t_vector		scatter_direction;
+	t_lambertian	*lambertian;
+
+	lambertian = (t_lambertian *)this;
+	scatter_direction = cal_add_vec(arg.rec->normal, random_unit_vecter());
+	if (near_zero(&scatter_direction))
+		scatter_direction = arg.rec->normal;
+	*arg.scattered = new_ray(arg.rec->p, scatter_direction);
+	arg.attenuation = &lambertian->albedo;
+	return (true);
+}
+/* Chapter 9.3.: Modeling Light Scatter and Reflectance */
+
 void	check_face_normal(void *this, t_ray ray, t_vector outward_normal)
 {
 	t_hit_record	*record;
@@ -28,43 +77,6 @@ void	check_face_normal(void *this, t_ray ray, t_vector outward_normal)
 		record->front_face = true;
 	}
 }
-
-/* Chapter 8: Metal*/
-bool	scatter_lambertian(void *this, struct s_material_arg arg)
-{
-	t_vector		target;
-	t_ray			ray;
-	t_lambertian	*lambertian;
-
-	lambertian = (t_lambertian *)this;
-	ray = new_ray(arg.rec->p, cal_subtract_vec(target, arg.rec->p));
-	arg.scattered = &ray;
-	arg.attenuation = &lambertian->albedo;
-	return (true);
-}
-
-t_vector	reflect(t_vector vec_v, t_vector vec_n)
-{
-	return (cal_subtract_vec(vec_v, cal_multiply_vec(vec_n, (2 * cal_inner_vec(vec_v, vec_n)))));
-}
-
-bool	scatter_metal(void *this, struct s_material_arg arg)
-{
-	t_metal		*metal;
-	t_vector	reflected;
-	t_ray		ray;
-	
-	metal = (t_metal *)this;
-	reflected = reflect(unit_vec(arg.ray_in->dir), arg.rec->normal);
-	ray = new_ray(arg.rec->p, reflected);
-	arg.scattered = &ray;
-	arg.attenuation = &metal->albedo;
-	if (cal_inner_vec(arg.scattered->dir, arg.rec->normal) > 0)
-		return (true);
-	else
-		return (false);
-}
-/* Chapter 8: Metal*/
 
 bool	hit_sphere(void *this, t_hitarg arg)
 {
@@ -95,9 +107,9 @@ bool	hit_sphere(void *this, t_hitarg arg)
 	arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
 
 	/* Surface check */
-	// t_vector	outward_normal;
-	// outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
-	// arg.rec->set_face_normal(&arg.rec, *arg.ray, outward_normal);
+	t_vector	outward_normal;
+	outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+	arg.rec->set_face_normal(&arg.rec, *arg.ray, outward_normal);
 
 	arg.rec->mat_ptr = sphere->mat_ptr;
 	
@@ -128,28 +140,42 @@ bool	hit_hitable_list(void *this, t_hitarg arg)
 	return (hit_anything);
 }
 
-t_vector	__get_color_vec(t_ray *ray, t_hitable *world, int depth) //ray_color
-{
+t_vector	__get_color_vec(t_ray *ray, t_hitable *world, int depth)
+{	//ray_color
 	t_hit_record	rec;
 	t_vector		unit_vector;
 	double			t;
-	t_hitarg 		arg;
+	t_hitarg 		hit_arg;
 	t_ray			__ray;
 
 	if (depth <= 0)
 		return (new_vec(0.0, 0.0, 0.0));
 
-	arg.ray = ray;
-	arg.min = 0.001;
-	arg.max = MAXFLOAT;
-	arg.rec = &rec;
+	hit_arg.ray = ray;
+	hit_arg.min = 0.001;
+	hit_arg.max = MAXFLOAT;
+	hit_arg.rec = &rec;
 	rec.set_face_normal = check_face_normal;
 
-	if (world->hit(world, arg))
+	// if (world->hit(world, arg))
+	// {
+	// 	// __ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add3_vec(arg.rec->p, arg.rec->normal, random_unit_vecter()), arg.rec->p)); // Lam Diffusion in Chapter 8
+	// 	__ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add_vec(arg.rec->p, random_in_hemisphere(arg.rec->normal)), arg.rec->p)); // Alternative Diffusion in Chapter 8
+	// 	return (cal_multiply_vec(__get_color_vec(&__ray, world, (depth - 1)), 0.5));
+	// }
+	if (world->hit(world, hit_arg))
 	{
-		// __ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add3_vec(arg.rec->p, arg.rec->normal, random_unit_vecter()), arg.rec->p)); // Lam Diffusion in Chapter 8
-		__ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add_vec(arg.rec->p, random_in_hemisphere(arg.rec->normal)), arg.rec->p)); // Alternative Diffusion in Chapter 8
-		return (cal_multiply_vec(__get_color_vec(&__ray, world, (depth - 1)), 0.5));
+		t_ray			scattered;
+		t_vector		attenuation;
+		t_material_arg	mat_arg;
+
+		mat_arg.ray_in = ray;
+		mat_arg.rec = &rec;
+		mat_arg.attenuation = &attenuation;
+		mat_arg.scattered = &scattered;
+		if (rec.mat_ptr->scatter(rec.mat_ptr, mat_arg))
+			return (cal_multi_vec(attenuation, __get_color_vec(&scattered, world, depth - 1)));
+		return (new_vec(0.0, 0.0, 0.0));
 	}
 	unit_vector = unit_vec(ray->dir);
 	t = 0.5 * ((unit_vector.y) + 1.0);
@@ -186,10 +212,29 @@ void	color_pixels(t_mlx *mlx)
 	cam._get_ray = __get_color_ray;
 	srand(time(NULL));
 
-	t_hitable	*list[2];
-	t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 2};
-	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5};
-	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100};
+	// t_hitable	*list[2];
+	// t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 2};
+	// list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5};
+	// list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100};
+
+
+	/* Chapter 9.5. */
+	t_lambertian	*lam[2];
+	t_metal			*met[2];
+
+	lam[0] = &(t_lambertian){scatter_lambertian, new_vec(0.8, 0.8, 0.0)};
+	lam[1] = &(t_lambertian){scatter_lambertian, new_vec(0.7, 0.3, 0.3)};
+	met[0] = &(t_metal){scatter_metal, new_vec(0.8, 0.8, 0.8)};
+	met[1] = &(t_metal){scatter_metal, new_vec(0.8, 0.6, 0.2)};
+
+	t_hitable	*list[4];
+	t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 4};
+	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5, lam[0]};
+	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100.0, lam[1]};
+	list[2] = &(t_sphere){hit_sphere, {-1.0, 0, -1.0}, 0.5, met[0]};
+	list[3] = &(t_sphere){hit_sphere, {1.0, 0, -1.0}, 0.5, met[1]};
+
+	/* Chapter 9.5. */
 
 	y = 0;
 	while (y < (WIN_HEIGHT + 1))
@@ -236,6 +281,44 @@ int	main(int argc, char **argv)
 	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }
+
+// /* Chapter 8: Metal*/
+// bool	scatter_lambertian(void *this, struct s_material_arg arg)
+// {
+// 	t_vector		target;
+// 	t_ray			ray;
+// 	t_lambertian	*lambertian;
+
+// 	lambertian = (t_lambertian *)this;
+// 	ray = new_ray(arg.rec->p, cal_subtract_vec(target, arg.rec->p));
+// 	arg.scattered = &ray;
+// 	arg.attenuation = &lambertian->albedo;
+// 	return (true);
+// }
+
+// // t_vector	reflect(t_vector vec_v, t_vector vec_n)
+// // {
+// // 	return (cal_subtract_vec(vec_v, cal_multiply_vec(vec_n, (2 * cal_inner_vec(vec_v, vec_n)))));
+// // }
+
+// bool	scatter_metal(void *this, struct s_material_arg arg)
+// {
+// 	t_metal		*metal;
+// 	t_vector	reflected;
+// 	t_ray		ray;
+	
+// 	metal = (t_metal *)this;
+// 	reflected = reflect(unit_vec(arg.ray_in->dir), arg.rec->normal);
+// 	ray = new_ray(arg.rec->p, reflected);
+// 	arg.scattered = &ray;
+// 	arg.attenuation = &metal->albedo;
+// 	if (cal_inner_vec(arg.scattered->dir, arg.rec->normal) > 0)
+// 		return (true);
+// 	else
+// 		return (false);
+// }
+// /* Chapter 8: Metal*/
+
 
 /* Chapter 7 */
 // t_vector	__get_color_vec(t_ray *ray, t_hitable *world) //ray_color

@@ -83,16 +83,16 @@ typedef struct s_hit_record
 
 typedef	struct s_hitarg
 {
-	t_ray			*ray;
-	double			min;
-	double			max;
-	t_hit_record	*rec;
+	struct s_ray		*ray;
+	double				min;
+	double				max;
+	struct s_hit_record	*rec;
 }	t_hitarg;
 
 typedef struct s_sphere
 {
 	bool				(*hit)(void *this, struct s_hitarg arg);
-	t_vector			center;
+	struct s_vector		center;
 	double 				radius;
 	struct s_material	*mat_ptr;
 }	t_sphere;
@@ -120,27 +120,27 @@ typedef struct s_camera
 
 typedef	struct s_material_arg
 {
-	t_ray			*ray_in;
-	t_hit_record	*rec;
-	t_vector		*attenuation;
-	t_ray			*scattered;
+	struct s_ray			*ray_in;
+	struct s_hit_record		*rec;
+	struct s_vector			*attenuation;
+	struct s_ray			*scattered;
 }	t_material_arg;
 
 typedef struct s_material
 {
-	bool	(*scatter)(void *this, struct s_material_arg arg);
+	bool			(*scatter)(void *this, struct s_material_arg arg);
 }	t_material;
 
 typedef struct s_lambertian
 {
-	bool		(*scatter)(void *this, struct s_material_arg arg);
-	t_vector	albedo;
+	bool			(*scatter)(void *this, struct s_material_arg arg);
+	struct s_vector	albedo;
 }	t_lambertian;
 
 typedef struct s_metal
 {
-	bool		(*scatter)(void *this, struct s_material_arg arg);
-	t_vector	albedo;
+	bool			(*scatter)(void *this, struct s_material_arg arg);
+	struct s_vector	albedo;
 }	t_metal;
 
 
