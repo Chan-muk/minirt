@@ -102,35 +102,14 @@ bool	hit_sphere(void *this, t_hitarg arg)
 		if (root < arg.min || arg.max < root)
 			return (false);
 	}
-	// /* 1st */
-	// arg.rec->t = root;
-	// arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-	// arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
-	// /* 1st */
-
-	/* Surface check */
-	// /* 2nd */
-	// arg.rec->t = root;
-	// arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-	
-	// t_vector	outward_normal;
-	// outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
-	// arg.rec->set_face_normal(&arg.rec, *arg.ray, outward_normal);
-	// /* 2nd */
-
-	/* 3rd */
-	t_hit_record	*record;
-
-	record = arg.rec;
-	record->t = root;
-	record->p = cal_ray(*arg.ray, record->t);
+	arg.rec->t = root;
+	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
 	
 	t_vector	outward_normal;
-	outward_normal = cal_divide_vec(cal_subtract_vec(record->p, sphere->center), sphere->radius);
-	record->set_face_normal(record, *arg.ray, outward_normal);
-	record->mat_ptr = sphere->mat_ptr;
-	/* 3rd */
-	/* Surface check */
+	outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+	arg.rec->set_face_normal(arg.rec, *arg.ray, outward_normal);
+	
+	arg.rec->mat_ptr = sphere->mat_ptr;
 	return (true);
 }
 
