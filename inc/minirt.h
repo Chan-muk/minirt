@@ -23,25 +23,24 @@
 # include <time.h>
 # include "../libft/inc/libft.h"
 
-# define EXIT_SUCCESS			0
-# define EXIT_FAILURE			1
-# define WIN_WIDTH				800
-# define WIN_HEIGHT				400
-# define CAMERA_NS				400
-# define DIVERGENCE_CONDITION	300
-# define KEYPRESS				2
-# define DESTROYNOTIFY			17
-# define ESC					53
-# define LEFT_CLICK				1
-# define RIGHT_CLICK			2
-# define MIDDLE_CLICK			3
-# define SCROLL_UP				4
-# define SCROLL_DOWN			5
-# define UP						126
-# define DOWN					125
-# define LEFT					123
-# define RIGHT					124
-# define R_KEY					15
+# define EXIT_SUCCESS	0
+# define EXIT_FAILURE	1
+# define WIN_WIDTH		800
+# define WIN_HEIGHT		400
+# define CAMERA_NS		100
+# define KEYPRESS		2
+# define DESTROYNOTIFY	17
+# define ESC			53
+# define LEFT_CLICK		1
+# define RIGHT_CLICK	2
+# define MIDDLE_CLICK	3
+# define SCROLL_UP		4
+# define SCROLL_DOWN	5
+# define UP				126
+# define DOWN			125
+# define LEFT			123
+# define RIGHT			124
+# define R_KEY			15
 
 typedef struct s_img
 {
@@ -81,6 +80,8 @@ typedef struct s_ray
 
 typedef struct s_hit_record
 {
+	bool				(*set_face_normal)(void *this, struct s_ray ray, struct s_vector outward_normal);
+	bool				front_face;
 	double				t;
 	struct s_vector		p;
 	struct s_vector		normal;
@@ -89,31 +90,31 @@ typedef struct s_hit_record
 
 typedef	struct s_hitarg
 {
-	t_ray			*ray;
-	double			min;
-	double			max;
-	t_hit_record	*rec;
+	struct s_ray		*ray;
+	double				min;
+	double				max;
+	struct s_hit_record	*rec;
 }	t_hitarg;
 
 typedef struct s_sphere
 {
 	bool				(*hit)(void *this, struct s_hitarg arg);
-	t_vector			center;
+	struct s_vector		center;
 	double 				radius;
 	struct s_material	*mat_ptr;
 }	t_sphere;
 
-typedef struct s_hitable
+typedef struct s_hittable
 {
 	bool		(*hit)(void *this, struct s_hitarg arg);
-}	t_hitable;
+}	t_hittable;
 
-typedef struct s_hitable_list
+typedef struct s_hittable_list
 {
 	bool				(*hit)(void *this, struct s_hitarg arg);
-	struct s_hitable	**list;
+	struct s_hittable	**list;
 	int					list_size;
-}	t_hitable_list;
+}	t_hittable_list;
 
 typedef struct s_camera
 {
@@ -126,31 +127,43 @@ typedef struct s_camera
 
 typedef	struct s_material_arg
 {
-	t_ray			*ray_in;
-	t_hit_record	*rec;
-	t_vector		*attenuation;
-	t_ray			*scattered;
+	struct s_ray			*ray_in;
+	struct s_hit_record		*rec;
+	struct s_vector			*attenuation;
+	struct s_ray			*scattered;
 }	t_material_arg;
 
 typedef struct s_material
 {
-	bool	(*scatter)(void *this, struct s_material_arg arg);
+	bool			(*scatter)(void *this, struct s_material_arg arg);
 }	t_material;
 
 typedef struct s_lambertian
 {
-	bool		(*scatter)(void *this, struct s_material_arg arg);
-	t_vector	albedo;
+	bool			(*scatter)(void *this, struct s_material_arg arg);
+	struct s_vector	albedo;
 }	t_lambertian;
 
 typedef struct s_metal
 {
-	bool		(*scatter)(void *this, struct s_material_arg arg);
-	t_vector	albedo;
+	bool			(*scatter)(void *this, struct s_material_arg arg);
+	struct s_vector	albedo;
 }	t_metal;
+
+void	set_face_normal(void *this, t_ray ray, t_vector outward_normal);
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
+
+/* color */
+void	color_each_pixel(t_img *img, int x, int y, int color);
+int		_get_color(t_vector vec);
+
+/* random */
+double		drandom48(void);
+t_vector	random_in_hemisphere(t_vector normal);
+t_vector	random_unit_vecter(void);
+t_vector	random_in_unit_sphere(void);
 
 /* calculate */
 double		size_vec(t_vector vec);
@@ -168,7 +181,6 @@ t_vector	cal_arithmetic_vec(t_vector vec_1, t_vector vec_2, double ratio);
 t_vector	cal_ray(t_ray ray, double ratio);
 double		cal_inner_vec(t_vector vec_1, t_vector vec_2);
 t_vector	cal_outer_vec(t_vector vec_1, t_vector vec_2);
-
 
 /* hooks */
 void		set_hooks(t_mlx *mlx);
