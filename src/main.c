@@ -27,7 +27,7 @@ bool	scatter_metal(void *this, struct s_material_arg arg)
 	metal = (t_metal *)this;
 	reflected = reflect(unit_vec(arg.ray_in->dir), arg.rec->normal);
 	*arg.scattered = new_ray(arg.rec->p, reflected);
-	arg.attenuation = &metal->albedo;
+	*arg.attenuation = metal->albedo;
 	if (cal_inner_vec(arg.scattered->dir, arg.rec->normal) > 0)
 		return (true);
 	else
@@ -47,7 +47,7 @@ bool	near_zero(void *this)
 }
 
 bool	scatter_lambertian(void *this, t_material_arg arg)
-{	// color
+{
 	t_vector		scatter_direction;
 	t_lambertian	*lambertian;
 
@@ -56,7 +56,7 @@ bool	scatter_lambertian(void *this, t_material_arg arg)
 	if (near_zero(&scatter_direction))
 		scatter_direction = arg.rec->normal;
 	*arg.scattered = new_ray(arg.rec->p, scatter_direction);
-	arg.attenuation = &lambertian->albedo;
+	*arg.attenuation = lambertian->albedo;
 	return (true);
 }
 /* Chapter 9.3.: Modeling Light Scatter and Reflectance */
@@ -154,12 +154,6 @@ t_vector	__get_color_vec(t_ray *ray, t_hittable *world, int depth)
 	hit_arg.rec = &rec;
 	rec.set_face_normal = check_face_normal;
 
-	// if (world->hit(world, arg))
-	// {
-	// 	// __ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add3_vec(arg.rec->p, arg.rec->normal, random_unit_vecter()), arg.rec->p)); // Lam Diffusion in Chapter 8
-	// 	__ray = new_ray(arg.rec->p, cal_subtract_vec(cal_add_vec(arg.rec->p, random_in_hemisphere(arg.rec->normal)), arg.rec->p)); // Alternative Diffusion in Chapter 8
-	// 	return (cal_multiply_vec(__get_color_vec(&__ray, world, (depth - 1)), 0.5));
-	// }
 	if (world->hit(world, hit_arg))
 	{
 		t_ray			scattered;
@@ -225,11 +219,10 @@ void	color_pixels(t_mlx *mlx)
 
 	t_hittable	*list[4];
 	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 4};
-	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5, lam[1]};
-	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100.0, lam[0]};
-	list[2] = &(t_sphere){hit_sphere, {-1.0, 0, -1.0}, 0.5, met[0]};
-	list[3] = &(t_sphere){hit_sphere, {1.0, 0, -1.0}, 0.5, met[1]};
-
+	list[0] = &(t_sphere){hit_sphere, {0.0, -100.5, -1.0}, 100.0, lam[0]};
+	list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
+	list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
+	list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
 	/* Chapter 9.5. */
 
 	y = 0;
