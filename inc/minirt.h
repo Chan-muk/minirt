@@ -71,13 +71,6 @@ typedef struct s_ray
 	struct s_vector	dir;
 }	t_ray;
 
-// typedef struct s_hit_record
-// {
-// 	double			t;
-// 	struct s_vector	p;
-// 	struct s_vector	normal;
-// }	t_hit_record;
-
 typedef struct s_hit_record
 {
 	bool				(*set_face_normal)(void *this, struct s_ray ray, struct s_vector outward_normal);
