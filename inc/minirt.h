@@ -97,17 +97,17 @@ typedef struct s_sphere
 	struct s_material	*mat_ptr;
 }	t_sphere;
 
-typedef struct s_hitable
+typedef struct s_hittable
 {
 	bool		(*hit)(void *this, struct s_hitarg arg);
-}	t_hitable;
+}	t_hittable;
 
-typedef struct s_hitable_list
+typedef struct s_hittable_list
 {
 	bool				(*hit)(void *this, struct s_hitarg arg);
-	struct s_hitable	**list;
+	struct s_hittable	**list;
 	int					list_size;
-}	t_hitable_list;
+}	t_hittable_list;
 
 typedef struct s_camera
 {

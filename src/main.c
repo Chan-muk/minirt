@@ -63,18 +63,18 @@ bool	scatter_lambertian(void *this, t_material_arg arg)
 
 void	check_face_normal(void *this, t_ray ray, t_vector outward_normal)
 {
-	t_hit_record	*record;
+	t_hit_record	*rec;
 
-	record = (t_hit_record *)this;
+	rec = (t_hit_record *)this;
 	if (cal_inner_vec(ray.dir, outward_normal) > 0.0)
 	{
-		record->normal = cal_inverse_vec(outward_normal);
-		record->front_face = false;
+		rec->normal = cal_inverse_vec(outward_normal);
+		rec->front_face = false;
 	}
 	else
 	{
-		record->normal = outward_normal;
-		record->front_face = true;
+		rec->normal = outward_normal;
+		rec->front_face = true;
 	}
 }
 
@@ -102,28 +102,46 @@ bool	hit_sphere(void *this, t_hitarg arg)
 		if (root < arg.min || arg.max < root)
 			return (false);
 	}
-	arg.rec->t = root;
-	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-	arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+	// /* 1st */
+	// arg.rec->t = root;
+	// arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
+	// arg.rec->normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+	// /* 1st */
 
 	/* Surface check */
-	t_vector	outward_normal;
-	outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
-	arg.rec->set_face_normal(&arg.rec, *arg.ray, outward_normal);
-
-	arg.rec->mat_ptr = sphere->mat_ptr;
+	// /* 2nd */
+	// arg.rec->t = root;
+	// arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
 	
+	// t_vector	outward_normal;
+	// outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, sphere->center), sphere->radius);
+	// arg.rec->set_face_normal(&arg.rec, *arg.ray, outward_normal);
+	// /* 2nd */
+
+	/* 3rd */
+	t_hit_record	*record;
+
+	record = arg.rec;
+	record->t = root;
+	record->p = cal_ray(*arg.ray, record->t);
+	
+	t_vector	outward_normal;
+	outward_normal = cal_divide_vec(cal_subtract_vec(record->p, sphere->center), sphere->radius);
+	record->set_face_normal(record, *arg.ray, outward_normal);
+	record->mat_ptr = sphere->mat_ptr;
+	/* 3rd */
+	/* Surface check */
 	return (true);
 }
 
-bool	hit_hitable_list(void *this, t_hitarg arg)
+bool	hit_hittable_list(void *this, t_hitarg arg)
 {
-	t_hitable_list	*world;
+	t_hittable_list	*world;
 	t_hit_record	temp_rec;
 	bool			hit_anything;
 	t_hitarg		temp_arg;
 
-	world = (t_hitable_list *)this;
+	world = (t_hittable_list *)this;
 	hit_anything = false;
 	temp_arg = arg;
 	temp_arg.rec = &temp_rec;
@@ -140,7 +158,7 @@ bool	hit_hitable_list(void *this, t_hitarg arg)
 	return (hit_anything);
 }
 
-t_vector	__get_color_vec(t_ray *ray, t_hitable *world, int depth)
+t_vector	__get_color_vec(t_ray *ray, t_hittable *world, int depth)
 {	//ray_color
 	t_hit_record	rec;
 	t_vector		unit_vector;
@@ -212,11 +230,10 @@ void	color_pixels(t_mlx *mlx)
 	cam._get_ray = __get_color_ray;
 	srand(time(NULL));
 
-	// t_hitable	*list[2];
-	// t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 2};
+	// t_hittable	*list[2];
+	// t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 2};
 	// list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5};
 	// list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100};
-
 
 	/* Chapter 9.5. */
 	t_lambertian	*lam[2];
@@ -227,10 +244,10 @@ void	color_pixels(t_mlx *mlx)
 	met[0] = &(t_metal){scatter_metal, new_vec(0.8, 0.8, 0.8)};
 	met[1] = &(t_metal){scatter_metal, new_vec(0.8, 0.6, 0.2)};
 
-	t_hitable	*list[4];
-	t_hitable	*world = &(t_hitable_list){hit_hitable_list, list, 4};
-	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5, lam[0]};
-	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100.0, lam[1]};
+	t_hittable	*list[4];
+	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 4};
+	list[0] = &(t_sphere){hit_sphere, {0, 0, -1}, 0.5, lam[1]};
+	list[1] = &(t_sphere){hit_sphere, {0, -100.5, -1}, 100.0, lam[0]};
 	list[2] = &(t_sphere){hit_sphere, {-1.0, 0, -1.0}, 0.5, met[0]};
 	list[3] = &(t_sphere){hit_sphere, {1.0, 0, -1.0}, 0.5, met[1]};
 
@@ -321,7 +338,7 @@ int	main(int argc, char **argv)
 
 
 /* Chapter 7 */
-// t_vector	__get_color_vec(t_ray *ray, t_hitable *world) //ray_color
+// t_vector	__get_color_vec(t_ray *ray, t_hittable *world) //ray_color
 // {
 // 	t_hit_record	rec;
 // 	t_vector		unit_vector;
