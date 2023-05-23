@@ -53,14 +53,31 @@ bool	hit_hittable_list(void *this, t_hitarg arg)
 	return (hit_anything);
 }
 
+#include <sys/time.h>
+
+int64_t	get_timestamp(void)
+{
+	struct timeval	time_val;
+	int64_t			time;
+
+	gettimeofday(&time_val, NULL);
+	time = (time_val.tv_sec * 1000 + (time_val.tv_usec * 0.001));
+	return (time);
+}
+
 int	main(int argc, char **argv)
 {
 	t_mlx	mlx;
+	int64_t	time_1;
+	int64_t	time_2;
 
+	time_1 = get_timestamp();
 	// arguments_check(argc, argv, &mlx);
 	initialize(argc, argv, &mlx);
 	color_window(&mlx);
 	set_hooks(&mlx);
+	time_2 = get_timestamp();
+	printf("time: %ld\n", time_2 - time_1);
 	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }
