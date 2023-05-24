@@ -65,19 +65,61 @@ int64_t	get_timestamp(void)
 	return (time);
 }
 
+// int	main(int argc, char **argv)
+// {
+// 	t_mlx	mlx;
+// 	int64_t	time_1;
+// 	int64_t	time_2;
+
+// 	check_input(argc, argv);
+// 	return (0);
+
+// 	time_1 = get_timestamp();
+// 	// arguments_check(argc, argv, &mlx);
+// 	initialize(argc, argv, &mlx);
+// 	color_window(&mlx);
+// 	set_hooks(&mlx);
+// 	time_2 = get_timestamp();
+// 	printf("time: %ld\n", time_2 - time_1);
+// 	mlx_loop(mlx.mlx_ptr);
+// 	return (0);
+// }
+
+
+t_vector	_cal_add_vec1(t_vector vec_1, t_vector vec_2)
+{
+	t_vector	vector;
+
+	vector.x = vec_1.x + vec_2.x;
+	vector.y = vec_1.y + vec_2.y;
+	vector.z = vec_1.z + vec_2.z;
+	return (vector);
+}
+
+t_vector	_cal_add_vec2(t_vector *vec_1, t_vector *vec_2)
+{
+	t_vector	vector;
+
+	vector.x = vec_1->x + vec_2->x;
+	vector.y = vec_1->y + vec_2->y;
+	vector.z = vec_1->z + vec_2->z;
+	return (vector);
+}
+
 int	main(int argc, char **argv)
 {
-	t_mlx	mlx;
-	int64_t	time_1;
-	int64_t	time_2;
+	t_vector result;
 
-	time_1 = get_timestamp();
-	// arguments_check(argc, argv, &mlx);
-	initialize(argc, argv, &mlx);
-	color_window(&mlx);
-	set_hooks(&mlx);
-	time_2 = get_timestamp();
-	printf("time: %ld\n", time_2 - time_1);
-	mlx_loop(mlx.mlx_ptr);
+	result = _cal_add_vec1(new_vec(1, 1, 1), new_vec(1, 1, 1));
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_vector result;
+	t_vector new;
+
+	new = 
+	result = _cal_add_vec2(new_vec(1, 1, 1), new_vec(1, 1, 1));
 	return (0);
 }

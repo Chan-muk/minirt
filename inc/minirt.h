@@ -24,6 +24,8 @@
 # include "structure.h"
 # include "../libft/inc/libft.h"
 
+int check_input(int argc, char **argv);
+
 void	check_face_normal(void *this, t_ray ray, t_vector outward_normal);
 bool	hit_hittable_list(void *this, t_hitarg arg);
 
