@@ -15,7 +15,55 @@
 #include "../libft/inc/get_next_line.h"
 #include <fcntl.h>
 
-int read_file(char *file)
+typedef struct s_ambient_lightning_
+{
+	double			ratio;
+	struct s_vector	color;
+}	t_ambient_lightning_;
+
+typedef struct s_camera_
+{
+	struct s_vector	view_point;
+	struct s_vector	org_vector;
+	double			fov;
+}	t_camera_;
+
+typedef struct s_light_
+{
+	struct s_vector	light_point;
+	double			ratio;
+	struct s_vector	color;
+}	t_light_;
+
+typedef struct s_sphere_
+{
+	struct s_vector	center;
+	double			diameter;
+	struct s_vector	color;
+}	t_sphere_;
+
+typedef struct s_plane_
+{
+	struct s_vector	center;
+	struct s_vector	vector;
+	struct s_vector	color;
+}	t_plane_;
+
+typedef struct s_cylinder_
+{
+	struct s_vector	center;
+	struct s_vector	vector;
+	double			diameter;
+	double			height;
+	struct s_vector	color;
+}	t_cylinder_;
+
+void	save_data(char *str)
+{
+	return ;
+}
+
+int	read_file(char *file)
 {
 	int fd;
 	char *str;
@@ -26,7 +74,9 @@ int read_file(char *file)
 		str = get_next_line(fd);
 		if (str == NULL)
 			break ;
+		save_data(str);
 		printf("%s", str);
+		free(str);
 	}
 	close(fd);
 	return (0);
@@ -40,7 +90,7 @@ int	is_rt_file(char *file)
 	return (FAILURE);
 }
 
-int check_input(int argc, char **argv)
+int	check_input(int argc, char **argv)
 {
 	if (argc != 2)
 		return (FAILURE);

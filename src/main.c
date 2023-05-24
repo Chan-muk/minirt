@@ -53,73 +53,34 @@ bool	hit_hittable_list(void *this, t_hitarg arg)
 	return (hit_anything);
 }
 
-#include <sys/time.h>
+// #include <sys/time.h>
 
-int64_t	get_timestamp(void)
-{
-	struct timeval	time_val;
-	int64_t			time;
-
-	gettimeofday(&time_val, NULL);
-	time = (time_val.tv_sec * 1000 + (time_val.tv_usec * 0.001));
-	return (time);
-}
-
-// int	main(int argc, char **argv)
+// int64_t	get_timestamp(void)
 // {
-// 	t_mlx	mlx;
-// 	int64_t	time_1;
-// 	int64_t	time_2;
+// 	struct timeval	time_val;
+// 	int64_t			time;
 
-// 	check_input(argc, argv);
-// 	return (0);
-
-// 	time_1 = get_timestamp();
-// 	// arguments_check(argc, argv, &mlx);
-// 	initialize(argc, argv, &mlx);
-// 	color_window(&mlx);
-// 	set_hooks(&mlx);
-// 	time_2 = get_timestamp();
-// 	printf("time: %ld\n", time_2 - time_1);
-// 	mlx_loop(mlx.mlx_ptr);
-// 	return (0);
+// 	gettimeofday(&time_val, NULL);
+// 	time = (time_val.tv_sec * 1000 + (time_val.tv_usec * 0.001));
+// 	return (time);
 // }
 
-
-t_vector	_cal_add_vec1(t_vector vec_1, t_vector vec_2)
-{
-	t_vector	vector;
-
-	vector.x = vec_1.x + vec_2.x;
-	vector.y = vec_1.y + vec_2.y;
-	vector.z = vec_1.z + vec_2.z;
-	return (vector);
-}
-
-t_vector	_cal_add_vec2(t_vector *vec_1, t_vector *vec_2)
-{
-	t_vector	vector;
-
-	vector.x = vec_1->x + vec_2->x;
-	vector.y = vec_1->y + vec_2->y;
-	vector.z = vec_1->z + vec_2->z;
-	return (vector);
-}
-
 int	main(int argc, char **argv)
 {
-	t_vector result;
+	t_mlx	mlx;
+	int64_t	time_1;
+	int64_t	time_2;
 
-	result = _cal_add_vec1(new_vec(1, 1, 1), new_vec(1, 1, 1));
+	check_input(argc, argv);
 	return (0);
-}
 
-int	main(int argc, char **argv)
-{
-	t_vector result;
-	t_vector new;
-
-	new = 
-	result = _cal_add_vec2(new_vec(1, 1, 1), new_vec(1, 1, 1));
+	// time_1 = get_timestamp();
+	// arguments_check(argc, argv, &mlx);
+	initialize(argc, argv, &mlx);
+	color_window(&mlx);
+	set_hooks(&mlx);
+	// time_2 = get_timestamp();
+	printf("time: %ld\n", time_2 - time_1);
+	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }
