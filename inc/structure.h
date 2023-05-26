@@ -87,6 +87,14 @@ typedef struct s_sphere
 	struct s_material	*mat_ptr;
 }	t_sphere;
 
+typedef struct s_plain
+{
+	bool				(*hit)(void *this, struct s_hitarg arg);
+	struct s_vector		center;
+	struct s_vector		normal_vector;
+	struct s_material	*mat_ptr;
+}	t_plain;
+
 typedef struct s_hittable
 {
 	bool		(*hit)(void *this, struct s_hitarg arg);

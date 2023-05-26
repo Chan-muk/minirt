@@ -35,15 +35,17 @@ bool	hit_hittable_list(void *this, t_hitarg arg)
 	t_hit_record	temp_rec;
 	bool			hit_anything;
 	t_hitarg		temp_arg;
+	int				index;
 
 	world = (t_hittable_list *)this;
 	hit_anything = false;
 	temp_arg = arg;
 	temp_arg.rec = &temp_rec;
 	temp_rec.set_face_normal = check_face_normal;
-	for (int i = 0; i < world->list_size; i++)
+	index = -1;
+	while (++index < world->list_size)
 	{
-		if (world->list[i]->hit(world->list[i], temp_arg))
+		if (world->list[index]->hit(world->list[index], temp_arg))
 		{
 			hit_anything = true;
 			temp_arg.max = temp_rec.t;
@@ -71,8 +73,8 @@ int	main(int argc, char **argv)
 	int64_t	time_1;
 	int64_t	time_2;
 
-	check_input(argc, argv);
-	return (0);
+	// check_input(argc, argv);
+	// return (0);
 
 	// time_1 = get_timestamp();
 	// arguments_check(argc, argv, &mlx);
@@ -80,7 +82,7 @@ int	main(int argc, char **argv)
 	color_window(&mlx);
 	set_hooks(&mlx);
 	// time_2 = get_timestamp();
-	printf("time: %ld\n", time_2 - time_1);
+	// printf("time: %ld\n", time_2 - time_1);
 	mlx_loop(mlx.mlx_ptr);
 	return (0);
 }

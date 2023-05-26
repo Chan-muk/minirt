@@ -43,6 +43,9 @@ void	color_window(t_mlx *mlx);
 /* sphere */
 bool	hit_sphere(void *this, t_hitarg arg);
 
+/* plain */
+bool	hit_plain(void *this, t_hitarg arg);
+
 /* random */
 double		drandom48(void);
 t_vector	random_in_hemisphere(t_vector normal);

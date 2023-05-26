@@ -99,12 +99,13 @@ void	color_pixels(t_mlx *mlx)
 	met[0] = &(t_metal){scatter_metal, new_vec(0.8, 0.8, 0.8)};
 	met[1] = &(t_metal){scatter_metal, new_vec(0.8, 0.6, 0.2)};
 
-	t_hittable	*list[4];
-	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 4};
-	list[0] = &(t_sphere){hit_sphere, {0.0, -100.5, -1.0}, 100.0, lam[0]};
-	list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
-	list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
-	list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
+	t_hittable	*list[1];
+	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 1};
+	list[0] = &(t_plain){hit_plain, {0.0, 0.0, -1.0}, {0.0, 1.0, 1.0}, lam[1]};
+	// list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
+	// list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
+	// list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
+	// list[4] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
 
 	y = 0;
 	while (y < (WIN_HEIGHT + 1))
