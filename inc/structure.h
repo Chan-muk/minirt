@@ -92,6 +92,7 @@ typedef struct s_plain
 	bool				(*hit)(void *this, struct s_hitarg arg);
 	struct s_vector		center;
 	struct s_vector		normal_vector;
+	double				size;
 	struct s_material	*mat_ptr;
 }	t_plain;
 

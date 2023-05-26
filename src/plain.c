@@ -12,6 +12,17 @@
 
 #include "minirt.h"
 
+bool	check_plain(t_plain *plain, t_hitarg arg)
+{
+	if (arg.rec->p.x < plain->center.x - (plain->size / 2) || arg.rec->p.x > plain->center.x + (plain->size / 2))
+		return (false);
+	if (arg.rec->p.y < plain->center.y - (plain->size / 2) || arg.rec->p.y > plain->center.y + (plain->size / 2))
+		return (false);
+	if (arg.rec->p.z < plain->center.z - (plain->size / 2) || arg.rec->p.z > plain->center.z + (plain->size / 2))
+		return (false);
+	return (true);
+}
+
 bool	hit_plain(void *this, t_hitarg arg)
 {
 	t_plain		*plain;
@@ -32,10 +43,14 @@ bool	hit_plain(void *this, t_hitarg arg)
 		return (false);
 	arg.rec->t = root;
 	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-	if (arg.rec->p.x < -1.0 || arg.rec->p.x > 1.0)
+	if (check_plain(plain, arg) == false)
 		return (false);
-	if (arg.rec->p.y < -0.5 || arg.rec->p.y > 0.5)
-		return (false);
+	// if (arg.rec->p.x < plain->center.x - (plain->size / 2) || arg.rec->p.x > plain->center.x + (plain->size / 2))
+	// 	return (false);
+	// if (arg.rec->p.y < plain->center.y - (plain->size / 2) || arg.rec->p.y > plain->center.y + (plain->size / 2))
+	// 	return (false);
+	// if (arg.rec->p.z < plain->center.z - (plain->size / 2) || arg.rec->p.z > plain->center.z + (plain->size / 2))
+	// 	return (false);
 	arg.rec->normal = plain->normal_vector;
 	arg.rec->set_face_normal(arg.rec, *arg.ray, arg.rec->normal);
 	arg.rec->mat_ptr = plain->mat_ptr;
