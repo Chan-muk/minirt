@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   plain.c                                            :+:      :+:    :+:   */
+/*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,48 +12,48 @@
 
 #include "minirt.h"
 
-bool	check_plain(t_plain *plain, t_hitarg arg)
+bool	check_plane(t_plane *plane, t_hitarg arg)
 {
-	if (arg.rec->p.x < plain->center.x - (plain->size / 2) || arg.rec->p.x > plain->center.x + (plain->size / 2))
+	if (arg.rec->p.x < plane->center.x - (double)((double)plane->size / 2) || arg.rec->p.x > plane->center.x + (double)((double)plane->size / 2))
 		return (false);
-	if (arg.rec->p.y < plain->center.y - (plain->size / 2) || arg.rec->p.y > plain->center.y + (plain->size / 2))
+	if (arg.rec->p.y < plane->center.y - (double)((double)plane->size / 2) || arg.rec->p.y > plane->center.y + (double)((double)plane->size / 2))
 		return (false);
-	if (arg.rec->p.z < plain->center.z - (plain->size / 2) || arg.rec->p.z > plain->center.z + (plain->size / 2))
+	if (arg.rec->p.z < plane->center.z - (double)((double)plane->size / 2) || arg.rec->p.z > plane->center.z + (double)((double)plane->size / 2))
 		return (false);
 	return (true);
 }
 
-bool	hit_plain(void *this, t_hitarg arg)
+bool	hit_plane(void *this, t_hitarg arg)
 {
-	t_plain		*plain;
+	t_plane		*plane;
 	t_vector	r_center;
 	double		numrator;
 	double		denominator;
 	double		root;
 	
-	plain = (t_plain *)this;
-	denominator = cal_inner_vec(arg.ray->dir, plain->normal_vector);
+	plane = (t_plane *)this;
+	denominator = cal_inner_vec(arg.ray->dir, plane->normal_vector);
 	if (fabs(denominator) < arg.min)
 		return (false);
-	numrator = cal_inner_vec(cal_subtract_vec(plain->center, arg.ray->org), plain->normal_vector);
-	// numrator = cal_inner_vec(cal_subtract_vec(arg.ray->org, plain->center), plain->normal_vector);
+	numrator = cal_inner_vec(cal_subtract_vec(plane->center, arg.ray->org), plane->normal_vector);
+	// numrator = cal_inner_vec(cal_subtract_vec(arg.ray->org, plane->center), plane->normal_vector);
 	root = numrator / denominator;
 	// printf("min: %f, max: %f\n", arg.min, arg.max);
 	if (root < arg.min || arg.max < root)
 		return (false);
 	arg.rec->t = root;
 	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-	if (check_plain(plain, arg) == false)
+	if (check_plane(plane, arg) == false)
 		return (false);
-	// if (arg.rec->p.x < plain->center.x - (plain->size / 2) || arg.rec->p.x > plain->center.x + (plain->size / 2))
+	// if (arg.rec->p.x < plane->center.x - (plane->size / 2) || arg.rec->p.x > plane->center.x + (plane->size / 2))
 	// 	return (false);
-	// if (arg.rec->p.y < plain->center.y - (plain->size / 2) || arg.rec->p.y > plain->center.y + (plain->size / 2))
+	// if (arg.rec->p.y < plane->center.y - (plane->size / 2) || arg.rec->p.y > plane->center.y + (plane->size / 2))
 	// 	return (false);
-	// if (arg.rec->p.z < plain->center.z - (plain->size / 2) || arg.rec->p.z > plain->center.z + (plain->size / 2))
+	// if (arg.rec->p.z < plane->center.z - (plane->size / 2) || arg.rec->p.z > plane->center.z + (plane->size / 2))
 	// 	return (false);
-	arg.rec->normal = plain->normal_vector;
+	arg.rec->normal = plane->normal_vector;
 	arg.rec->set_face_normal(arg.rec, *arg.ray, arg.rec->normal);
-	arg.rec->mat_ptr = plain->mat_ptr;
+	arg.rec->mat_ptr = plane->mat_ptr;
 	
 	// rec->albedo = pl_obj->albedo;
 
@@ -62,18 +62,18 @@ bool	hit_plain(void *this, t_hitarg arg)
 	return (true);
 }
 
-// bool	hit_plain(void *this, t_hitarg arg)
+// bool	hit_plane(void *this, t_hitarg arg)
 // {
-// 	t_plain		*plain;
+// 	t_plane		*plane;
 // 	t_vector	r_center;
 // 	double		a;
 // 	double		b;
 // 	double		root;
 
-// 	plain = (t_plain *)this;
-// 	r_center = cal_subtract_vec(arg.ray->org, plain->center);
-// 	a = cal_inner_vec(arg.ray->dir, plain->normal_vector);
-// 	b = cal_inner_vec(r_center, plain->normal_vector);
+// 	plane = (t_plane *)this;
+// 	r_center = cal_subtract_vec(arg.ray->org, plane->center);
+// 	a = cal_inner_vec(arg.ray->dir, plane->normal_vector);
+// 	b = cal_inner_vec(r_center, plane->normal_vector);
 
 // 	root = -b / a;
 // 	// if (root < arg.min || arg.max < root)
@@ -97,9 +97,9 @@ bool	hit_plain(void *this, t_hitarg arg)
 // 	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
 	
 // 	// t_vector	outward_normal;
-// 	// outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, plain->center), plain->radius);
-// 	arg.rec->set_face_normal(arg.rec, *arg.ray, plain->normal_vector);
+// 	// outward_normal = cal_divide_vec(cal_subtract_vec(arg.rec->p, plane->center), plane->radius);
+// 	arg.rec->set_face_normal(arg.rec, *arg.ray, plane->normal_vector);
 	
-// 	arg.rec->mat_ptr = plain->mat_ptr;
+// 	arg.rec->mat_ptr = plane->mat_ptr;
 // 	return (true);
 // }

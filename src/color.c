@@ -101,8 +101,8 @@ void	color_pixels(t_mlx *mlx)
 
 	t_hittable	*list[1];
 	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 1};
-	list[0] = &(t_plain){hit_plain, {0.0, -0.2, -2.0}, {1.0, 2.0, 1.0}, 1.0, lam[0]};
-	// list[0] = &(t_plain){hit_plain, {0.0, 0.0, -1.0}, {0.0, 1.0, 1.0}, lam[1]};
+	list[0] = &(t_plane){hit_plane, {0.0, -0.2, -2.0}, {0.0, 2.0, 1.0}, 1.0, lam[0]};
+	// list[0] = &(t_plane){hit_plane, {0.0, 0.0, -1.0}, {0.0, 1.0, 1.0}, lam[1]};
 	// list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
 	// list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
 	// list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};

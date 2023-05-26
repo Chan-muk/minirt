@@ -43,8 +43,8 @@ void	color_window(t_mlx *mlx);
 /* sphere */
 bool	hit_sphere(void *this, t_hitarg arg);
 
-/* plain */
-bool	hit_plain(void *this, t_hitarg arg);
+/* plane */
+bool	hit_plane(void *this, t_hitarg arg);
 
 /* random */
 double		drandom48(void);
