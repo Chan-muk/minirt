@@ -96,6 +96,16 @@ typedef struct s_plane
 	struct s_material	*mat_ptr;
 }	t_plane;
 
+typedef struct s_cylinder
+{
+	bool				(*hit)(void *this, struct s_hitarg arg);
+	struct s_vector		center;
+	struct s_vector		normal_vector;
+	double				diameter;
+	struct s_vector		height;
+	struct s_material	*mat_ptr;
+}	t_cylinder;
+
 typedef struct s_hittable
 {
 	bool		(*hit)(void *this, struct s_hitarg arg);

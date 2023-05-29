@@ -46,6 +46,9 @@ bool	hit_sphere(void *this, t_hitarg arg);
 /* plane */
 bool	hit_plane(void *this, t_hitarg arg);
 
+/* cylinder */
+bool	hit_cylinder(void *this, t_hitarg arg);
+
 /* random */
 double		drandom48(void);
 t_vector	random_in_hemisphere(t_vector normal);

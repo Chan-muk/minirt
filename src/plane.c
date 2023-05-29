@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chajung <chajung@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 10:50:27 by chajung           #+#    #+#             */
 /*   Updated: 2023/05/26 10:50:28 by chajung          ###   ########.fr       */
