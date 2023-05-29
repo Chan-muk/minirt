@@ -14,11 +14,11 @@
 
 bool	check_plane(t_plane *plane, t_hitarg arg)
 {
-	if (arg.rec->p.x < plane->center.x - (double)((double)plane->size / 2) || arg.rec->p.x > plane->center.x + (double)((double)plane->size / 2))
+	if (arg.rec->p.x < plane->center.x - ((double)((double)plane->size / 2)) || arg.rec->p.x > plane->center.x + ((double)((double)plane->size / 2)))
 		return (false);
-	if (arg.rec->p.y < plane->center.y - (double)((double)plane->size / 2) || arg.rec->p.y > plane->center.y + (double)((double)plane->size / 2))
+	if (arg.rec->p.y < plane->center.y - ((double)((double)plane->size / 2)) || arg.rec->p.y > plane->center.y + ((double)((double)plane->size / 2)))
 		return (false);
-	if (arg.rec->p.z < plane->center.z - (double)((double)plane->size / 2) || arg.rec->p.z > plane->center.z + (double)((double)plane->size / 2))
+	if (arg.rec->p.z < plane->center.z - ((double)((double)plane->size / 2)) || arg.rec->p.z > plane->center.z + ((double)((double)plane->size / 2)))
 		return (false);
 	return (true);
 }
@@ -32,11 +32,18 @@ bool	hit_plane(void *this, t_hitarg arg)
 	double		root;
 	
 	plane = (t_plane *)this;
-	denominator = cal_inner_vec(arg.ray->dir, plane->normal_vector);
+	denominator = cal_inner_vec(arg.ray->dir, unit_vec(plane->normal_vector));
+	// if (denominator == 0)
+	// 	return (false);
 	if (fabs(denominator) < arg.min)
 		return (false);
-	numrator = cal_inner_vec(cal_subtract_vec(plane->center, arg.ray->org), plane->normal_vector);
+	numrator = cal_inner_vec(cal_subtract_vec(plane->center, arg.ray->org), unit_vec(plane->normal_vector));
 	// numrator = cal_inner_vec(cal_subtract_vec(arg.ray->org, plane->center), plane->normal_vector);
+	// if (fabs(denominator) < arg.min)
+	// {
+	// 	if (fabs(numrator) < arg.min)
+	// 		return (false);
+	// }
 	root = numrator / denominator;
 	// printf("min: %f, max: %f\n", arg.min, arg.max);
 	if (root < arg.min || arg.max < root)
@@ -45,20 +52,16 @@ bool	hit_plane(void *this, t_hitarg arg)
 	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
 	if (check_plane(plane, arg) == false)
 		return (false);
-	// if (arg.rec->p.x < plane->center.x - (plane->size / 2) || arg.rec->p.x > plane->center.x + (plane->size / 2))
-	// 	return (false);
-	// if (arg.rec->p.y < plane->center.y - (plane->size / 2) || arg.rec->p.y > plane->center.y + (plane->size / 2))
-	// 	return (false);
-	// if (arg.rec->p.z < plane->center.z - (plane->size / 2) || arg.rec->p.z > plane->center.z + (plane->size / 2))
-	// 	return (false);
 	arg.rec->normal = plane->normal_vector;
-	arg.rec->set_face_normal(arg.rec, *arg.ray, arg.rec->normal);
+	arg.rec->set_face_normal(arg.rec, *arg.ray, unit_vec(arg.rec->normal));
 	arg.rec->mat_ptr = plane->mat_ptr;
-	
+
 	// rec->albedo = pl_obj->albedo;
 
 	// set_face_normal(ray, rec);
 	// rec->color = pl_obj->color;
+	// if (check_plane(plane, arg) == false)
+	// 	return (false);
 	return (true);
 }
 

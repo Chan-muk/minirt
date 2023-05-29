@@ -14,8 +14,8 @@
 
 NAME		= minirt
 
-CC			= cc -g3
-CFLAGS		= -Wall -Wextra -Werror -g3
+CC			= cc -g3 -O3
+CFLAGS		= -Wall -Wextra -Werror
 RMFLAGS		= -r
 
 HEADER		= -I./inc
