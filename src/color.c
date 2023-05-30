@@ -25,8 +25,9 @@ int	_get_color(t_vector vec)
 	return (((int)(255.999 * vec.x) << 16) + ((int)(255.999 * vec.y) << 8) + (int)(255.999 * vec.z));
 }
 
+/* ray_color */
 t_vector	__get_color_vec(t_ray *ray, t_hittable *world, int depth)
-{	//ray_color
+{
 	t_hit_record	rec;
 	t_vector		unit_vector;
 	double			t;
@@ -101,8 +102,11 @@ void	color_pixels(t_mlx *mlx)
 
 	t_hittable	*list[1];
 	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 1};
-	list[0] = &(t_cylinder){hit_cylinder, {0.0, -1.0, -2.0}, {0.0, 1.0, 0}, 0.4, {0.0, 1.0, -2.0}, met[1]};
-	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -2.0}, {0.9, -0.5, 0.7}, 1.0, met[1]};
+	list[0] = &(t_cylinder){hit_cylinder, {0.0, -0.5, -2.0}, {0.0, 1.0, 0.0}, 0.5, 0.5, met[1]};
+	
+	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, met[1]};
+	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, 1.0, met[1]};
+
 	// list[0] = &(t_plane){hit_plane, {0.0, 0.0, -1.0}, {0.0, 1.0, 1.0}, lam[1]};
 	// list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
 	// list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
@@ -119,7 +123,7 @@ void	color_pixels(t_mlx *mlx)
 			for (int s = 0; s < CAMERA_NS; s++) {
 				double u = ((double)x + drandom48()) / (double)WIN_WIDTH;
 				double v = ((double)y + drandom48()) / (double)WIN_HEIGHT;
-
+				
 				t_ray	ray = cam._get_ray(&cam, u, v);
 				t_vector p = cal_ray(ray, 2.0);
 				// color = cal_add_vec(color, __get_color_vec(&ray, world)); // Chapter 7
@@ -127,8 +131,6 @@ void	color_pixels(t_mlx *mlx)
 			}
 			color = cal_divide_vec(color, (double)CAMERA_NS);
 			color = new_vec(sqrt(color.x), sqrt(color.y), sqrt(color.z));
-			// color_ray = __get_color_ray(x, y);
-			// color = __get_color_vec(&color_ray);
 			color_each_pixel(&mlx->img, x, y, _get_color(color));
 			x++;
 		}

@@ -87,6 +87,7 @@ bool	hit_sphere(void *this, t_hitarg arg)
 	double		c;
 	double		discriminant;
 	double		root;
+
 	sphere = (t_sphere *)this;
 	r_center = cal_subtract_vec(arg.ray->org, sphere->center);
 	a = cal_inner_vec(arg.ray->dir, arg.ray->dir);

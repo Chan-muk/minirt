@@ -92,7 +92,7 @@ typedef struct s_plane
 	bool				(*hit)(void *this, struct s_hitarg arg);
 	struct s_vector		center;
 	struct s_vector		normal_vector;
-	double				size;
+	// double				size;
 	struct s_material	*mat_ptr;
 }	t_plane;
 
@@ -102,7 +102,8 @@ typedef struct s_cylinder
 	struct s_vector		center;
 	struct s_vector		normal_vector;
 	double				diameter;
-	struct s_vector		height;
+	double				height;
+	// struct s_vector		height;
 	struct s_material	*mat_ptr;
 }	t_cylinder;
 

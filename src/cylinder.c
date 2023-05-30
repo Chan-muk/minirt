@@ -22,16 +22,20 @@ bool	hit_cylinder(void *this, t_hitarg arg)
 	double		discriminant;
 	double		root;
 
+	cylinder = (t_cylinder *)this;
+
 	double		vh;
 	double		wh;
 
-	cylinder = (t_cylinder *)this;
-	vh = cal_inner_vec(arg.ray->org, unit_vec(cal_subtract_vec(cylinder->height, cylinder->center)));
-	wh = cal_inner_vec(r_center, unit_vec(cal_subtract_vec(cylinder->height, cylinder->center)));
+	t_vector	_height;
+	_height = cal_multiply_vec(unit_vec(cylinder->normal_vector), cylinder->height);
+
+	vh = cal_inner_vec(arg.ray->org, unit_vec(cal_subtract_vec(_height, cylinder->center)));
+	wh = cal_inner_vec(r_center, unit_vec(cal_subtract_vec(_height, cylinder->center)));
 
 	r_center = cal_subtract_vec(arg.ray->org, cylinder->center);
 	a = cal_inner_vec(arg.ray->dir, arg.ray->dir) - (vh * vh);
-	b = 2 * (cal_inner_vec(arg.ray->dir, r_center) - (vh * wh));
+	b = cal_inner_vec(arg.ray->dir, r_center) - (vh * wh);
 	c = cal_inner_vec(r_center, r_center) - (wh * wh) - ((cylinder->diameter / 2) * (cylinder->diameter / 2));
 
 	discriminant = (b * b) - (a * c);
