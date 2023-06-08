@@ -100,20 +100,35 @@ void	color_pixels(t_mlx *mlx)
 	met[0] = &(t_metal){scatter_metal, new_vec(0.8, 0.8, 0.8)};
 	met[1] = &(t_metal){scatter_metal, new_vec(0.8, 0.6, 0.2)};
 
-	t_hittable	*list[2];
-	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 2};
-	list[0] = &(t_cylinder){hit_cylinder, {0.0, -0.5, -2.0}, {0.0, 1.0, 0.0}, 0.4, 1.0, met[1]};
-	list[1] = &(t_plane){hit_plane, {0.0, 0.0, -2.0}, {0.0, 1.0, 1.0}, lam[1]};
+	t_hittable	*list[4];
+	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 4};
+	list[0] = &(t_sphere){hit_sphere, {0.0, -100.5, -1.0}, 100.0, lam[0]};
+	list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
+	list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
+	list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
+
+	// 	t_lambertian	*lam[2];
+	// 	t_metal			*met[2];
+
+	// 	lam[0] = &(t_lambertian){scatter_lambertian, new_vec(0.8, 0.8, 0.0)};
+	// 	lam[1] = &(t_lambertian){scatter_lambertian, new_vec(0.7, 0.3, 0.3)};
+	// 	met[0] = &(t_metal){scatter_metal, new_vec(0.8, 0.8, 0.8)};
+	// 	met[1] = &(t_metal){scatter_metal, new_vec(0.8, 0.6, 0.2)};
+
+	// 	t_hittable	*list[2];
+	// 	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 2};
+	// 	list[0] = &(t_cylinder){hit_cylinder, {0.0, -0.5, -2.0}, {0.0, 1.0, 0.0}, 0.4, 1.0, met[1]};
+	// 	list[1] = &(t_plane){hit_plane, {0.0, 0.0, -2.0}, {0.0, 1.0, 1.0}, lam[1]};
 
 
-	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, met[1]};
-	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, 1.0, met[1]};
+	// 	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, met[1]};
+	// 	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, 1.0, met[1]};
 
-	
-	// list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
-	// list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
-	// list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
-	// list[4] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
+		
+	// 	// list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
+	// 	// list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
+	// 	// list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
+	// 	// list[4] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
 
 	y = 0;
 	while (y < (WIN_HEIGHT + 1))
@@ -125,7 +140,7 @@ void	color_pixels(t_mlx *mlx)
 			for (int s = 0; s < CAMERA_NS; s++) {
 				double u = ((double)x + drandom48()) / (double)WIN_WIDTH;
 				double v = ((double)y + drandom48()) / (double)WIN_HEIGHT;
-				
+
 				t_ray	ray = cam._get_ray(&cam, u, v);
 				t_vector p = cal_ray(ray, 2.0);
 				// color = cal_add_vec(color, __get_color_vec(&ray, world)); // Chapter 7
@@ -133,6 +148,8 @@ void	color_pixels(t_mlx *mlx)
 			}
 			color = cal_divide_vec(color, (double)CAMERA_NS);
 			color = new_vec(sqrt(color.x), sqrt(color.y), sqrt(color.z));
+			// color_ray = __get_color_ray(x, y);
+			// color = __get_color_vec(&color_ray);
 			color_each_pixel(&mlx->img, x, y, _get_color(color));
 			x++;
 		}
