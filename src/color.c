@@ -40,6 +40,7 @@ t_vector	__get_color_vec(t_ray *ray, t_hittable *world, int depth)
 	hit_arg.ray = ray;
 	hit_arg.min = 0.00000001;
 	hit_arg.max = MAXFLOAT;
+	hit_arg.max = __DBL_MAX__;
 	hit_arg.rec = &rec;
 	rec.set_face_normal = check_face_normal;
 
@@ -100,12 +101,16 @@ void	color_pixels(t_mlx *mlx)
 	met[0] = &(t_metal){scatter_metal, new_vec(0.8, 0.8, 0.8)};
 	met[1] = &(t_metal){scatter_metal, new_vec(0.8, 0.6, 0.2)};
 
-	t_hittable	*list[4];
-	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 4};
-	list[0] = &(t_sphere){hit_sphere, {0.0, -100.5, -1.0}, 100.0, lam[0]};
-	list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
-	list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
-	list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
+	// t_hittable	*list[4];
+	// t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 4};
+	// list[0] = &(t_sphere){hit_sphere, {0.0, -100.5, -1.0}, 100.0, lam[0]};
+	// list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
+	// list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
+	// list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
+
+	t_hittable	*list[1];
+	t_hittable	*world = &(t_hittable_list){hit_hittable_list, list, 1};
+	list[0] = &(t_plane){hit_plane, {0.0, 0.0, -1.0}, {1.0, 1.0, 1.0}, lam[0]};
 
 	// 	t_lambertian	*lam[2];
 	// 	t_metal			*met[2];
@@ -120,11 +125,9 @@ void	color_pixels(t_mlx *mlx)
 	// 	list[0] = &(t_cylinder){hit_cylinder, {0.0, -0.5, -2.0}, {0.0, 1.0, 0.0}, 0.4, 1.0, met[1]};
 	// 	list[1] = &(t_plane){hit_plane, {0.0, 0.0, -2.0}, {0.0, 1.0, 1.0}, lam[1]};
 
-
 	// 	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, met[1]};
 	// 	// list[0] = &(t_plane){hit_plane, {0.0, -0.2, -3.0}, {0.9, -0.5, 0.7}, 1.0, met[1]};
 
-		
 	// 	// list[1] = &(t_sphere){hit_sphere, {0.0, 0.0, -1.0}, 0.5, lam[1]};
 	// 	// list[2] = &(t_sphere){hit_sphere, {-1.0, 0.0, -1.0}, 0.5, met[0]};
 	// 	// list[3] = &(t_sphere){hit_sphere, {1.0, 0.0, -1.0}, 0.5, met[1]};
