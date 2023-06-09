@@ -95,21 +95,21 @@ void	color_pixels(t_mlx *mlx)
 
 	t_hitarr arr[10];
 
-	arr[0].type = sp;
-	arr[0].center = new_vec(0, 0, -5);
+	// arr[0].type = sp;
+	// arr[0].center = new_vec(0, 0, -5);
+	// arr[0].radius = 2;
+
+	// arr[1].type = sp;
+	// arr[1].center = new_vec(2, 0, -2);
+	// arr[1].radius = 2;
+
+	arr[0].type = cy;
+	arr[0].center = new_vec(0, 0, -1);
+	arr[0].norm = new_vec(1, 1, 1);
+	arr[0].height = 2;
 	arr[0].radius = 2;
 
-	arr[1].type = sp;
-	arr[1].center = new_vec(2, 0, -2);
-	arr[1].radius = 2;
-
-	arr[2].type = cy;
-	arr[2].center = new_vec(0, 0, -1);
-	arr[2].norm = new_vec(1, 1, 1);
-	arr[2].height = 2;
-	arr[2].radius = 2;
-
-	arr[3].type = end;
+	arr[1].type = end;
 
 	t_sphere	sp;
 	sp = sphere(new_point(0, 0, -5), 2);

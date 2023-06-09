@@ -30,6 +30,7 @@ bool	hit_world(t_hitarr *arr, t_ray *r, t_hit_record *rec)
 	hit = 0;
 	// set_hitobjs(hit_objs);
 	hit_objs[sp] = hit_sphere;
+	hit_objs[cy] = hit_cy;
 	while (arr->type)
 	{
 		if (hit_objs[arr->type](arr, r, rec))
