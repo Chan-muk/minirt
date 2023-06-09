@@ -14,48 +14,48 @@
 
 void	set_face_normal(t_ray *r, t_hit_record *rec)
 {
-	// 광선의 방향벡터와 교점의 법선벡터의 내적이 음수이면 광선은 앞면(객체의)에 hit 한 것이다
-	rec->front_face = vdot(r->dir, rec->normal) < 0;
-	// 광선의 앞면에 hit 면 그대로 아니면 법선을 반대로 뒤집는다. (항상 광선 방향벡터와 법선 벡터를 반대인 상태로 사용하기위해)
-	rec->normal = (rec->front_face) ? rec->normal : vmult(rec->normal, -1);
+	if (vec_dot(r->dir, rec->normal) < 0)
+		rec->front_face = true;
+	if (rec->front_face == true)
+		rec->normal = rec->normal;
+	else
+		rec->normal = vec_mul(rec->normal, -1);
 }
 
-t_bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
+bool	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
 {
-	t_vec3	oc;
+	t_vector	oc;
 	double	a;
-	// double	b; b를 half_b로 변경
 	double	half_b;
 	double	c;
-	double	discriminant; //판별식
+	double	discriminant;
 	double	sqrtd;
 	double	root;
 
-	oc = vminus(ray->orig, sp->center);
-	a = vlength2(ray->dir);
-	half_b = vdot(oc, ray->dir);
-	c = vlength2(oc) - sp->radius2;
+	oc = vec_sub(ray->orig, sp->center);
+	a = vec_len_2(ray->dir);
+	half_b = vec_dot(oc, ray->dir);
+	c = vec_len_2(oc) - sp->radius2;
 	discriminant = half_b * half_b - a * c;
 
 	if (discriminant < 0)
-		return (FALSE);
+		return (false);
 	sqrtd = sqrt(discriminant);
-	//두 실근(t) 중 tmin과 tmax 사이에 있는 근이 있는지 체크, 작은 근부터 체크.
 	root = (-half_b - sqrtd) / a;
 	if (root < rec->tmin || rec->tmax < root)
 	{
 		root = (-half_b + sqrtd) / a;
 		if (root < rec->tmin || rec->tmax < root)
-			return (FALSE);
+			return (false);
 	}
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = vdivide(vminus(rec->p, sp->center), sp->radius); // 정규화된 법선 벡터.
-	set_face_normal(ray, rec); // rec의 법선벡터와 광선의 방향벡터를 비교해서 앞면인지 뒷면인지 t_bool 값으로 저장.
-	return (TRUE);
+	rec->normal = vec_div(vec_sub(rec->p, sp->center), sp->radius);
+	set_face_normal(ray, rec);
+	return (true);
 }
 
-t_sphere	sphere(t_point3 center, double radius)
+t_sphere	sphere(t_point center, double radius)
 {
 	t_sphere sp;
 

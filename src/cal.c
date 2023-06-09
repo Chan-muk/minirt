@@ -12,9 +12,9 @@
 
 #include "minirt.h"
 
-t_vec3		vec3(double x, double y, double z)
+t_vector	new_vec(double x, double y, double z)
 {
-	t_vec3 vec;
+	t_vector vec;
 
 	vec.x = x;
 	vec.y = y;
@@ -22,9 +22,9 @@ t_vec3		vec3(double x, double y, double z)
 	return (vec);
 }
 
-t_point3	point3(double x, double y, double z)
+t_point	new_point(double x, double y, double z)
 {
-	t_point3 point;
+	t_point point;
 
 	point.x = x;
 	point.y = y;
@@ -32,10 +32,9 @@ t_point3	point3(double x, double y, double z)
 	return (point);
 }
 
-//색상3 생성자
-t_point3	color3(double r, double g, double b)
+t_point	new_color(double r, double g, double b)
 {
-	t_color3 color;
+	t_color color;
 
 	color.x = r;
 	color.y = g;
@@ -43,28 +42,24 @@ t_point3	color3(double r, double g, double b)
 	return (color);
 }
 
-// 벡터 값 설정
-void		vset(t_vec3 *vec, double x, double y, double z)
+void	set_vec(t_vector *vec, double x, double y, double z)
 {
 	vec->x = x;
 	vec->y = y;
 	vec->z = z;
 }
 
-// 벡터 길이 제곱
-double		vlength2(t_vec3 vec)
+double	vec_len_2(t_vector vec)
 {
 	return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
-// 벡터 길이
-double		vlength(t_vec3 vec)
+double	vec_len(t_vector vec)
 {
-	return (sqrt(vlength2(vec)));
+	return (sqrt(vec_len_2(vec)));
 }
 
-// 벡터합
-t_vec3		vplus(t_vec3 vec, t_vec3 vec2)
+t_vector	vec_add(t_vector vec, t_vector vec2)
 {
 	vec.x += vec2.x;
 	vec.y += vec2.y;
@@ -72,8 +67,7 @@ t_vec3		vplus(t_vec3 vec, t_vec3 vec2)
 	return (vec);
 }
 
-// 벡터합2
-t_vec3		vplus_(t_vec3 vec, double x, double y, double z)
+t_vector	vec_add_(t_vector vec, double x, double y, double z)
 {
 	vec.x += x;
 	vec.y += y;
@@ -81,8 +75,7 @@ t_vec3		vplus_(t_vec3 vec, double x, double y, double z)
 	return (vec);
 }
 
-// 벡터차
-t_vec3		vminus(t_vec3 vec, t_vec3 vec2)
+t_vector	vec_sub(t_vector vec, t_vector vec2)
 {
 	vec.x -= vec2.x;
 	vec.y -= vec2.y;
@@ -90,7 +83,7 @@ t_vec3		vminus(t_vec3 vec, t_vec3 vec2)
 	return (vec);
 }
 
-t_vec3		vminus_(t_vec3 vec, double x, double y, double z)
+t_vector		vec_sub_(t_vector vec, double x, double y, double z)
 {
 	vec.x -= x;
 	vec.y -= y;
@@ -98,8 +91,7 @@ t_vec3		vminus_(t_vec3 vec, double x, double y, double z)
 	return (vec);
 }
 
-// 벡터 * 스칼라 곱연산
-t_vec3		vmult(t_vec3 vec, double t)
+t_vector	vec_mul(t_vector vec, double t)
 {
 	vec.x *= t;
 	vec.y *= t;
@@ -107,8 +99,7 @@ t_vec3		vmult(t_vec3 vec, double t)
 	return (vec);
 }
 
-// 벡터 축 값끼리 곱연산
-t_vec3		vmult_(t_vec3 vec, t_vec3 vec2)
+t_vector	vec_mul_(t_vector vec, t_vector vec2)
 {
 	vec.x *= vec2.x;
 	vec.y *= vec2.y;
@@ -116,8 +107,7 @@ t_vec3		vmult_(t_vec3 vec, t_vec3 vec2)
 	return (vec);
 }
 
-// 벡터 스칼라 나누기
-t_vec3		vdivide(t_vec3 vec, double t)
+t_vector	vec_div(t_vector vec, double t)
 {
 	vec.x *= 1 / t;
 	vec.y *= 1 / t;
@@ -126,16 +116,14 @@ t_vec3		vdivide(t_vec3 vec, double t)
 	return vec;
 }
 
-// 벡터 내적
-double		vdot(t_vec3 vec, t_vec3 vec2)
+double	vec_dot(t_vector vec, t_vector vec2)
 {
 	return (vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z);
 }
 
-// 벡터 외적
-t_vec3		vcross(t_vec3 vec, t_vec3 vec2)
+t_vector	vec_prod(t_vector vec, t_vector vec2)
 {
-	t_vec3 new;
+	t_vector new;
 
 	new.x = vec.y * vec2.z - vec.z * vec2.y;
 	new.y = vec.z * vec2.x - vec.x * vec2.z;
@@ -143,10 +131,9 @@ t_vec3		vcross(t_vec3 vec, t_vec3 vec2)
 	return (new);
 }
 
-// 단위 벡터
-t_vec3		vunit(t_vec3 vec)
+t_vector	unit_vec(t_vector vec)
 {
-	double len = vlength(vec);
+	double len = vec_len(vec);
 	if (len == 0)
 	{
 		printf("Error\n:Devider is 0");
@@ -158,8 +145,7 @@ t_vec3		vunit(t_vec3 vec)
 	return (vec);
 }
 
-// 두 벡터의 원소를 비교하여 작은 값들만 반환 
-t_vec3	vmin(t_vec3 vec1, t_vec3 vec2)
+t_vector	vec_cmp(t_vector vec1, t_vector vec2)
 {
 	if (vec1.x > vec2.x)
 		vec1.x = vec2.x;
@@ -170,21 +156,20 @@ t_vec3	vmin(t_vec3 vec1, t_vec3 vec2)
 	return (vec1);
 }
 
-t_ray	ray(t_point3 orig, t_vec3 dir)
+t_ray	ray(t_point orig, t_vector dir)
 {
 	t_ray ray;
 
 	ray.orig = orig;
-	ray.dir = vunit(dir);
+	ray.dir = unit_vec(dir);
 	return (ray);
 }
 
-//ray origin point 부터 방향벡터 ray dir * t 만큼 떨어진 점.
-t_point3	ray_at(t_ray *ray, double t)
+t_point	ray_at(t_ray *ray, double t)
 {
-	t_point3 at;
+	t_point at;
 
-	at = vplus(ray->orig, vmult(ray->dir, t));
+	at = vec_add(ray->orig, vec_mul(ray->dir, t));
 	return (at);
 }
 

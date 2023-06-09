@@ -14,11 +14,6 @@
 # define MINIRT_H
 
 /* renewal */
-
-# include "mlx.h"
-# include "structure.h"
-# include "../libft/inc/libft.h"
-
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -26,6 +21,10 @@
 # include <fcntl.h>
 # include <math.h>
 # include <time.h>
+
+# include "mlx.h"
+# include "structure.h"
+# include "../libft/inc/libft.h"
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
@@ -40,29 +39,29 @@ void		exit_with_str(const char *str, int exit_code);
 void	color_window(t_mlx *mlx);
 
 /* sphere */
-t_sphere	sphere(t_point3 center, double radius);
-t_bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec);
+t_sphere	sphere(t_point center, double radius);
+bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec);
 
 /* cal */
-t_vec3		vec3(double x, double y, double z);
-t_point3	point3(double x, double y, double z);
-t_point3	color3(double r, double g, double b);
-void		vset(t_vec3 *vec, double x, double y, double z);
-double		vlength2(t_vec3 vec);
-double		vlength(t_vec3 vec);
-t_vec3		vplus(t_vec3 vec, t_vec3 vec2);
-t_vec3		vplus_(t_vec3 vec, double x, double y, double z);
-t_vec3		vminus(t_vec3 vec, t_vec3 vec2);
-t_vec3		vminus_(t_vec3 vec, double x, double y, double z);
-t_vec3		vmult(t_vec3 vec, double t);
-t_vec3		vmult_(t_vec3 vec, t_vec3 vec2);
-t_vec3		vdivide(t_vec3 vec, double t);
-double		vdot(t_vec3 vec, t_vec3 vec2);
-t_vec3		vcross(t_vec3 vec, t_vec3 vec2);
-t_vec3		vunit(t_vec3 vec);
-t_vec3		vmin(t_vec3 vec1, t_vec3 vec2);
-t_ray		ray(t_point3 orig, t_vec3 dir);
-t_point3	ray_at(t_ray *ray, double t);
+t_vector		new_vec(double x, double y, double z);
+t_point	new_point(double x, double y, double z);
+t_point	new_color(double r, double g, double b);
+void		set_vec(t_vector *vec, double x, double y, double z);
+double		vec_len_2(t_vector vec);
+double		vec_len(t_vector vec);
+t_vector		vec_add(t_vector vec, t_vector vec2);
+t_vector		vec_add_(t_vector vec, double x, double y, double z);
+t_vector		vec_sub(t_vector vec, t_vector vec2);
+t_vector		vec_sub_(t_vector vec, double x, double y, double z);
+t_vector		vec_mul(t_vector vec, double t);
+t_vector		vec_mul_(t_vector vec, t_vector vec2);
+t_vector		vec_div(t_vector vec, double t);
+double		vec_dot(t_vector vec, t_vector vec2);
+t_vector		vec_prod(t_vector vec, t_vector vec2);
+t_vector		unit_vec(t_vector vec);
+t_vector		vec_cmp(t_vector vec1, t_vector vec2);
+t_ray		ray(t_point orig, t_vector dir);
+t_point	ray_at(t_ray *ray, double t);
 
 /* renewal */
 

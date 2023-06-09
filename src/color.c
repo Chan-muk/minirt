@@ -22,7 +22,7 @@ t_canvas	canvas(int	width, int height)
 	return (canvas);
 }
 
-t_camera	camera(t_canvas *canvas, t_point3 orig)
+t_camera	camera(t_canvas *canvas, t_point orig)
 {
 	t_camera	cam;
 	double		focal_len;
@@ -34,10 +34,9 @@ t_camera	camera(t_canvas *canvas, t_point3 orig)
 	cam.viewport_h = viewport_height;
 	cam.viewport_w = viewport_height * canvas->aspect_ratio;
 	cam.focal_len = focal_len;
-	cam.horizontal = vec3(cam.viewport_w, 0, 0);
-	cam.vertical = vec3(0, cam.viewport_h, 0);
-	// 왼쪽 아래 코너점 좌표, origin - horizontal / 2 - vertical / 2 - vec3(0,0,focal_length)
-	cam.left_bottom = vminus(vminus(vminus(cam.orig, vdivide(cam.horizontal, 2)), vdivide(cam.vertical, 2)), vec3(0, 0, focal_len));
+	cam.horizontal = new_vec(cam.viewport_w, 0, 0);
+	cam.vertical = new_vec(0, cam.viewport_h, 0);
+	cam.left_bottom = vec_sub(vec_sub(vec_sub(cam.orig, vec_div(cam.horizontal, 2)), vec_div(cam.vertical, 2)), new_vec(0, 0, focal_len));
 	return (cam);
 }
 
@@ -46,31 +45,24 @@ t_ray		ray_primary(t_camera *cam, double u, double v)
 	t_ray	ray;
 
 	ray.orig = cam->orig;
-	// left_bottom + u * horizontal + v * vertical - origin 의 단위 벡터.
-	ray.dir = vunit(vminus(vplus(vplus(cam->left_bottom, vmult(cam->horizontal, u)), vmult(cam->vertical, v)), cam->orig));
+	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->orig));
 	return (ray);
 }
 
-//광선이 최종적으로 얻게된 픽셀의 색상 값을 리턴.
-t_color3	ray_color(t_ray *ray, t_sphere *sphere)
+t_color	ray_color(t_ray *ray, t_sphere *sphere)
 {
 	double	t;
-	t_vec3	n;
-
+	t_vector	n;
 	t_hit_record	rec;
 
 	rec.tmin = 0;
 	rec.tmax = INFINITY;
-
-	//광선이 구에 적중하면(광선과 구가 교점이 있고, 교점이 카메라 앞쪽이라면!)
 	if (hit_sphere(sphere, ray, &rec))
-		return (vmult(vplus(rec.normal, color3(1, 1, 1)), 0.5));
+		return (vec_mul(vec_add(rec.normal, new_color(1, 1, 1)), 0.5));
 	else
 	{
-		//ray의 방향벡터의 y 값을 기준으로 그라데이션을 주기 위한 계수.
 		t = 0.5 * (ray->dir.y + 1.0);
-		// (1-t) * 흰색 + t * 하늘색
-		return (vplus(vmult(color3(1, 1, 1), 1.0 - t), vmult(color3(0.5, 0.7, 1.0),     t)));
+		return (vec_add(vec_mul(new_color(1, 1, 1), 1.0 - t), vec_mul(new_color(0.5, 0.7, 1.0),     t)));
 	}
 }
 
@@ -82,7 +74,7 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	write_color(t_color3 pixel_color)
+int	write_color(t_color pixel_color)
 {
 	return (((int)(255.999 * pixel_color.x) << 16) + ((int)(255.999 * pixel_color.y) << 8) + (int)(255.999 * pixel_color.z));
 }
@@ -93,16 +85,16 @@ void	color_pixels(t_mlx *mlx)
 	int			j;
 	double		u;
 	double		v;
-	t_color3	pixel_color;
+	t_color	pixel_color;
 	t_canvas	canv;
 	t_camera	cam;
 	t_ray		ray;
 
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
-	cam = camera(&canv, point3(0, 0, 0));
+	cam = camera(&canv, new_point(0, 0, 0));
 
 	t_sphere	sp;
-	sp = sphere(point3(0, 0, -5), 2);
+	sp = sphere(new_point(0, 0, -5), 2);
 
 	j = canv.height - 1;
 	while (j >= 0)
@@ -114,8 +106,6 @@ void	color_pixels(t_mlx *mlx)
 			v = (double)j / (canv.height - 1);
 			ray = ray_primary(&cam, u, v);
 			pixel_color = ray_color(&ray, &sp);
-			// pixel_color = ray_color(&ray);
-			// write_color(pixel_color);
 			color_each_pixel(&mlx->img, i, j, write_color(pixel_color));
 			++i;
 		}
