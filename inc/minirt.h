@@ -26,10 +26,10 @@
 # include "structure.h"
 # include "../libft/inc/libft.h"
 
-bool		hit_sphere(t_hitarr *sp, t_ray *ray, t_hit_record *rec);
-bool	hit_world(t_hitarr *arr, t_ray *r, t_hit_record *rec);
+bool	hit_sphere(t_hitarray *sp, t_ray *ray, t_hit_record *rec);
+bool	hit_world(t_hitarray *array, t_ray *r, t_hit_record *rec);
 void	set_face_normal(t_ray *r, t_hit_record *rec);
-int	hit_cy(t_hitarr *cy, t_ray r, t_hit_record *rec);
+bool	hit_cylinder(t_hitarray *cy, t_ray *r, t_hit_record *rec);
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);

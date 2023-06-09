@@ -49,7 +49,7 @@ t_ray		ray_primary(t_camera *cam, double u, double v)
 	return (ray);
 }
 
-t_color	ray_color(t_ray *ray, t_hitarr *arr)
+t_color	ray_color(t_ray *ray, t_hitarray *array)
 {
 	double	t;
 	t_vector	n;
@@ -57,7 +57,7 @@ t_color	ray_color(t_ray *ray, t_hitarr *arr)
 
 	rec.tmin = 0;
 	rec.tmax = INFINITY;
-	if (hit_world(arr, ray, &rec))
+	if (hit_world(array, ray, &rec))
 		return (vec_mul(vec_add(rec.normal, new_color(1, 1, 1)), 0.5));
 	else
 	{
@@ -93,26 +93,26 @@ void	color_pixels(t_mlx *mlx)
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
 	cam = camera(&canv, new_point(0, 0, 0));
 
-	t_hitarr arr[10];
+	t_hitarray array[10];
 
-	// arr[0].type = sp;
-	// arr[0].center = new_vec(0, 0, -5);
-	// arr[0].radius = 2;
+	// array[0].type = _sphere;
+	// array[0].center = new_vec(0, 0, -5);
+	// array[0].radius = 2;
 
-	// arr[1].type = sp;
-	// arr[1].center = new_vec(2, 0, -2);
-	// arr[1].radius = 2;
+	// array[1].type = _sphere;
+	// array[1].center = new_vec(2, 0, -2);
+	// array[1].radius = 2;
 
-	arr[0].type = cy;
-	arr[0].center = new_vec(0, 0, -1);
-	arr[0].norm = new_vec(1, 1, 1);
-	arr[0].height = 2;
-	arr[0].radius = 2;
+	array[0].type = _cylinder;
+	array[0].center = new_vec(0, 0, -5);
+	array[0].norm = unit_vec(new_vec(1, 1, 1));
+	array[0].height = 2;
+	array[0].radius = 2;
 
-	arr[1].type = end;
+	array[1].type = _end;
 
-	t_sphere	sp;
-	sp = sphere(new_point(0, 0, -5), 2);
+	// t_sphere	sp;
+	// sp = sphere(new_point(0, 0, -5), 2);
 
 	j = canv.height - 1;
 	while (j >= 0)
@@ -124,7 +124,7 @@ void	color_pixels(t_mlx *mlx)
 			v = (double)j / (canv.height - 1);
 			ray = ray_primary(&cam, u, v);
 			// pixel_color = ray_color(&ray, &sp);
-			pixel_color = ray_color(&ray, arr);
+			pixel_color = ray_color(&ray, array);
 			color_each_pixel(&mlx->img, i, j, write_color(pixel_color));
 			++i;
 		}

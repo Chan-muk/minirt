@@ -12,22 +12,22 @@
 
 #include "libft.h"
 
-static char	**free_double_array(char **array)
+static char	**free_double_arrayay(char **arrayay)
 {
 	int	i;
 
 	i = -1;
-	while (array[++i])
+	while (arrayay[++i])
 	{
-		free(array[i]);
-		array[i] = NULL;
+		free(arrayay[i]);
+		arrayay[i] = NULL;
 	}
-	free(array);
-	array = NULL;
+	free(arrayay);
+	arrayay = NULL;
 	return (NULL);
 }
 
-static int	double_array_size(char *str, char c)
+static int	double_arrayay_size(char *str, char c)
 {
 	int	size;
 
@@ -45,7 +45,7 @@ static int	double_array_size(char *str, char c)
 	return (size);
 }
 
-static int	single_array_size(char *str, char c)
+static int	single_arrayay_size(char *str, char c)
 {
 	int	size;
 
@@ -62,7 +62,7 @@ static int	single_array_size(char *str, char c)
 	return (size);
 }
 
-static int	make_array(char **array, char *str, char c, int size)
+static int	make_arrayay(char **arrayay, char *str, char c, int size)
 {
 	int	i;
 	int	j;
@@ -73,28 +73,28 @@ static int	make_array(char **array, char *str, char c, int size)
 		j = 0;
 		while (*str && *str == c)
 			str++;
-		array[i] = (char *)malloc(sizeof(char) \
-			* (single_array_size(str, c) + 1));
-		if (array[i] == NULL)
+		arrayay[i] = (char *)malloc(sizeof(char) \
+			* (single_arrayay_size(str, c) + 1));
+		if (arrayay[i] == NULL)
 			return (FAILURE);
 		while (*str && *str != c)
-			array[i][j++] = *str++;
-		array[i][j] = '\0';
+			arrayay[i][j++] = *str++;
+		arrayay[i][j] = '\0';
 	}
-	array[i] = NULL;
+	arrayay[i] = NULL;
 	return (SUCCESS);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	int		size;
-	char	**array;
+	char	**arrayay;
 
-	size = double_array_size((char *)s, c);
-	array = (char **)malloc(sizeof(char *) * (size + 1));
-	if (array == NULL)
+	size = double_arrayay_size((char *)s, c);
+	arrayay = (char **)malloc(sizeof(char *) * (size + 1));
+	if (arrayay == NULL)
 		return (NULL);
-	if (make_array(array, (char *)s, c, size) == FAILURE)
-		return (free_double_array(array));
-	return (array);
+	if (make_arrayay(arrayay, (char *)s, c, size) == FAILURE)
+		return (free_double_arrayay(arrayay));
+	return (arrayay);
 }

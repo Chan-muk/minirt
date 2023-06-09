@@ -407,9 +407,9 @@ int get_mouse_button(NSEventType eventtype)
 
   glDisable(GL_DEPTH_TEST);
   glGenBuffers(1, &pixel_vbuffer);
-  glBindBuffer(GL_ARRAY_BUFFER, pixel_vbuffer);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(pixel_vertexes), pixel_vertexes, GL_DYNAMIC_DRAW); // 4 points buff
-  // pixel_ptr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+  glBindBuffer(GL_arrayAY_BUFFER, pixel_vbuffer);
+  glBufferData(GL_arrayAY_BUFFER, sizeof(pixel_vertexes), pixel_vertexes, GL_DYNAMIC_DRAW); // 4 points buff
+  // pixel_ptr = glMapBuffer(GL_arrayAY_BUFFER, GL_WRITE_ONLY);
 
   glGenTextures(1, &pixel_texture);
   glBindTexture(GL_TEXTURE_2D, pixel_texture);
@@ -559,16 +559,16 @@ int get_mouse_button(NSEventType eventtype)
   glUniform2f(glsl.loc_image_pos, x, size_y - y);
   glUniform2f(glsl.loc_image_size, img->width, -img->height);
 
-  glBindBuffer(GL_ARRAY_BUFFER, imgctx->vbuffer);
+  glBindBuffer(GL_arrayAY_BUFFER, imgctx->vbuffer);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), (void*)0);
-  glEnableVertexAttribArray(0);
+  glEnableVertexAttribarrayay(0);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);  // src alpha 0xFF : keep dst
   glBlendEquation(GL_FUNC_ADD);
 
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-  glDisableVertexAttribArray(0);
+  glDrawarrayays(GL_TRIANGLE_FAN, 0, 4);
+  glDisableVertexAttribarrayay(0);
 
 }
 
@@ -596,16 +596,16 @@ int get_mouse_button(NSEventType eventtype)
   glUniform2f(glsl.loc_font_posinatlas, gx, gy);
   glUniform2f(glsl.loc_font_atlassize, img->width, img->height);
 
-  glBindBuffer(GL_ARRAY_BUFFER, imgctx->vbuffer);
+  glBindBuffer(GL_arrayAY_BUFFER, imgctx->vbuffer);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), (void*)0);
-  glEnableVertexAttribArray(0);
+  glEnableVertexAttribarrayay(0);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);  // src alpha 0xFF : keep dst
   glBlendEquation(GL_FUNC_ADD);
 
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-  glDisableVertexAttribArray(0);
+  glDrawarrayays(GL_TRIANGLE_FAN, 0, 4);
+  glDisableVertexAttribarrayay(0);
 
 }
 
@@ -621,16 +621,16 @@ int get_mouse_button(NSEventType eventtype)
   glBindTexture(GL_TEXTURE_2D, pixel_vbuffer);
   glUniform1i(glsl.loc_pixel_texture, 0);
   
-  glBindBuffer(GL_ARRAY_BUFFER, pixel_vbuffer);
+  glBindBuffer(GL_arrayAY_BUFFER, pixel_vbuffer);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), (void*)0);
-  glEnableVertexAttribArray(0);
+  glEnableVertexAttribarrayay(0);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);  // src alpha 0xFF : keep dst
   glBlendEquation(GL_FUNC_ADD);
 
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-  glDisableVertexAttribArray(0);
+  glDrawarrayays(GL_TRIANGLE_FAN, 0, 4);
+  glDisableVertexAttribarrayay(0);
 
   pixel_nb = size_x*size_y;
   while (pixel_nb--) pixtexbuff[pixel_nb] = 0xFF000000;

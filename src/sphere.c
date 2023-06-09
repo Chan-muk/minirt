@@ -13,7 +13,7 @@
 #include "minirt.h"
 
 // bool	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
-bool		hit_sphere(t_hitarr *sp, t_ray *ray, t_hit_record *rec)
+bool	hit_sphere(t_hitarray *sp, t_ray *ray, t_hit_record *rec)
 {
 	t_vector	r_center;
 	double		a;

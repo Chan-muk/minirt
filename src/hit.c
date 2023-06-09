@@ -22,23 +22,23 @@ void	set_face_normal(t_ray *r, t_hit_record *rec)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
-bool	hit_world(t_hitarr *arr, t_ray *r, t_hit_record *rec)
+bool	hit_world(t_hitarray *array, t_ray *r, t_hit_record *rec)
 {
-	bool	(*hit_objs[total])(t_hitarr* arr, t_ray *r, t_hit_record *rec);
-	int	hit;
+	bool	(*hit_objs[_total])(t_hitarray* array, t_ray *r, t_hit_record *rec);
+	bool	hit;
 
-	hit = 0;
+	hit = false;
 	// set_hitobjs(hit_objs);
-	hit_objs[sp] = hit_sphere;
-	hit_objs[cy] = hit_cy;
-	while (arr->type)
+	hit_objs[_sphere] = hit_sphere;
+	hit_objs[_cylinder] = hit_cylinder;
+	while (array->type)
 	{
-		if (hit_objs[arr->type](arr, r, rec))
+		if (hit_objs[array->type](array, r, rec))
 		{
-			hit = 1;
+			hit = true;
 			rec->tmax = rec->t;
 		}
-		arr++;
+		array++;
 	}
 	return (hit);
 }

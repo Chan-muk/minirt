@@ -46,12 +46,12 @@ typedef struct s_hit_record t_hit_record;
 
 enum e_type
 {
-	end = 0,
-	pl,
-	sp,
-	cy,
-	con,
-	total,
+	_end = 0,
+	_plane,
+	_sphere,
+	_cylinder,
+	_cone,
+	_total,
 };
 
 struct s_img
@@ -117,7 +117,7 @@ struct s_hit_record
 	bool		front_face;
 };
 
-typedef struct s_hitarr
+typedef struct s_hitarray
 {
 	int				type;
 	t_vector			center;
@@ -125,7 +125,7 @@ typedef struct s_hitarr
 	t_vector			color;
 	double			radius;
 	double			height;
-}	t_hitarr;
+}	t_hitarray;
 
 // typedef struct s_vector
 // {
