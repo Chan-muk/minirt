@@ -12,30 +12,50 @@
 
 #include "minirt.h"
 
-bool	hit_plane(void *this, t_hitarg arg)
+bool	hit_plane(t_hitarray* pl, t_ray *r, t_hit_record *rec)
 {
-	t_plane		*plane;
-	t_vector	r_center;
-	double		numerator;
-	double		denominator;
-	double		root;
-	
-	plane = (t_plane *)this;
-	denominator = cal_inner_vec(arg.ray->dir, unit_vec(plane->normal_vector));
-	numerator = \
-	cal_inner_vec(cal_subtract_vec(plane->center, arg.ray->org), unit_vec(plane->normal_vector));
-	if (denominator == 0 && numerator != 0)
+	double	numrator;
+	double	denominator;
+	double	root;
+
+	denominator = vec_dot(r->dir, pl->norm);
+	if (fabs(denominator) < 0.0000000001)
 		return (false);
-	root = numerator / denominator;
-	if (root < arg.min || root > 1.0)
+	numrator = vec_dot(vec_sub(pl->center, r->org), pl->norm);
+	root = numrator / denominator;
+	if (root < rec->tmin || root > rec->tmax)
 		return (false);
-	arg.rec->t = root;
-	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
-	arg.rec->normal = plane->normal_vector;
-	arg.rec->set_face_normal(arg.rec, *arg.ray, arg.rec->normal);
-	arg.rec->mat_ptr = plane->mat_ptr;
+	rec->t = root;
+	rec->p = ray_at(r, root);
+	rec->normal = pl->norm;
+	set_face_normal(r, rec);
 	return (true);
 }
+
+// bool	hit_plane(void *this, t_hitarg arg)
+// {
+// 	t_plane		*plane;
+// 	t_vector	r_center;
+// 	double		numerator;
+// 	double		denominator;
+// 	double		root;
+	
+// 	plane = (t_plane *)this;
+// 	denominator = cal_inner_vec(arg.ray->dir, unit_vec(plane->normal_vector));
+// 	numerator = \
+// 	cal_inner_vec(cal_subtract_vec(plane->center, arg.ray->org), unit_vec(plane->normal_vector));
+// 	if (denominator == 0 && numerator != 0)
+// 		return (false);
+// 	root = numerator / denominator;
+// 	if (root < arg.min || root > 1.0)
+// 		return (false);
+// 	arg.rec->t = root;
+// 	arg.rec->p = cal_ray(*arg.ray, arg.rec->t);
+// 	arg.rec->normal = plane->normal_vector;
+// 	arg.rec->set_face_normal(arg.rec, *arg.ray, arg.rec->normal);
+// 	arg.rec->mat_ptr = plane->mat_ptr;
+// 	return (true);
+// }
 
 // bool	check_plane(t_plane *plane, t_hitarg arg)
 // {

@@ -31,6 +31,7 @@ bool	hit_world(t_hitarray *array, t_ray *r, t_hit_record *rec)
 	// set_hitobjs(hit_objs);
 	hit_objs[_sphere] = hit_sphere;
 	hit_objs[_cylinder] = hit_cylinder;
+	hit_objs[_plane] = hit_plane;
 	while (array->type)
 	{
 		if (hit_objs[array->type](array, r, rec))
