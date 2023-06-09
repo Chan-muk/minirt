@@ -15,110 +15,17 @@
 
 /* renewal */
 
+# include "mlx.h"
+# include "structure.h"
+# include "../libft/inc/libft.h"
+
 # include <stdio.h>
-# include <math.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include "mlx.h"
-
-# define WIN_WIDTH		800
-# define WIN_HEIGHT		400
-
-typedef int				t_bool;
-# define FALSE 0
-# define TRUE 1
-
-# define EXIT_SUCCESS	0
-# define EXIT_FAILURE	1
-# define SUCCESS		0
-# define FAILURE		-1
-# define CAMERA_NS		100
-# define KEYPRESS		2
-# define DESTROYNOTIFY	17
-# define ESC			53
-# define LEFT_CLICK		1
-# define RIGHT_CLICK	2
-# define MIDDLE_CLICK	3
-# define SCROLL_UP		4
-# define SCROLL_DOWN	5
-# define UP				126
-# define DOWN			125
-# define LEFT			123
-# define RIGHT			124
-# define R_KEY			15
-
-typedef struct s_img
-{
-	void	*img_ptr;
-	char	*data_addr;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-}	t_img;	
-
-typedef struct s_mlx
-{
-	void			*mlx_ptr;
-	void			*win_ptr;
-	struct s_img	img;
-}	t_mlx;
-
-typedef struct s_vec3 t_vec3;
-typedef struct s_vec3 t_point3;
-typedef struct s_vec3 t_color3;
-typedef struct s_ray t_ray;
-typedef struct s_camera t_camera;
-typedef struct s_canvas t_canvas;
-typedef struct s_sphere	t_sphere;
-typedef struct s_hit_record t_hit_record;
-
-struct s_vec3
-{
-	double x;
-	double y;
-	double z;
-};
-
-struct	s_camera
-{
-	t_point3	orig;  // 카메라 원점(위치)
-	double		viewport_h; // 뷰포트 세로길이
-	double		viewport_w; // 뷰포트 가로길이
-	t_vec3		horizontal; // 수평길이 벡터
-	t_vec3		vertical; // 수직길이 벡터
-	double		focal_len; // focal length
-	t_point3	left_bottom; // 왼쪽 아래 코너점
-};
-
-struct	s_sphere
-{
-	t_point3	center;
-	double		radius;
-	double		radius2;
-};
-
-struct	s_canvas
-{
-	int		width; //canvas width
-	int		height; //canvas height;
-	double	aspect_ratio; //종횡비
-};
-
-struct	s_ray
-{
-	t_point3	orig;
-	t_vec3		dir;
-};
-
-struct s_hit_record
-{
-	t_point3	p;
-	t_vec3		normal;
-	double		tmin;
-	double		tmax;
-	double		t;
-	t_bool		front_face;
-};
+# include <stdbool.h>
+# include <fcntl.h>
+# include <math.h>
+# include <time.h>
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
@@ -129,14 +36,14 @@ void		set_hooks(t_mlx *mlx);
 /* utils */
 void		exit_with_str(const char *str, int exit_code);
 
+/* color */
+void	color_window(t_mlx *mlx);
+
 /* sphere */
 t_sphere	sphere(t_point3 center, double radius);
-// t_bool		hit_sphere(t_sphere *sp, t_ray *ray);
 t_bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec);
 
-t_ray		ray(t_point3 orig, t_vec3 dir);
-t_point3	ray_at(t_ray *ray, double t);
-
+/* cal */
 t_vec3		vec3(double x, double y, double z);
 t_point3	point3(double x, double y, double z);
 t_point3	color3(double r, double g, double b);
@@ -154,7 +61,8 @@ double		vdot(t_vec3 vec, t_vec3 vec2);
 t_vec3		vcross(t_vec3 vec, t_vec3 vec2);
 t_vec3		vunit(t_vec3 vec);
 t_vec3		vmin(t_vec3 vec1, t_vec3 vec2);
-
+t_ray		ray(t_point3 orig, t_vec3 dir);
+t_point3	ray_at(t_ray *ray, double t);
 
 /* renewal */
 
@@ -167,7 +75,7 @@ t_vec3		vmin(t_vec3 vec1, t_vec3 vec2);
 // # include <mlx.h>
 // # include <time.h>
 // # include "structure.h"
-# include "../libft/inc/libft.h"
+// # include "../libft/inc/libft.h"
 
 // int check_input(int argc, char **argv);
 

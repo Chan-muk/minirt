@@ -28,12 +28,10 @@ t_bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
 	double	half_b;
 	double	c;
 	double	discriminant; //판별식
-	//추가
 	double	sqrtd;
 	double	root;
 
 	oc = vminus(ray->orig, sp->center);
-	//추가
 	a = vlength2(ray->dir);
 	half_b = vdot(oc, ray->dir);
 	c = vlength2(oc) - sp->radius2;
@@ -55,7 +53,6 @@ t_bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
 	rec->normal = vdivide(vminus(rec->p, sp->center), sp->radius); // 정규화된 법선 벡터.
 	set_face_normal(ray, rec); // rec의 법선벡터와 광선의 방향벡터를 비교해서 앞면인지 뒷면인지 t_bool 값으로 저장.
 	return (TRUE);
-	//추가 끝
 }
 
 t_sphere	sphere(t_point3 center, double radius)
@@ -67,7 +64,6 @@ t_sphere	sphere(t_point3 center, double radius)
 	sp.radius2 = radius * radius;
 	return (sp);
 }
-
 
 // bool	hit_sphere(void *this, t_hitarg arg)
 // {

@@ -22,7 +22,6 @@ t_vec3		vec3(double x, double y, double z)
 	return (vec);
 }
 
-//포인트3 생성자
 t_point3	point3(double x, double y, double z)
 {
 	t_point3 point;
