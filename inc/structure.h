@@ -44,6 +44,16 @@ typedef struct s_canvas t_canvas;
 typedef struct s_sphere	t_sphere;
 typedef struct s_hit_record t_hit_record;
 
+enum e_type
+{
+	end = 0,
+	pl,
+	sp,
+	cy,
+	con,
+	total,
+};
+
 struct s_img
 {
 	void	*img_ptr;
@@ -69,20 +79,19 @@ struct s_vector
 
 struct	s_camera
 {
-	t_point	orig;  // 카메라 원점(위치)
+	t_point		org;  // 카메라 원점(위치)
 	double		viewport_h; // 뷰포트 세로길이
 	double		viewport_w; // 뷰포트 가로길이
-	t_vector		horizontal; // 수평길이 벡터
-	t_vector		vertical; // 수직길이 벡터
+	t_vector	horizontal; // 수평길이 벡터
+	t_vector	vertical; // 수직길이 벡터
 	double		focal_len; // focal length
-	t_point	left_bottom; // 왼쪽 아래 코너점
+	t_point		left_bottom; // 왼쪽 아래 코너점
 };
 
 struct	s_sphere
 {
-	t_point	center;
+	t_point		center;
 	double		radius;
-	double		radius2;
 };
 
 struct	s_canvas
@@ -94,19 +103,29 @@ struct	s_canvas
 
 struct	s_ray
 {
-	t_point	orig;
-	t_vector		dir;
+	t_point		org;
+	t_vector	dir;
 };
 
 struct s_hit_record
 {
-	t_point	p;
-	t_vector		normal;
+	t_point		p;
+	t_vector	normal;
 	double		tmin;
 	double		tmax;
 	double		t;
 	bool		front_face;
 };
+
+typedef struct s_hitarr
+{
+	int				type;
+	t_vector			center;
+	t_vector			norm;
+	t_vector			color;
+	double			radius;
+	double			height;
+}	t_hitarr;
 
 // typedef struct s_vector
 // {

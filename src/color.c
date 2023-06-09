@@ -22,7 +22,7 @@ t_canvas	canvas(int	width, int height)
 	return (canvas);
 }
 
-t_camera	camera(t_canvas *canvas, t_point orig)
+t_camera	camera(t_canvas *canvas, t_point org)
 {
 	t_camera	cam;
 	double		focal_len;
@@ -30,13 +30,13 @@ t_camera	camera(t_canvas *canvas, t_point orig)
 
 	viewport_height = 2.0;
 	focal_len = 1.0;
-	cam.orig = orig;
+	cam.org = org;
 	cam.viewport_h = viewport_height;
 	cam.viewport_w = viewport_height * canvas->aspect_ratio;
 	cam.focal_len = focal_len;
 	cam.horizontal = new_vec(cam.viewport_w, 0, 0);
 	cam.vertical = new_vec(0, cam.viewport_h, 0);
-	cam.left_bottom = vec_sub(vec_sub(vec_sub(cam.orig, vec_div(cam.horizontal, 2)), vec_div(cam.vertical, 2)), new_vec(0, 0, focal_len));
+	cam.left_bottom = vec_sub(vec_sub(vec_sub(cam.org, vec_div(cam.horizontal, 2)), vec_div(cam.vertical, 2)), new_vec(0, 0, focal_len));
 	return (cam);
 }
 
@@ -44,12 +44,12 @@ t_ray		ray_primary(t_camera *cam, double u, double v)
 {
 	t_ray	ray;
 
-	ray.orig = cam->orig;
-	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->orig));
+	ray.org = cam->org;
+	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->org));
 	return (ray);
 }
 
-t_color	ray_color(t_ray *ray, t_sphere *sphere)
+t_color	ray_color(t_ray *ray, t_hitarr *arr)
 {
 	double	t;
 	t_vector	n;
@@ -57,7 +57,7 @@ t_color	ray_color(t_ray *ray, t_sphere *sphere)
 
 	rec.tmin = 0;
 	rec.tmax = INFINITY;
-	if (hit_sphere(sphere, ray, &rec))
+	if (hit_world(arr, ray, &rec))
 		return (vec_mul(vec_add(rec.normal, new_color(1, 1, 1)), 0.5));
 	else
 	{
@@ -85,13 +85,31 @@ void	color_pixels(t_mlx *mlx)
 	int			j;
 	double		u;
 	double		v;
-	t_color	pixel_color;
+	t_color		pixel_color;
 	t_canvas	canv;
 	t_camera	cam;
 	t_ray		ray;
 
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
 	cam = camera(&canv, new_point(0, 0, 0));
+
+	t_hitarr arr[10];
+
+	arr[0].type = sp;
+	arr[0].center = new_vec(0, 0, -5);
+	arr[0].radius = 2;
+
+	arr[1].type = sp;
+	arr[1].center = new_vec(2, 0, -2);
+	arr[1].radius = 2;
+
+	arr[2].type = cy;
+	arr[2].center = new_vec(0, 0, -1);
+	arr[2].norm = new_vec(1, 1, 1);
+	arr[2].height = 2;
+	arr[2].radius = 2;
+
+	arr[3].type = end;
 
 	t_sphere	sp;
 	sp = sphere(new_point(0, 0, -5), 2);
@@ -105,7 +123,8 @@ void	color_pixels(t_mlx *mlx)
 			u = (double)i / (canv.width - 1);
 			v = (double)j / (canv.height - 1);
 			ray = ray_primary(&cam, u, v);
-			pixel_color = ray_color(&ray, &sp);
+			// pixel_color = ray_color(&ray, &sp);
+			pixel_color = ray_color(&ray, arr);
 			color_each_pixel(&mlx->img, i, j, write_color(pixel_color));
 			++i;
 		}
@@ -173,12 +192,12 @@ void	color_window(t_mlx *mlx)
 // 	camera.lower_left_corner = new_vec(-2.0, -1.0, -1.0);
 // 	camera.horizontal = new_vec(4.0, 0.0, 0.0);
 // 	camera.vertical = new_vec(0.0, 2.0, 0.0);
-// 	camera.origin = new_vec(0.0, 0.0, 0.0);
+// 	camera.orgin = new_vec(0.0, 0.0, 0.0);
 
-// 	ray.org = camera.origin;
+// 	ray.org = camera.orgin;
 // 	ray.dir = cal_subtract_vec(cal_add_vec(cal_add_vec(camera.lower_left_corner, \
 // 	cal_multiply_vec(camera.horizontal, u)), \
-// 	cal_multiply_vec(camera.vertical, v)), camera.origin);
+// 	cal_multiply_vec(camera.vertical, v)), camera.orgin);
 // 	return (ray);
 // }
 

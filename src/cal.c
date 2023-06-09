@@ -83,7 +83,7 @@ t_vector	vec_sub(t_vector vec, t_vector vec2)
 	return (vec);
 }
 
-t_vector		vec_sub_(t_vector vec, double x, double y, double z)
+t_vector	vec_sub_(t_vector vec, double x, double y, double z)
 {
 	vec.x -= x;
 	vec.y -= y;
@@ -160,7 +160,7 @@ t_ray	ray(t_point orig, t_vector dir)
 {
 	t_ray ray;
 
-	ray.orig = orig;
+	ray.org = orig;
 	ray.dir = unit_vec(dir);
 	return (ray);
 }
@@ -169,7 +169,7 @@ t_point	ray_at(t_ray *ray, double t)
 {
 	t_point at;
 
-	at = vec_add(ray->orig, vec_mul(ray->dir, t));
+	at = vec_add(ray->org, vec_mul(ray->dir, t));
 	return (at);
 }
 

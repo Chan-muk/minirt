@@ -12,39 +12,27 @@
 
 #include "minirt.h"
 
-void	set_face_normal(t_ray *r, t_hit_record *rec)
+// bool	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
+bool		hit_sphere(t_hitarr *sp, t_ray *ray, t_hit_record *rec)
 {
-	if (vec_dot(r->dir, rec->normal) < 0)
-		rec->front_face = true;
-	if (rec->front_face == true)
-		rec->normal = rec->normal;
-	else
-		rec->normal = vec_mul(rec->normal, -1);
-}
+	t_vector	r_center;
+	double		a;
+	double		b;
+	double		c;
+	double		discriminant;
+	double		root;
 
-bool	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
-{
-	t_vector	oc;
-	double	a;
-	double	half_b;
-	double	c;
-	double	discriminant;
-	double	sqrtd;
-	double	root;
-
-	oc = vec_sub(ray->orig, sp->center);
+	r_center = vec_sub(ray->org, sp->center);
 	a = vec_len_2(ray->dir);
-	half_b = vec_dot(oc, ray->dir);
-	c = vec_len_2(oc) - sp->radius2;
-	discriminant = half_b * half_b - a * c;
-
-	if (discriminant < 0)
+	b = vec_dot(r_center, ray->dir);
+	c = vec_len_2(r_center) - sp->radius * sp->radius;
+	discriminant = b * b - a * c;
+	if (discriminant < 0.0)
 		return (false);
-	sqrtd = sqrt(discriminant);
-	root = (-half_b - sqrtd) / a;
+	root = (-b - sqrt(discriminant)) / a;
 	if (root < rec->tmin || rec->tmax < root)
 	{
-		root = (-half_b + sqrtd) / a;
+		root = (-b + sqrt(discriminant)) / a;
 		if (root < rec->tmin || rec->tmax < root)
 			return (false);
 	}
@@ -61,7 +49,6 @@ t_sphere	sphere(t_point center, double radius)
 
 	sp.center = center;
 	sp.radius = radius;
-	sp.radius2 = radius * radius;
 	return (sp);
 }
 
