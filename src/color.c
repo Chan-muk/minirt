@@ -53,7 +53,7 @@ int	write_color(t_color pixel_color)
 	return (((int)(255.999 * pixel_color.x) << 16) + ((int)(255.999 * pixel_color.y) << 8) + (int)(255.999 * pixel_color.z));
 }
 
-void	color_pixels(t_mlx *mlx)
+void	color_pixels(t_mlx *mlx, t_hit_array *array)
 {
 	int			i;
 	int			j;
@@ -66,30 +66,6 @@ void	color_pixels(t_mlx *mlx)
 
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
 	cam = camera(&canv, new_point(0, 0, 0));
-
-	t_hit_array array[10];
-
-	// array[0].type = _sphere;
-	// array[0].center = new_vec(0, 0, -5);
-	// array[0].radius = 2;
-
-	// array[1].type = _sphere;
-	// array[1].center = new_vec(2, 0, -2);
-	// array[1].radius = 2;
-
-	array[0].type = _cylinder;
-	array[0].center = new_vec(0, 0, -5);
-	array[0].norm = unit_vec(new_vec(1, 1, 1));
-	array[0].height = 5;
-	array[0].radius = 2;
-
-	array[1].type = _plane;
-	array[1].center = new_vec(0, 0, -6);
-	array[1].norm = unit_vec(new_vec(1, 1, 1));
-	// array[1].height = 2;
-	// array[1].radius = 2;
-
-	array[2].type = _end;
 
 	// t_sphere	sp;
 	// sp = sphere(new_point(0, 0, -5), 2);
@@ -112,10 +88,10 @@ void	color_pixels(t_mlx *mlx)
 	}
 }
 
-void	color_window(t_mlx *mlx)
+void	color_window(t_mlx *mlx, t_hit_array *array)
 {
 	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
-	color_pixels(mlx);
+	color_pixels(mlx, array);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 }
 

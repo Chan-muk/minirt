@@ -14,11 +14,13 @@
 
 int	main(int argc, char **argv)
 {
-	t_mlx	mlx;
+	t_mlx		mlx;
+	t_hitarray	array[10];
 
 	// arguments_check(argc, argv, &mlx);
 	initialize(argc, argv, &mlx);
-	color_window(&mlx);
+	set_objs(array);
+	color_window(&mlx, array);
 	set_hooks(&mlx);
 	mlx_loop(mlx.mlx_ptr);
 	return (0);
