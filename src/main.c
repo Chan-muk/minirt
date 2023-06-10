@@ -15,7 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_mlx		mlx;
-	t_hitarray	array[10];
+	t_hit_array	array[10];
 
 	// arguments_check(argc, argv, &mlx);
 	initialize(argc, argv, &mlx);

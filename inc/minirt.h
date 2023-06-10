@@ -39,7 +39,7 @@
 // bool		hit_plane(t_hit_array* pl, t_ray *r, t_hit_record *rec);
 
 /* input */
-void		set_objs(t_hitarray *array);
+void		set_objs(t_hit_array *array);
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
@@ -51,7 +51,7 @@ void		set_hooks(t_mlx *mlx);
 void		exit_with_str(const char *str, int exit_code);
 
 /* color */
-void		color_window(t_mlx *mlx, t_hitarray *array);
+void		color_window(t_mlx *mlx, t_hit_array *array);
 
 /* sphere */
 // t_sphere	sphere(t_point center, double radius);

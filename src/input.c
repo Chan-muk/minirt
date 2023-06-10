@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void	set_objs(t_hitarray *array)
+void	set_objs(t_hit_array *array)
 {
 	// array[0].type = _sphere;
 	// array[0].center = new_vec(0, 0, -5);
