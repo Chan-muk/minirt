@@ -24,7 +24,12 @@
 
 # include "mlx.h"
 # include "structure.h"
+# include "scene.h"
 # include "../libft/inc/libft.h"
+
+t_canvas	canvas(int	width, int height);
+t_camera	camera(t_canvas *canvas, t_point org);
+
 
 bool	hit_sphere(t_hitarray *sp, t_ray *ray, t_hit_record *rec);
 bool	hit_world(t_hitarray *array, t_ray *r, t_hit_record *rec);

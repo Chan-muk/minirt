@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chajung <chajung@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:48:41 by chajung           #+#    #+#             */
 /*   Updated: 2023/06/10 10:48:42 by chajung          ###   ########.fr       */
@@ -33,7 +33,6 @@ struct	s_canvas
 	int		height; //canvas height;
 	double	aspect_ratio; //종횡비
 };
-
 
 t_canvas	canvas(int	width, int height);
 t_camera	camera(t_canvas *canvas, t_point org);
