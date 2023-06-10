@@ -19,7 +19,7 @@ bool	hit_plane(t_hit_array* pl, t_ray *ray, t_hit_record *rec)
 	double	root;
 
 	denominator = vec_dot(ray->dir, pl->norm);
-	if (fabs(denominator) < 0.0000000001)
+	if (fabs(denominator) < rec->tmin)
 		return (false);
 	numrator = vec_dot(vec_sub(pl->center, ray->org), pl->norm);
 	root = numrator / denominator;
