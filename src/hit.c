@@ -22,26 +22,35 @@ void	set_face_normal(t_ray *r, t_hit_record *rec)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
-bool	hit_world(t_hitarray *array, t_ray *r, t_hit_record *rec)
+bool    hit_objs(t_hitarray *array, t_ray *ray, t_hit_record *rec)
 {
-	bool	(*hit_objs[_total])(t_hitarray* array, t_ray *r, t_hit_record *rec);
-	bool	hit;
+    if (array->type == _plane)
+        return (hit_plane(array, ray, rec));
+    else if (array->type == _sphere)
+        return (hit_plane(array, ray, rec));
+    else if (array->type == _cylinder)
+        return (hit_cylinder(array, ray, rec));
+    else if (array->type == _cone)
+        return (hit_cylinder(array, ray, rec));
+    return (false);
+}
 
-	hit = false;
-	// set_hitobjs(hit_objs);
-	hit_objs[_sphere] = hit_sphere;
-	hit_objs[_cylinder] = hit_cylinder;
-	hit_objs[_plane] = hit_plane;
-	while (array->type)
-	{
-		if (hit_objs[array->type](array, r, rec))
-		{
-			hit = true;
-			rec->tmax = rec->t;
-		}
-		array++;
-	}
-	return (hit);
+bool    hit_world(t_hitarray *array, t_ray *ray, t_hit_record *rec)
+{
+    bool    hit;
+
+    hit = false;
+    // set_hitobjs(hit_objs);
+    while (array->type)
+    {
+        if (hit_objs(array, ray, rec))
+        {
+            hit = true;
+            rec->tmax = rec->t;
+        }
+        array++;
+    }
+    return (hit);
 }
 
 // void	check_face_normal(void *this, t_ray ray, t_vector outward_normal)
