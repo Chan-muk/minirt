@@ -50,5 +50,6 @@ bool	hit_world(t_hit_array *array, t_ray *r, t_hit_record *rec);
 void	set_face_normal(t_ray *r, t_hit_record *rec);
 bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
 bool	hit_plane(t_hit_array *pl, t_ray *r, t_hit_record *rec);
+bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec);
 
 #endif

@@ -31,7 +31,7 @@ bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 	else if (array->type == _cylinder)
 		return (hit_cylinder(array, ray, rec));
 	else if (array->type == _cone)
-		return (hit_cylinder(array, ray, rec));
+		return (hit_cone(array, ray, rec));
 	return (false);
 }
 
