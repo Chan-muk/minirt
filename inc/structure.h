@@ -39,7 +39,6 @@ typedef struct s_vector t_vector;
 typedef struct s_vector t_point;
 typedef struct s_vector t_color;
 typedef struct s_ray t_ray;
-typedef struct s_sphere	t_sphere;
 typedef struct s_hit_record t_hit_record;
 
 enum e_type
@@ -75,11 +74,11 @@ struct s_vector
 	double z;
 };
 
-struct	s_sphere
-{
-	t_point		center;
-	double		radius;
-};
+// struct	s_sphere
+// {
+// 	t_point		center;
+// 	double		radius;
+// };
 
 struct	s_ray
 {
@@ -87,25 +86,6 @@ struct	s_ray
 	t_vector	dir;
 };
 
-struct s_hit_record
-{
-	t_point		p;
-	t_vector	normal;
-	double		tmin;
-	double		tmax;
-	double		t;
-	bool		front_face;
-};
-
-typedef struct s_hitarray
-{
-	int				type;
-	t_vector			center;
-	t_vector			norm;
-	t_vector			color;
-	double			radius;
-	double			height;
-}	t_hitarray;
 
 // typedef struct s_vector
 // {

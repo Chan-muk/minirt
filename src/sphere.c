@@ -13,7 +13,7 @@
 #include "minirt.h"
 
 // bool	hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec)
-bool	hit_sphere(t_hitarray *sp, t_ray *ray, t_hit_record *rec)
+bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 {
 	t_vector	r_center;
 	double		a;
@@ -43,14 +43,14 @@ bool	hit_sphere(t_hitarray *sp, t_ray *ray, t_hit_record *rec)
 	return (true);
 }
 
-t_sphere	sphere(t_point center, double radius)
-{
-	t_sphere sp;
+// t_sphere	sphere(t_point center, double radius)
+// {
+// 	t_sphere sp;
 
-	sp.center = center;
-	sp.radius = radius;
-	return (sp);
-}
+// 	sp.center = center;
+// 	sp.radius = radius;
+// 	return (sp);
+// }
 
 // bool	hit_sphere(void *this, t_hitarg arg)
 // {

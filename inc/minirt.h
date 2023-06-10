@@ -25,17 +25,8 @@
 # include "mlx.h"
 # include "structure.h"
 # include "scene.h"
+# include "object.h"
 # include "../libft/inc/libft.h"
-
-t_canvas	canvas(int	width, int height);
-t_camera	camera(t_canvas *canvas, t_point org);
-
-
-bool	hit_sphere(t_hitarray *sp, t_ray *ray, t_hit_record *rec);
-bool	hit_world(t_hitarray *array, t_ray *r, t_hit_record *rec);
-void	set_face_normal(t_ray *r, t_hit_record *rec);
-bool	hit_cylinder(t_hitarray *cy, t_ray *r, t_hit_record *rec);
-bool	hit_plane(t_hitarray* pl, t_ray *r, t_hit_record *rec);
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
@@ -50,7 +41,7 @@ void		exit_with_str(const char *str, int exit_code);
 void	color_window(t_mlx *mlx);
 
 /* sphere */
-t_sphere	sphere(t_point center, double radius);
+// t_sphere	sphere(t_point center, double radius);
 // bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec);
 
 /* cal */

@@ -17,11 +17,12 @@ t_ray		ray_primary(t_camera *cam, double u, double v)
 	t_ray	ray;
 
 	ray.org = cam->org;
-	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->org));
+	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, \
+	vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->org));
 	return (ray);
 }
 
-t_color	ray_color(t_ray *ray, t_hitarray *array)
+t_color	ray_color(t_ray *ray, t_hit_array *array)
 {
 	double	t;
 	t_vector	n;
@@ -34,7 +35,8 @@ t_color	ray_color(t_ray *ray, t_hitarray *array)
 	else
 	{
 		t = 0.5 * (ray->dir.y + 1.0);
-		return (vec_add(vec_mul(new_color(1, 1, 1), 1.0 - t), vec_mul(new_color(0.5, 0.7, 1.0),     t)));
+		return (vec_add(vec_mul(new_color(1, 1, 1), 1.0 - t), \
+		vec_mul(new_color(0.5, 0.7, 1.0), t)));
 	}
 }
 
@@ -42,7 +44,7 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y) * img->size_line);
+	dst = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y - 1) * img->size_line);
 	*(unsigned int *)dst = color;
 }
 
@@ -65,7 +67,7 @@ void	color_pixels(t_mlx *mlx)
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
 	cam = camera(&canv, new_point(0, 0, 0));
 
-	t_hitarray array[10];
+	t_hit_array array[10];
 
 	// array[0].type = _sphere;
 	// array[0].center = new_vec(0, 0, -5);

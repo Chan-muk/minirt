@@ -22,7 +22,7 @@ void	set_face_normal(t_ray *r, t_hit_record *rec)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
-bool    hit_objs(t_hitarray *array, t_ray *ray, t_hit_record *rec)
+bool    hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 {
     if (array->type == _plane)
         return (hit_plane(array, ray, rec));
@@ -35,15 +35,14 @@ bool    hit_objs(t_hitarray *array, t_ray *ray, t_hit_record *rec)
     return (false);
 }
 
-bool    hit_world(t_hitarray *array, t_ray *ray, t_hit_record *rec)
+bool    hit_world(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 {
     bool    hit;
 
     hit = false;
-    // set_hitobjs(hit_objs);
     while (array->type)
     {
-        if (hit_objs(array, ray, rec))
+        if (hit_objects(array, ray, rec))
         {
             hit = true;
             rec->tmax = rec->t;

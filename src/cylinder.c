@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-bool	cylinder_cap(t_hitarray* cy, t_vector c, t_ray *r, t_hit_record *rec)
+bool	cylinder_cap(t_hit_array* cy, t_vector c, t_ray *r, t_hit_record *rec)
 {
 	double	numrator;
 	double	denominator;
@@ -36,7 +36,7 @@ bool	cylinder_cap(t_hitarray* cy, t_vector c, t_ray *r, t_hit_record *rec)
 	return (true);
 }
 
-bool	cylinder_side(t_hitarray *cy, t_ray *r, t_hit_record *rec)
+bool	cylinder_side(t_hit_array *cy, t_ray *r, t_hit_record *rec)
 {
 	double	a;
 	double	half_b;
@@ -64,7 +64,7 @@ bool	cylinder_side(t_hitarray *cy, t_ray *r, t_hit_record *rec)
 	return (true);
 }
 
-bool	hit_cylinder(t_hitarray *cy, t_ray *r, t_hit_record *rec)
+bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec)
 {
 	int	flag = 0;
 	if (cylinder_side(cy, r, rec))
