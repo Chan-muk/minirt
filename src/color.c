@@ -28,8 +28,8 @@ t_color	ray_color(t_ray *ray, t_hit_array *array)
 	t_vector	n;
 	t_hit_record	rec;
 
-	rec.tmin = 0;
-	rec.tmax = INFINITY;
+	rec.tmin = 0.00000001;
+	rec.tmax = MAXFLOAT;
 	if (hit_world(array, ray, &rec))
 		return (vec_mul(vec_add(rec.normal, new_color(1, 1, 1)), 0.5));
 	else
