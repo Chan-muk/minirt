@@ -23,10 +23,6 @@ struct s_formula
 	double	b;
 	double	c;
 	double	discriminant;
-	t_vector	center;
-	double	center_h;
-	// double	numrator;
-	double	denominator;
 };
 
 struct s_hit_record

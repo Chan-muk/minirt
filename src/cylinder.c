@@ -85,13 +85,19 @@ int	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *
 	return (1);
 }
 
-void	get_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
+void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 {
-	formula->a = vec_len_2(vec_prod(ray->dir, cy->norm));
-	formula->b = vec_dot(vec_prod(ray->dir, cy->norm), vec_prod(vec_sub(ray->org, cy->center), cy->norm));
-	formula->c = vec_len_2(vec_prod(vec_sub(ray->org, cy->center), cy->norm)) - (cy->radius * cy->radius);
+	t_vector	r_center;
+	double		vh;
+	double		wh;
+
+	r_center = vec_sub(ray->org, cy->center);
+	vh = vec_dot(ray->dir, unit_vec(vec_mul(cy->norm, cy->height)));
+	wh = vec_dot(r_center, unit_vec(vec_mul(cy->norm, cy->height)));
+	formula->a = vec_dot(ray->dir, ray->dir) - (vh * vh);
+	formula->b = vec_dot(ray->dir, r_center) - (vh * wh);
+	formula->c = vec_dot(r_center, r_center) - (wh * wh) - (cy->radius * cy->radius);
 	formula->discriminant = (formula->b * formula->b) - (formula->a * formula->c);
-	formula->denominator = vec_dot(ray->dir, cy->norm);
 }
 
 bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
@@ -99,9 +105,8 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 	t_formula	formula;
 	int			flag;
 
-	get_data(&formula, cy, ray);
+	get_cylinder_data(&formula, cy, ray);
 	flag = 0;
-	
 	flag += cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec);
 	flag += cylinder_lower_cap(cy->center, cy, ray, rec);
 	flag += cylinder_side(formula, cy, ray, rec);

@@ -27,7 +27,7 @@ bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 	if (array->type == _plane)
 		return (hit_plane(array, ray, rec));
 	else if (array->type == _sphere)
-		return (hit_plane(array, ray, rec));
+		return (hit_sphere(array, ray, rec));
 	else if (array->type == _cylinder)
 		return (hit_cylinder(array, ray, rec));
 	else if (array->type == _cone)
