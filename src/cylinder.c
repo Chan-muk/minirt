@@ -12,70 +12,100 @@
 
 #include "minirt.h"
 
-bool	cylinder_cap(t_hit_array* cy, t_vector c, t_ray *r, t_hit_record *rec)
+int	cylinder_upper_cap(t_vector center, t_hit_array* cy, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
 	double	denominator;
 	double	root;
+	double	pc;
 
-	denominator = vec_dot(r->dir, cy->norm);
+	denominator = vec_dot(ray->dir, cy->norm);
 	if (fabs(denominator) < 0.0000000001)
-		return (false);
-	numrator = vec_dot(vec_sub(c, r->org), cy->norm);
+		return (0);
+	numrator = vec_dot(vec_sub(center, ray->org), cy->norm);
 	root = numrator / denominator;
 	if (root < rec->tmin || root > rec->tmax)
-		return (false);
-	t_vector	P = vec_add(r->org, vec_mul(r->dir, root));
-	double		pc = vec_len(vec_sub(P, c));
-	if (pc * pc > (cy->radius * 0.5) * (cy->radius * 0.5) || pc < 0.0)
-		return (false);
+		return (0);
+	pc = vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), center));
+	if ((pc * pc) > (cy->radius * cy->radius) || pc < 0.0)
+		return (0);
 	rec->t = root;
-	rec->p = ray_at(r, root);
+	rec->p = ray_at(ray, root);
 	rec->normal = cy->norm;
-	set_face_normal(r, rec);
-	return (true);
+	set_face_normal(ray, rec);
+	return (1);
 }
 
-bool	cylinder_side(t_hit_array *cy, t_ray *r, t_hit_record *rec)
+int	cylinder_lower_cap(t_vector center, t_hit_array* cy, t_ray *ray, t_hit_record *rec)
 {
-	double	a;
-	double	half_b;
-	double	c;
-	double	discriminant;
+	double	numrator;
+	double	denominator;
 	double	root;
+	double	pc;
 
-	a = vec_len_2(vec_prod(r->dir, cy->norm));
-	half_b = vec_dot(vec_prod(r->dir, cy->norm), vec_prod(vec_sub(r->org, cy->center), cy->norm));
-	c = vec_len_2(vec_prod(vec_sub(r->org, cy->center), cy->norm)) - ( cy->radius * 0.5) * (cy->radius * 0.5);
-	discriminant = half_b * half_b - a * c;
-	if (discriminant < 0)
-		return (false);
-	root = (-half_b - sqrt(discriminant)) / a;
+	denominator = vec_dot(ray->dir, cy->norm);
+	if (fabs(denominator) < 0.0000000001)
+		return (0);
+	numrator = vec_dot(vec_sub(center, ray->org), cy->norm);
+	root = numrator / denominator;
 	if (root < rec->tmin || root > rec->tmax)
-		return (false);
-	t_vector	P = vec_add(r->org, vec_mul(r->dir, root));
-	double		qc = vec_dot(vec_sub(P, cy->center), cy->norm);
-	if (qc > cy->height || qc < 0.0)
-		return (false);
+		return (0);
+	pc = vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), center));
+	if ((pc * pc) > (cy->radius * cy->radius) || pc < 0.0)
+		return (0);
 	rec->t = root;
-	rec->p = ray_at(r, root);
-	rec->normal = cy->norm;
-	set_face_normal(r, rec);
-	return (true);
+	rec->p = ray_at(ray, root);
+	rec->normal = vec_mul(cy->norm, -1);
+	set_face_normal(ray, rec);
+	return (1);
 }
 
-bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec)
+int	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
-	int	flag = 0;
-	if (cylinder_side(cy, r, rec))
-		flag++;
-	t_vector	H = vec_add(cy->center, vec_mul(cy->norm, cy->height));
-	if (cylinder_cap(cy, H, r, rec))
-		flag++;
-	if (cylinder_cap(cy, cy->center, r, rec))
-		flag++;
+	double	root;
+	double	qc;
+
+	if (formula.discriminant < 0.0)
+		return (0);
+	root = (-formula.b - sqrt(formula.discriminant)) / formula.a;
+	if (root < rec->tmin || rec->tmax < root)
+	{
+		root = (-formula.b + sqrt(formula.discriminant)) / formula.a;
+		if (root < rec->tmin || rec->tmax < root)
+			return (0);
+	}
+	qc = vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center), cy->norm);
+	if (qc > cy->height || qc < 0.0)
+		return (0);
+	rec->t = root;
+	rec->p = ray_at(ray, root);
+	rec->normal = unit_vec(vec_sub(vec_add(cy->center, vec_mul(cy->norm, qc)), \
+	vec_add(ray->org, vec_mul(ray->dir, root))));
+	set_face_normal(ray, rec);
+	return (1);
+}
+
+void	get_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
+{
+	formula->a = vec_len_2(vec_prod(ray->dir, cy->norm));
+	formula->b = vec_dot(vec_prod(ray->dir, cy->norm), vec_prod(vec_sub(ray->org, cy->center), cy->norm));
+	formula->c = vec_len_2(vec_prod(vec_sub(ray->org, cy->center), cy->norm)) - (cy->radius * cy->radius);
+	formula->discriminant = (formula->b * formula->b) - (formula->a * formula->c);
+	formula->denominator = vec_dot(ray->dir, cy->norm);
+}
+
+bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
+{
+	t_formula	formula;
+	int			flag;
+
+	get_data(&formula, cy, ray);
+	flag = 0;
+	
+	flag += cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec);
+	flag += cylinder_lower_cap(cy->center, cy, ray, rec);
+	flag += cylinder_side(formula, cy, ray, rec);
 	if (flag)
 		return (true);
 	return(false);
 }
-

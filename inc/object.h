@@ -13,8 +13,21 @@
 #ifndef OBJECT_H
 # define OBJECT_H
 
+typedef struct s_formula	t_formula;
 typedef struct s_hit_record	t_hit_record;
 typedef struct s_hit_array	t_hit_array;
+
+struct s_formula
+{
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+	t_vector	center;
+	double	center_h;
+	// double	numrator;
+	double	denominator;
+};
 
 struct s_hit_record
 {
