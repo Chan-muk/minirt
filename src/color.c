@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_ray		ray_primary(t_camera *cam, double u, double v)
+t_ray	ray_primary(t_camera *cam, double u, double v)
 {
 	t_ray	ray;
 
@@ -67,9 +67,6 @@ void	color_pixels(t_mlx *mlx, t_hit_array *array)
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
 	cam = camera(&canv, new_point(0, 0, 0));
 
-	// t_sphere	sp;
-	// sp = sphere(new_point(0, 0, -5), 2);
-
 	j = canv.height - 1;
 	while (j >= 0)
 	{
@@ -79,7 +76,6 @@ void	color_pixels(t_mlx *mlx, t_hit_array *array)
 			u = (double)i / (canv.width - 1);
 			v = (double)j / (canv.height - 1);
 			ray = ray_primary(&cam, u, v);
-			// pixel_color = ray_color(&ray, &sp);
 			pixel_color = ray_color(&ray, array);
 			color_each_pixel(&mlx->img, i, j, write_color(pixel_color));
 			++i;

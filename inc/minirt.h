@@ -13,7 +13,6 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-/* renewal */
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -23,23 +22,33 @@
 # include <time.h>
 
 # include "mlx.h"
-# include "structure.h"
-# include "scene.h"
+# include "calculate.h"
 # include "object.h"
+# include "scene.h"
 # include "../libft/inc/libft.h"
 
-// t_canvas	canvas(int	width, int height);
-// t_camera	camera(t_canvas *canvas, t_point org);
+# define WIN_WIDTH		800
+# define WIN_HEIGHT		400
 
-
-// bool		hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
-// bool		hit_world(t_hit_array *array, t_ray *r, t_hit_record *rec);
-// void		set_face_normal(t_ray *r, t_hit_record *rec);
-// bool		hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
-// bool		hit_plane(t_hit_array* pl, t_ray *r, t_hit_record *rec);
+# define EXIT_SUCCESS	0
+# define EXIT_FAILURE	1
+# define CAMERA_NS		100
+# define KEYPRESS		2
+# define DESTROYNOTIFY	17
+# define ESC			53
+# define LEFT_CLICK		1
+# define RIGHT_CLICK	2
+# define MIDDLE_CLICK	3
+# define SCROLL_UP		4
+# define SCROLL_DOWN	5
+# define UP				126
+# define DOWN			125
+# define LEFT			123
+# define RIGHT			124
+# define R_KEY			15
 
 /* input */
-void		set_objs(t_hit_array *array);
+void		set_objects(t_hit_array *array);
 
 /* init */
 void		initialize(int argc, char **argv, t_mlx *mlx);
@@ -49,104 +58,5 @@ void		set_hooks(t_mlx *mlx);
 
 /* utils */
 void		exit_with_str(const char *str, int exit_code);
-
-/* color */
-void		color_window(t_mlx *mlx, t_hit_array *array);
-
-/* sphere */
-// t_sphere	sphere(t_point center, double radius);
-// bool		hit_sphere(t_sphere *sp, t_ray *ray, t_hit_record *rec);
-
-/* cal */
-t_vector		new_vec(double x, double y, double z);
-t_point	new_point(double x, double y, double z);
-t_point	new_color(double r, double g, double b);
-void		set_vec(t_vector *vec, double x, double y, double z);
-double		vec_len_2(t_vector vec);
-double		vec_len(t_vector vec);
-t_vector		vec_add(t_vector vec, t_vector vec2);
-t_vector		vec_add_(t_vector vec, double x, double y, double z);
-t_vector		vec_sub(t_vector vec, t_vector vec2);
-t_vector		vec_sub_(t_vector vec, double x, double y, double z);
-t_vector		vec_mul(t_vector vec, double t);
-t_vector		vec_mul_(t_vector vec, t_vector vec2);
-t_vector		vec_div(t_vector vec, double t);
-double		vec_dot(t_vector vec, t_vector vec2);
-t_vector		vec_prod(t_vector vec, t_vector vec2);
-t_vector		unit_vec(t_vector vec);
-t_vector		vec_cmp(t_vector vec1, t_vector vec2);
-t_ray		ray(t_point orig, t_vector dir);
-t_point	ray_at(t_ray *ray, double t);
-
-/* renewal */
-
-// # include <stdio.h>
-// # include <unistd.h>
-// # include <stdlib.h>
-// # include <stdbool.h>
-// # include <fcntl.h>
-// # include <math.h>
-// # include <mlx.h>
-// # include <time.h>
-// # include "structure.h"
-// # include "../libft/inc/libft.h"
-
-// int check_input(int argc, char **argv);
-
-// void	check_face_normal(void *this, t_ray ray, t_vector outward_normal);
-// bool	hit_hittable_list(void *this, t_hitarg arg);
-
-// /* init */
-// void		initialize(int argc, char **argv, t_mlx *mlx);
-
-// /* color */
-// void	color_each_pixel(t_img *img, int x, int y, int color);
-// int		_get_color(t_vector vec);
-// t_vector	__get_color_vec(t_ray *ray, t_hittable *world, int depth);
-// t_ray	__get_color_ray(void *this, double u, double v);
-// void	color_pixels(t_mlx *mlx);
-// void	color_window(t_mlx *mlx);
-
-// /* sphere */
-// bool	hit_sphere(void *this, t_hitarg arg);
-
-// /* plane */
-// bool	hit_plane(void *this, t_hitarg arg);
-
-// /* cylinder */
-// bool	hit_cylinder(void *this, t_hitarg arg);
-
-// /* random */
-// double		drandom48(void);
-// t_vector	random_in_hemisphere(t_vector normal);
-// t_vector	random_unit_vecter(void);
-// t_vector	random_in_unit_sphere(void);
-
-// /* scatter */
-// bool	scatter_lambertian(void *this, t_material_arg arg);
-// bool	scatter_metal(void *this, struct s_material_arg arg);
-
-// /* calculate */
-// double		size_vec(t_vector vec);
-// t_vector	new_vec(double x, double y, double z);
-// t_ray		new_ray(t_vector org, t_vector dir);
-// t_vector	unit_vec(t_vector vec);
-// t_vector	cal_add_vec(t_vector vec_1, t_vector vec_2);
-// t_vector	cal_add3_vec(t_vector vec_1, t_vector vec_2, t_vector vec_3);
-// t_vector	cal_subtract_vec(t_vector vec_1, t_vector vec_2);
-// t_vector	cal_inverse_vec(t_vector vec);
-// t_vector	cal_multiply_vec(t_vector vec, double ratio);
-// t_vector	cal_multi_vec(t_vector vec_1, t_vector vec_2);
-// t_vector	cal_divide_vec(t_vector vec, double ratio);
-// t_vector	cal_arithmetic_vec(t_vector vec_1, t_vector vec_2, double ratio);
-// t_vector	cal_ray(t_ray ray, double ratio);
-// double		cal_inner_vec(t_vector vec_1, t_vector vec_2);
-// t_vector	cal_outer_vec(t_vector vec_1, t_vector vec_2);
-
-// /* hooks */
-// void		set_hooks(t_mlx *mlx);
-
-// /* utils */
-// void		exit_with_str(const char *str, int exit_code);
 
 #endif

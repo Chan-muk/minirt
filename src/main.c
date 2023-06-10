@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 
 	// arguments_check(argc, argv, &mlx);
 	initialize(argc, argv, &mlx);
-	set_objs(array);
+	set_objects(array);
 	color_window(&mlx, array);
 	set_hooks(&mlx);
 	mlx_loop(mlx.mlx_ptr);
