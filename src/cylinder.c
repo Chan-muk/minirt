@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int	cylinder_upper_cap(t_vector center, t_hit_array* cy, t_ray *ray, t_hit_record *rec)
+int	cylinder_upper_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
 	double	denominator;
@@ -36,7 +36,7 @@ int	cylinder_upper_cap(t_vector center, t_hit_array* cy, t_ray *ray, t_hit_recor
 	return (1);
 }
 
-int	cylinder_lower_cap(t_vector center, t_hit_array* cy, t_ray *ray, t_hit_record *rec)
+int	cylinder_lower_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
 	double	denominator;
@@ -60,6 +60,22 @@ int	cylinder_lower_cap(t_vector center, t_hit_array* cy, t_ray *ray, t_hit_recor
 	return (1);
 }
 
+int	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root)
+{
+	t_vector	PC;
+	t_vector	H;
+	double		condition;
+
+	PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
+	H = vec_mul(cy->norm, cy->height);
+	condition = vec_dot(PC, H);
+	if (condition < 0.0)
+		return (cylinder_lower_cap(cy->center, cy, ray, rec));
+	if (condition > cy->height)
+		return (cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
+	return (0);
+}
+
 int	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	double	root;
@@ -74,54 +90,14 @@ int	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *
 		if (root < rec->tmin || rec->tmax < root)
 			return (0);
 	}
-	// qc = vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center), cy->norm);
-	// if (qc > cy->height || qc < 0.0)
-	// 	return (0);
-
 	qc = vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center), cy->norm);
 	if (qc > cy->height || qc < 0.0)
-	{
-		t_vector PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
-		t_vector H = vec_mul(cy->norm, cy->height);
-		double condition;
-		condition = vec_dot(PC, H);
-
-		if (condition < 0.0)
-		{
-			return (cylinder_lower_cap(cy->center, cy, ray, rec));
-			// return (1);
-		}
-		else if (fabs(condition - cy->height) > rec->tmin)
-		{
-			return (cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
-			// return (1);
-		}
-		return (0);
-	}
-	// /* test */
-	// t_vector PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
-	// t_vector H = vec_mul(cy->norm, cy->height);
-	// double condition;
-	// condition = vec_dot(PC, H);
-
-	// if (condition < 0.0)
-	// {
-	// 	cylinder_lower_cap(cy->center, cy, ray, rec);
-	// 	return (1);
-	// }
-	// else if (condition > cy->height)
-	// {
-	// 	cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec);
-	// 	return (1);
-	// }
-	/* test */
-	{
-		rec->t = root;
-		rec->p = ray_at(ray, root);
-		rec->normal = unit_vec(vec_sub(vec_add(cy->center, vec_mul(cy->norm, qc)), \
-		vec_add(ray->org, vec_mul(ray->dir, root))));
-		set_face_normal(ray, rec);
-	}
+		return (cylinder_cap(cy, ray, rec, root));
+	rec->t = root;
+	rec->p = ray_at(ray, root);
+	rec->normal = unit_vec(vec_sub(vec_add(cy->center, vec_mul(cy->norm, qc)), \
+	vec_add(ray->org, vec_mul(ray->dir, root))));
+	set_face_normal(ray, rec);
 	return (1);
 }
 
@@ -143,14 +119,7 @@ void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	t_formula	formula;
-	int			flag;
 
 	get_cylinder_data(&formula, cy, ray);
-	flag = 0;
-	// flag += cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec);
-	// flag += cylinder_lower_cap(cy->center, cy, ray, rec);
-	flag += cylinder_side(formula, cy, ray, rec);
-	if (flag)
-		return (true);
-	return(false);
+	return (cylinder_side(formula, cy, ray, rec));
 }
