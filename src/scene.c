@@ -66,8 +66,8 @@ t_camera	camera(t_point org, t_vector dir)
 	cam.focal_len = (double)(WIN_WIDTH * 0.5) / get_tan(cam.fov * 0.5);
 
 	temp = vec_add(cam.org, vec_mul(cam.dir, cam.focal_len));
-	temp = vec_sub(temp, vec_mul(cam.right_normal, -(double)(WIN_WIDTH - 1) * 0.5));
-	temp = vec_sub(temp, vec_mul(cam.up_normal, -(double)(WIN_HEIGHT - 1) * 0.5));
+	temp = vec_sub(temp, vec_mul(cam.right_normal, (double)(WIN_WIDTH - 1) * 0.5));
+	temp = vec_sub(temp, vec_mul(cam.up_normal, (double)(WIN_HEIGHT - 1) * 0.5));
 	cam.left_bottom = temp;
 	// print_vec(cam.right_normal);
 	// print_vec(cam.up_normal);
