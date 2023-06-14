@@ -48,7 +48,7 @@ double		vec_dot(t_vector vec, t_vector vec2);
 t_vector	vec_prod(t_vector vec, t_vector vec2);
 t_vector	unit_vec(t_vector vec);
 t_vector	vec_cmp(t_vector vec1, t_vector vec2);
-t_ray		ray(t_point orig, t_vector dir);
+t_ray		ray(t_point org, t_vector dir);
 t_point		ray_at(t_ray *ray, double t);
 
 #endif

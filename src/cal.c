@@ -134,11 +134,11 @@ t_vector	vec_prod(t_vector vec, t_vector vec2)
 t_vector	unit_vec(t_vector vec)
 {
 	double len = vec_len(vec);
-	// if (len == 0)
-	// {
-	// 	printf("Error\n:Devider is 0");
-	// 	exit(0);
-	// }
+	if (len == 0)
+	{
+		printf("Error\n:Devider is 0");
+		exit(0);
+	}
 	vec.x /= len;
 	vec.y /= len;
 	vec.z /= len;
@@ -156,21 +156,21 @@ t_vector	vec_cmp(t_vector vec1, t_vector vec2)
 	return (vec1);
 }
 
-t_ray	ray(t_point orig, t_vector dir)
+t_ray	ray(t_point org, t_vector dir)
 {
 	t_ray ray;
 
-	ray.org = orig;
+	ray.org = org;
 	ray.dir = unit_vec(dir);
 	return (ray);
 }
 
 t_point	ray_at(t_ray *ray, double t)
 {
-	t_point at;
+	t_point _ray;
 
-	at = vec_add(ray->org, vec_mul(ray->dir, t));
-	return (at);
+	_ray = vec_add(ray->org, vec_mul(ray->dir, t));
+	return (_ray);
 }
 
 // double	size_vec(t_vector vec)

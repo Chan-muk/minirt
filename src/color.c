@@ -12,40 +12,23 @@
 
 #include "minirt.h"
 
-// t_ray	ray_primary(t_camera *cam, double u, double v)
-// {
-// 	t_ray	ray;
-
-// 	ray.org = cam->org;
-// 	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, \
-// 	vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->org));
-// 	return (ray);
-// }
-
 t_ray	ray_primary(t_camera *cam, double u, double v)
 {
 	t_ray		ray;
-
-	t_vector	horizontal;
-	t_vector	vertical;
 	t_point		viewport_point;
 
-	ray.org = cam->org; // 0, 0, 0
-
-	horizontal = vec_mul(cam->right_normal, u);
-	vertical = vec_mul(cam->up_normal, v);
-	viewport_point = vec_add(cam->left_bottom, horizontal);
-	viewport_point = vec_add(viewport_point, vertical);
-
+	ray.org = cam->org;
+	viewport_point = vec_add( vec_add(cam->left_bottom, \
+	vec_mul(cam->right_normal, u)), vec_mul(cam->up_normal, v));
 	ray.dir = unit_vec(vec_sub(viewport_point, ray.org));
 	return (ray);
 }
 
 t_color	ray_color(t_ray *ray, t_hit_array *array)
 {
-	double	t;
-	t_vector	n;
 	t_hit_record	rec;
+	t_vector		n;
+	double			t;
 
 	rec.tmin = 0.00000001;
 	rec.tmax = MAXFLOAT;
@@ -63,48 +46,31 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
-	// dst = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y - 1) * img->size_line);
-	// *(unsigned int *)dst = color;
 	dst = img->data_addr + (y * img->size_line + x * (img->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
 
-// void	color_each_pixel(t_img *img, int x, int y, int color)
-// {
-// 	char	*dst;
-
-// 	dst = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y - 1) * img->size_line);
-// 	*(unsigned int *)dst = color;
-// }
-
 int	write_color(t_color pixel_color)
 {
-	return (((int)(255.999 * pixel_color.x) << 16) + ((int)(255.999 * pixel_color.y) << 8) + (int)(255.999 * pixel_color.z));
+	return (((int)(255.999 * pixel_color.x) << 16) + \
+	((int)(255.999 * pixel_color.y) << 8) + (int)(255.999 * pixel_color.z));
 }
 
 void	color_pixels(t_mlx *mlx, t_hit_array *array)
 {
 	int			i;
 	int			j;
-	double		u;
-	double		v;
 	t_color		pixel_color;
-	t_canvas	canv;
 	t_camera	cam;
 	t_ray		ray;
 
-	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
-	cam = camera(new_point(0, 0, 0), new_point(0, 0, -1));
-
+	cam = camera(new_point(0, 0, 5), new_point(0, 0, -1), 90);
 	j = WIN_HEIGHT - 1;
 	while (j >= 0)
 	{
 		i = 0;
 		while (i < WIN_WIDTH)
 		{
-			// u = (double)i / (WIN_WIDTH - 1);
-			// v = (double)j / (WIN_HEIGHT - 1);
-			// ray = ray_primary(&cam, u, v);
 			ray = ray_primary(&cam, i, j);
 			pixel_color = ray_color(&ray, array);
 			color_each_pixel(&mlx->img, i, (WIN_HEIGHT - 1 - j), write_color(pixel_color));
