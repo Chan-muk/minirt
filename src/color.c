@@ -63,9 +63,19 @@ void	color_each_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y - 1) * img->size_line);
-	*(unsigned int *)dst = color;
+	// dst = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y - 1) * img->size_line);
+	// *(unsigned int *)dst = color;
+	dst = img->data_addr + (y * img->size_line + x * (img->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
 }
+
+// void	color_each_pixel(t_img *img, int x, int y, int color)
+// {
+// 	char	*dst;
+
+// 	dst = img->data_addr + (x * img->bits_per_pixel / 8) + ((WIN_HEIGHT - y - 1) * img->size_line);
+// 	*(unsigned int *)dst = color;
+// }
 
 int	write_color(t_color pixel_color)
 {
@@ -84,24 +94,23 @@ void	color_pixels(t_mlx *mlx, t_hit_array *array)
 	t_ray		ray;
 
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
-	// cam = camera(&canv, new_point(0, 0, 0));
-	cam = camera(new_point(0, 0, -1), new_point(0, 0, 0));
-	// cam = camera(new_point(1, 1, -1), new_point(1, 1, 1));
+	cam = camera(new_point(0, 0, 0), new_point(0, 0, -1));
 
-	j = canv.height - 1;
+	j = WIN_HEIGHT - 1;
 	while (j >= 0)
 	{
 		i = 0;
-		while (i < canv.width)
+		while (i < WIN_WIDTH)
 		{
-			u = (double)i / (canv.width - 1);
-			v = (double)j / (canv.height - 1);
-			ray = ray_primary(&cam, u, v);
+			// u = (double)i / (WIN_WIDTH - 1);
+			// v = (double)j / (WIN_HEIGHT - 1);
+			// ray = ray_primary(&cam, u, v);
+			ray = ray_primary(&cam, i, j);
 			pixel_color = ray_color(&ray, array);
-			color_each_pixel(&mlx->img, i, j, write_color(pixel_color));
+			color_each_pixel(&mlx->img, i, (WIN_HEIGHT - 1 - j), write_color(pixel_color));
 			++i;
 		}
-	--j;
+		--j;
 	}
 }
 
