@@ -44,15 +44,26 @@ struct s_mlx
 	struct s_img	img;
 };
 
-struct	s_camera
+// struct	s_camera
+// {
+// 	t_point		org;
+// 	double		viewport_h;
+// 	double		viewport_w;
+// 	t_vector	horizontal;
+// 	t_vector	vertical;
+// 	double		focal_len;
+// 	t_point		left_bottom;
+// };
+
+struct  s_camera
 {
 	t_point		org;
-	double		viewport_h;
-	double		viewport_w;
-	t_vector	horizontal;
-	t_vector	vertical;
-	double		focal_len;
+	t_vector	dir;
+	t_vector	right_normal;
+	t_vector	up_normal;
 	t_point		left_bottom;
+	double      fov;
+	double      focal_len;
 };
 
 struct	s_canvas
@@ -64,7 +75,8 @@ struct	s_canvas
 
 /* scene */
 t_canvas	canvas(int width, int height);
-t_camera	camera(t_canvas *canvas, t_point org);
+// t_camera	camera(t_canvas *canvas, t_point org);
+t_camera	camera(t_point org, t_vector dir);
 
 /* color */
 void		color_window(t_mlx *mlx, t_hit_array *array);

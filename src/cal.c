@@ -134,11 +134,11 @@ t_vector	vec_prod(t_vector vec, t_vector vec2)
 t_vector	unit_vec(t_vector vec)
 {
 	double len = vec_len(vec);
-	if (len == 0)
-	{
-		printf("Error\n:Devider is 0");
-		exit(0);
-	}
+	// if (len == 0)
+	// {
+	// 	printf("Error\n:Devider is 0");
+	// 	exit(0);
+	// }
 	vec.x /= len;
 	vec.y /= len;
 	vec.z /= len;

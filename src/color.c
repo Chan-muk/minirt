@@ -12,13 +12,32 @@
 
 #include "minirt.h"
 
+// t_ray	ray_primary(t_camera *cam, double u, double v)
+// {
+// 	t_ray	ray;
+
+// 	ray.org = cam->org;
+// 	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, \
+// 	vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->org));
+// 	return (ray);
+// }
+
 t_ray	ray_primary(t_camera *cam, double u, double v)
 {
-	t_ray	ray;
+	t_ray		ray;
 
-	ray.org = cam->org;
-	ray.dir = unit_vec(vec_sub(vec_add(vec_add(cam->left_bottom, \
-	vec_mul(cam->horizontal, u)), vec_mul(cam->vertical, v)), cam->org));
+	t_vector	horizontal;
+	t_vector	vertical;
+	t_point		viewport_point;
+
+	ray.org = cam->org; // 0, 0, 0
+
+	horizontal = vec_mul(cam->right_normal, u);
+	vertical = vec_mul(cam->up_normal, v);
+	viewport_point = vec_add(cam->left_bottom, horizontal);
+	viewport_point = vec_add(viewport_point, vertical);
+
+	ray.dir = unit_vec(vec_sub(viewport_point, ray.org));
 	return (ray);
 }
 
@@ -65,7 +84,9 @@ void	color_pixels(t_mlx *mlx, t_hit_array *array)
 	t_ray		ray;
 
 	canv = canvas(WIN_WIDTH, WIN_HEIGHT);
-	cam = camera(&canv, new_point(0, 0, 0));
+	// cam = camera(&canv, new_point(0, 0, 0));
+	cam = camera(new_point(0, 0, -1), new_point(0, 0, 0));
+	// cam = camera(new_point(1, 1, -1), new_point(1, 1, 1));
 
 	j = canv.height - 1;
 	while (j >= 0)
