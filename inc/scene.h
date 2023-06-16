@@ -17,6 +17,7 @@ typedef struct s_img	t_img;
 typedef struct s_mlx	t_mlx;
 typedef struct s_camera	t_camera;
 typedef struct s_canvas	t_canvas;
+typedef struct s_scene	t_scene;
 
 enum e_type
 {
@@ -25,6 +26,7 @@ enum e_type
 	_sphere,
 	_cylinder,
 	_cone,
+	_light,
 	_total,
 };
 
@@ -62,9 +64,23 @@ struct	s_canvas
 	double	aspect_ratio;
 };
 
+struct	s_scene
+{
+	t_canvas		canvas;
+	t_camera		cam;
+	t_hit_array		*world;
+	t_hit_array		*light;
+	t_vector		ambient; // 8.4에서 설명할 요소
+	t_ray			ray;
+	t_hit_record	rec;
+};
+
 /* scene */
 t_camera	camera(t_point org, t_vector dir, double fov);
 
 /* color */
-void		color_window(t_mlx *mlx, t_hit_array *array);
+void		color_window(t_mlx *mlx, t_scene *scene);
+
+/* phong */
+t_color		phong_lighting(t_scene *scene);
 #endif

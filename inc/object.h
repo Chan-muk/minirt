@@ -16,6 +16,7 @@
 typedef struct s_formula	t_formula;
 typedef struct s_hit_record	t_hit_record;
 typedef struct s_hit_array	t_hit_array;
+typedef	struct s_scene		t_scene;
 
 struct s_formula
 {
@@ -33,6 +34,7 @@ struct s_hit_record
 	double		tmax;
 	double		t;
 	bool		front_face;
+	t_vector	albedo;
 };
 
 struct s_hit_array
@@ -43,10 +45,13 @@ struct s_hit_array
 	t_vector	color;
 	double		radius;
 	double		height;
+	t_vector	light_color;
+	double		bright_ratio;
+	t_vector	albedo;
 };
 
 bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
-bool	hit_world(t_hit_array *array, t_ray *r, t_hit_record *rec);
+bool	hit_world(t_scene *scene);
 void	set_face_normal(t_ray *r, t_hit_record *rec);
 bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
 bool	hit_plane(t_hit_array *pl, t_ray *r, t_hit_record *rec);

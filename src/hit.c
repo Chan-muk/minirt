@@ -35,17 +35,19 @@ bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 	return (false);
 }
 
-bool	hit_world(t_hit_array *array, t_ray *ray, t_hit_record *rec)
+bool	hit_world(t_scene *scene)
 {
+	t_hit_array	*array;
 	bool	hit;
 
+	array = scene->world;
 	hit = false;
 	while (array->type)
 	{
-		if (hit_objects(array, ray, rec))
+		if (hit_objects(array, &scene->ray, &scene->rec))
 		{
 			hit = true;
-			rec->tmax = rec->t;
+			scene->rec.tmax = scene->rec.t;
 		}
 		array++;
 	}

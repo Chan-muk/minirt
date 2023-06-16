@@ -24,19 +24,20 @@ t_ray	ray_primary(t_camera *cam, double u, double v)
 	return (ray);
 }
 
-t_color	ray_color(t_ray *ray, t_hit_array *array)
+t_color	ray_color(t_scene *scene)
 {
-	t_hit_record	rec;
 	t_vector		n;
 	double			t;
 
-	rec.tmin = 0.00000001;
-	rec.tmax = MAXFLOAT;
-	if (hit_world(array, ray, &rec))
-		return (vec_mul(vec_add(rec.normal, new_color(1, 1, 1)), 0.5));
+	scene->rec.tmin = 0.00000001;
+	scene->rec.tmax = MAXFLOAT;
+	// if (hit_world(scene))
+	// 	return (vec_mul(vec_add(scene->rec.normal, new_color(1, 1, 1)), 0.5));
+	if (hit_world(scene))
+		return (phong_lighting(scene));
 	else
 	{
-		t = 0.5 * (ray->dir.y + 1.0);
+		t = 0.5 * (scene->ray.dir.y + 1.0);
 		return (vec_add(vec_mul(new_color(1, 1, 1), 1.0 - t), \
 		vec_mul(new_color(0.5, 0.7, 1.0), t)));
 	}
@@ -56,23 +57,20 @@ int	write_color(t_color pixel_color)
 	((int)(255.999 * pixel_color.y) << 8) + (int)(255.999 * pixel_color.z));
 }
 
-void	color_pixels(t_mlx *mlx, t_hit_array *array)
+void	color_pixels(t_mlx *mlx, t_scene *scene)
 {
 	int			i;
 	int			j;
 	t_color		pixel_color;
-	t_camera	cam;
-	t_ray		ray;
 
-	cam = camera(new_point(0, 0, 5), new_point(0, 0, -1), 90);
 	j = WIN_HEIGHT - 1;
 	while (j >= 0)
 	{
 		i = 0;
 		while (i < WIN_WIDTH)
 		{
-			ray = ray_primary(&cam, i, j);
-			pixel_color = ray_color(&ray, array);
+			scene->ray = ray_primary(&scene->cam, i, j);
+			pixel_color = ray_color(scene);
 			color_each_pixel(&mlx->img, i, (WIN_HEIGHT - 1 - j), write_color(pixel_color));
 			++i;
 		}
@@ -80,10 +78,10 @@ void	color_pixels(t_mlx *mlx, t_hit_array *array)
 	}
 }
 
-void	color_window(t_mlx *mlx, t_hit_array *array)
+void	color_window(t_mlx *mlx, t_scene *scene)
 {
 	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
-	color_pixels(mlx, array);
+	color_pixels(mlx, scene);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 }
 
