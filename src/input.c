@@ -27,6 +27,7 @@ void	set_objects(t_hit_array *array)
 	array[0].norm = unit_vec(new_vec(1, 1, 1));
 	array[0].height = 2;
 	array[0].radius = 2;
+	array[0].albedo = new_color(0.5, 0.0, 0.0);
 
 	// array[1].type = _plane; 
 	// array[1].center = new_vec(0, 0, -6);

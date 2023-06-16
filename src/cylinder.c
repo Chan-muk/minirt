@@ -118,6 +118,7 @@ int	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *
 	rec->normal = unit_vec(vec_sub(vec_add(cy->center, vec_mul(cy->norm, qc)), \
 	vec_add(ray->org, vec_mul(ray->dir, root))));
 	set_face_normal(ray, rec);
+	rec->albedo = cy->albedo;
 	return (1);
 }
 

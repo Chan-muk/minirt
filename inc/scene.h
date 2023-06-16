@@ -83,4 +83,5 @@ void		color_window(t_mlx *mlx, t_scene *scene);
 
 /* phong */
 t_color		phong_lighting(t_scene *scene);
+t_color		point_light_get(t_scene *scene, t_hit_array *light);
 #endif
