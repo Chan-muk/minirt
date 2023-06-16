@@ -41,7 +41,8 @@ bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 	}
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = vec_div(vec_sub(rec->p, sp->center), sp->radius);
+	rec->normal = unit_vec(vec_sub(rec->p, sp->center));
 	set_face_normal(ray, rec);
+	rec->albedo = sp->albedo;
 	return (true);
 }

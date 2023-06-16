@@ -16,7 +16,6 @@
 typedef struct s_img	t_img;
 typedef struct s_mlx	t_mlx;
 typedef struct s_camera	t_camera;
-typedef struct s_canvas	t_canvas;
 typedef struct s_scene	t_scene;
 
 enum e_type
@@ -57,16 +56,8 @@ struct  s_camera
 	double      focal_len;
 };
 
-struct	s_canvas
-{
-	int		width;
-	int		height;
-	double	aspect_ratio;
-};
-
 struct	s_scene
 {
-	t_canvas		canvas;
 	t_camera		cam;
 	t_hit_array		*world;
 	t_hit_array		*light;
