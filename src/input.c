@@ -52,7 +52,7 @@ void	set_objects(t_hit_array *array)
 	array[1].albedo = new_color(0, 0.5, 0);
 
 	array[2].type = _sphere;
-	array[2].center = new_vec(0, -1000, 0);
+	array[2].center = new_vec(0, -1005, 0);
 	array[2].radius = 999;
 	array[2].albedo = new_color(0, 0, 0.5);
 

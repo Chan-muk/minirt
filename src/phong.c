@@ -5,6 +5,32 @@ t_vector	reflect(t_vector v, t_vector n)
 	return (vec_sub(v, vec_mul(n, vec_dot(v, n) * 2)));
 }
 
+bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec);
+
+bool	hit_shadow(t_hit_array *array, t_ray *ray, t_hit_record *rec)
+{
+	bool	hit;
+
+	hit = false;
+	while (array->type)
+	{
+		if (hit_objects(array, ray, rec))
+			hit = true;
+		array++;
+	}
+	return (hit);
+}
+
+bool	in_shadow(t_hit_array *objs, t_ray light_ray, double light_len)
+{
+	t_hit_record rec;
+
+	rec.tmin = 0;
+	rec.tmax = light_len;
+	if (hit_shadow(objs, &light_ray, &rec))
+		return (true);
+	return (false);
+}
 
 t_color		phong_lighting(t_scene *scene)
 {
@@ -16,13 +42,7 @@ t_color		phong_lighting(t_scene *scene)
 	while (lights_array->type) //여러 광원에서 나오는 모든 빛에 대해 각각 diffuse, specular 값을 모두 구해줘야 한다
 	{
 		if(lights_array->type == _light)
-		{
-			t_color	temp;
-
-			temp = point_light_get(scene, lights_array);
-			printf("%f, %f, %f\n", temp.x, temp.y, temp.z);
-			light_color = vec_add(light_color, temp);
-		}
+			light_color = vec_add(light_color, point_light_get(scene, lights_array));
 		lights_array++;
 	}
 	light_color = vec_add(light_color, scene->ambient);
@@ -54,7 +74,19 @@ t_color		point_light_get(t_scene *scene, t_hit_array *light)
 	double		ks;
 	double		brightness;
 
-	light_dir = unit_vec(vec_sub(light->center, scene->rec.p));
+	// 추가
+	double		light_len;
+	t_ray		light_ray;
+	// 추가 끝
+
+	light_dir = vec_sub(light->center, scene->rec.p);
+	light_len = vec_len(light_dir);
+	light_ray = ray(vec_add(scene->rec.p, vec_mul(scene->rec.normal, 0.000001)), light_dir);
+	if (in_shadow(scene->world, light_ray, light_len))
+		return (new_color(0,0,0));
+	light_dir = unit_vec(light_dir);
+
+	// light_dir = unit_vec(vec_sub(light->center, scene->rec.p));
 	kd = fmax(vec_dot(scene->rec.normal, light_dir), 0.0);// diffuse strength;
 	diffuse = vec_mul(light->light_color, kd);
 	view_dir = unit_vec(vec_mul(scene->ray.dir, -1));
