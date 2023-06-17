@@ -107,6 +107,8 @@ bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root)
 	t_vector	H;
 	double		condition;
 
+	if (check_cylinder_height(cy, ray, root))
+		return (false);
 	PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
 	H = vec_mul(cy->norm, cy->height);
 	condition = vec_dot(PC, H);
@@ -141,8 +143,7 @@ bool	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record 
 	return (true);
 }
 
-
-bool	test_cylinder_side(double root, t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
+bool	_cylinder_side(double root, t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	double qc = vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center), cy->norm);
 
@@ -152,29 +153,11 @@ bool	test_cylinder_side(double root, t_formula formula, t_hit_array *cy, t_ray *
 		return (false);
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = unit_vec(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), vec_add(cy->center, vec_mul(cy->norm, qc))));
+	rec->normal = \
+	unit_vec(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), vec_add(cy->center, vec_mul(cy->norm, qc))));
 	set_face_normal(ray, rec);
 	rec->albedo = cy->albedo;
 	return (true);
-}
-
-bool	test_cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root)
-{
-	t_vector	PC;
-	t_vector	H;
-	double		condition;
-
-	if (check_cylinder_height(cy, ray, root))
-		return (false);
-
-	PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
-	H = vec_mul(cy->norm, cy->height);
-	condition = vec_dot(PC, H);
-	if (condition < 0.0)
-		return (cylinder_lower_cap(cy->center, cy, ray, rec));
-	if (condition > cy->height)
-		return (cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
-	return (false);
 }
 
 bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
@@ -187,13 +170,12 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 	get_cylinder_data(&formula, cy, ray);
 	if (formula.discriminant < 0.0)
 		return (flag);
-
-	if (test_cylinder_side(formula.root_1, formula, cy, ray, rec))
+	if (_cylinder_side(formula.root_1, formula, cy, ray, rec))
 	{
 		data_backup(&rec_backup, rec);
 		flag = true;
 	}
-	if (test_cylinder_side(formula.root_2, formula, cy, ray, rec))
+	if (_cylinder_side(formula.root_2, formula, cy, ray, rec))
 	{
 		if (flag == true && rec_backup.t < rec->t)
 			data_backup(rec, &rec_backup);
@@ -203,21 +185,25 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 			flag = true;
 		}
 	}
-
-	if (test_cylinder_cap(cy, ray, rec, formula.root_1))
+	if (cylinder_cap(cy, ray, rec, formula.root_1))
 	{
 		if (flag == true && rec_backup.t < rec->t)
 			data_backup(rec, &rec_backup);
 		else
+		{
+			data_backup(&rec_backup, rec);
 			flag = true;
+		}
 	}
-	// if (test_cylinder_cap(cy, ray, rec, formula.root_2))
-	// {
-	// 	if (flag == true && rec_backup.t < rec->t)
-	// 		data_backup(rec, &rec_backup);
-	// 	else
-	// 		flag = true;
-	// }
-	
+	if (cylinder_cap(cy, ray, rec, formula.root_2))
+	{
+		if (flag == true && rec_backup.t < rec->t)
+			data_backup(rec, &rec_backup);
+		else
+		{
+			data_backup(&rec_backup, rec);
+			flag = true;
+		}
+	}
 	return (flag);
 }
