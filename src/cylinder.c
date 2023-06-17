@@ -53,6 +53,7 @@ int	cylinder_upper_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_recor
 	rec->p = ray_at(ray, root);
 	rec->normal = cy->norm;
 	set_face_normal(ray, rec);
+	rec->albedo = cy->albedo;
 	return (1);
 }
 
@@ -77,6 +78,7 @@ int	cylinder_lower_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_recor
 	rec->p = ray_at(ray, root);
 	rec->normal = vec_mul(cy->norm, -1);
 	set_face_normal(ray, rec);
+	rec->albedo = cy->albedo;
 	return (1);
 }
 
@@ -115,8 +117,8 @@ int	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record *
 		return (cylinder_cap(cy, ray, rec, root));
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = unit_vec(vec_sub(vec_add(cy->center, vec_mul(cy->norm, qc)), \
-	vec_add(ray->org, vec_mul(ray->dir, root))));
+	rec->normal = unit_vec(vec_mul(vec_sub(vec_add(cy->center, vec_mul(cy->norm, qc)), \
+	vec_add(ray->org, vec_mul(ray->dir, root))), -1));
 	set_face_normal(ray, rec);
 	rec->albedo = cy->albedo;
 	return (1);
