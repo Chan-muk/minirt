@@ -24,7 +24,8 @@ void	set_objects(t_hit_array *array)
 
 	array[0].type = _cylinder;
 	array[0].center = new_vec(0, 0, -5);
-	array[0].norm = unit_vec(new_vec(0, 0, -1));
+	array[0].norm = unit_vec(new_vec(0, 0, 1));
+	array[0].norm = unit_vec(new_vec(1, 1, 1));
 	array[0].height = 2;
 	array[0].radius = 2;
 	array[0].albedo = new_color(0.5, 0.0, 0.0);
