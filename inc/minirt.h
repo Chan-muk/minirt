@@ -48,16 +48,17 @@
 # define R_KEY			15
 
 /* input */
-void		set_objects(t_hit_array *array);
-void		set_lights(t_hit_array *light);
+void	set_objects(t_hit_array *array);
+void	set_lights(t_hit_array *light);
 
 /* init */
-void		initialize(int argc, char **argv, t_mlx *mlx);
+void	initialize(int argc, char **argv, t_mlx *mlx);
 
 /* hooks */
-void		set_hooks(t_mlx *mlx);
+void	set_hooks(t_mlx *mlx);
 
 /* utils */
-void		exit_with_str(const char *str, int exit_code);
+double	fract(double x);
+void	exit_with_str(const char *str, int exit_code);
 
 #endif

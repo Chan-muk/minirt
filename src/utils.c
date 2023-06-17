@@ -12,6 +12,11 @@
 
 #include "minirt.h"
 
+double	fract(double x)
+{
+	return (x - floor(x));
+}
+
 void	exit_with_str(const char *str, int exit_code)
 {
 	ft_putendl_fd((char *)str, STDERR_FILENO);

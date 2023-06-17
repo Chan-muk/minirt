@@ -12,6 +12,18 @@
 
 #include "minirt.h"
 
+t_color	shpere_checkerboard(t_vector p)
+{
+	double	u;
+	double	v;
+
+	u = fract(p.x) - 0.5;
+	v = fract(p.y) - 0.5;
+	if (u * v > 0.0)
+		return (new_vec(1.0, 1.0, 1.0));
+	return (new_vec(0, 0, 0));
+}
+
 void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
 {
 	t_vector	r_center;
@@ -22,38 +34,6 @@ void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
 	formula->c = vec_dot(r_center, r_center) - (sp->radius * sp->radius);
 	formula->discriminant = \
 	(formula->b * formula->b) - (formula->a * formula->c);
-}
-
-// t_color	shpere_checkerboard(t_vector p)
-// {
-// 	double	u;
-// 	double	v;
-
-// 	u = (atan2(-p.z, p.x) + M_PI) / (2 * M_PI);
-// 	v = acos(-p.y) / M_PI;
-
-// 	double sines = sin(10*p.x)*sin(10*p.y)*sin(10*p.z);
-// 	if (sines < 0)
-// 		return (new_color(1, 1, 1));
-// 	else
-// 		return (new_color(0, 0, 0));
-// }
-
-double __fract(double x) {
-    return x - floor(x);
-}
-
-t_color	shpere_checkerboard(t_vector p)
-{
-	// double	u = _fract(p.x * 0.2) - 0.5;
-	// double	v = _fract(p.y * 0.4) - 0.5;
-
-	double	u = __fract(p.x * 1) - 0.5;
-	double	v = __fract(p.y * 1) - 0.5;
-
-	if (u * v > 0.0)
-		return (new_vec(1.0, 1.0, 1.0));
-	return (new_vec(0, 0, 0));
 }
 
 bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
