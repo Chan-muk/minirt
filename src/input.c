@@ -58,3 +58,13 @@ void	set_objects(t_hit_array *array)
 
 	array[3].type = _end;
 }
+
+void	set_lights(t_hit_array *light)
+{
+	light[0].type = _light;
+	light[0].center = new_vec(0, 5, 0);
+	light[0].light_color = new_color(1, 1, 1);
+	light[0].bright_ratio = 0.5;
+
+	light[1].type = _end;
+}
