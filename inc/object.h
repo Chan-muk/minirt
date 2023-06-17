@@ -24,6 +24,8 @@ struct s_formula
 	double	b;
 	double	c;
 	double	discriminant;
+	double	root_1;
+	double	root_2;
 };
 
 struct s_hit_record

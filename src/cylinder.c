@@ -25,6 +25,19 @@ void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 	formula->b = vec_dot(ray->dir, r_center) - (vh * wh);
 	formula->c = vec_dot(r_center, r_center) - (wh * wh) - (cy->radius * cy->radius);
 	formula->discriminant = (formula->b * formula->b) - (formula->a * formula->c);
+	formula->root_1 = (-formula->b - sqrt(formula->discriminant)) / formula->a;
+	formula->root_2 = (-formula->b + sqrt(formula->discriminant)) / formula->a;
+}
+
+bool	check_cylinder_height(t_hit_array *cy, t_ray *ray, double root)
+{
+	double	point_on_line;
+
+	point_on_line = \
+	vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center), cy->norm);
+	if (point_on_line < 0.0 || point_on_line > cy->height)
+		return (false);
+	return (true);
 }
 
 bool	cylinder_upper_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
@@ -160,36 +173,23 @@ void	data_backup(t_hit_record *rec_backup, t_hit_record *rec)
 
 bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
-	t_formula	formula;
-	
-	bool		flag;
+	t_formula		formula;
+	t_hit_record	rec_backup;
+	bool			flag;
+
 	flag = false;
-
 	get_cylinder_data(&formula, cy, ray);
-
-	/* 1. discriminant */
 	if (formula.discriminant < 0.0)
 		return (flag);
 
-	double	root_1;
-	double	root_2;
-	root_1 = (-formula.b - sqrt(formula.discriminant)) / formula.a;
-	root_2 = (-formula.b + sqrt(formula.discriminant)) / formula.a;
-
-
-	t_hit_record	rec_backup;
-	// data_backup(&rec_backup, rec);
-
-	// rec_backup = rec;
-
 	// printf("1: %.10f,\t2: %.10f,\ta: %.10f,\tb: %.10f,\tc: %.10f\n", root_1, root_2, formula.a, formula.b, formula.c);
-	if (root_1 > 0.0 && test_cylinder_side(root_1, formula, cy, ray, rec))
+	if (formula.root_1 > 0.0 && test_cylinder_side(formula.root_1, formula, cy, ray, rec))
 		flag = true;
 
 	data_backup(&rec_backup, rec);
 	// rec_backup != rec;
 
-	if (root_2 > 0.0 && test_cylinder_side(root_2, formula, cy, ray, rec))
+	if (formula.root_2 > 0.0 && test_cylinder_side(formula.root_2, formula, cy, ray, rec))
 	{
 		if (flag == true && rec_backup.t < rec->t)
 			data_backup(rec, &rec_backup);
@@ -199,14 +199,14 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 
 	double	qc;
 
-	qc = vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root_1)), cy->center), cy->norm);
+	qc = vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, formula.root_1)), cy->center), cy->norm);
 	if (qc > cy->height || qc < 0.0)
 	{
 		t_vector	PC;
 		t_vector	H;
 		double		condition;
 
-		PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root_1)), cy->center);
+		PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, formula.root_1)), cy->center);
 		H = vec_mul(cy->norm, cy->height);
 		condition = vec_dot(PC, H);
 
@@ -227,30 +227,6 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 				flag = true;
 		}
 	}
-
-	// if (root_1 > 0.0 && test_cylinder_side(root_1, formula, cy, ray, rec))
-	// 	return (true);
-	// if (root_2 > 0.0 && test_cylinder_side(root_2, formula, cy, ray, rec))
-	// 	return (true);
-
-
-
-
-	// if (cylinder_side(formula, cy, ray, rec))
-	// 	return (true);
-
-	// t_vector	PC;
-	// t_vector	H;
-	// double		condition;
-
-	// PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
-	// H = vec_mul(cy->norm, cy->height);
-	// condition = vec_dot(PC, H);
-	// if (condition < 0.0)
-	// 	return (cylinder_lower_cap(cy->center, cy, ray, rec));
-	// if (condition > cy->height)
-	// 	return (cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
-	// return (false);
 
 	return (flag);
 }
