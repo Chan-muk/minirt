@@ -49,18 +49,6 @@ t_color		phong_lighting(t_scene *scene)
 	return (vec_cmp(vec_mul_(light_color, scene->rec.albedo), new_color(1, 1, 1)));	
 }
 
-// t_color		point_light_get(t_scene *scene, t_hit_array *light)
-// {
-// 	t_color		diffuse;
-// 	t_vector	light_dir;
-// 	double		kd;
-
-// 	light_dir = unit_vec(vec_sub(light->center, scene->rec.p));
-// 	kd = fmax(vec_dot(scene->rec.normal, light_dir), 0.0);
-// 	diffuse = vec_mul(light->light_color, kd);
-// 	return (diffuse);
-// }
-
 t_color		point_light_get(t_scene *scene, t_hit_array *light)
 {
 	t_color	diffuse;
@@ -96,5 +84,10 @@ t_color		point_light_get(t_scene *scene, t_hit_array *light)
 	spec = pow(fmax(vec_dot(view_dir, reflect_dir), 0.0), ksn);
 	specular = vec_mul(vec_mul(light->light_color, ks), spec);
 	brightness = light->bright_ratio * 3; // 기준 광속/광량을 정의한 매크로
-	return (vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness));
+
+	t_color	result;
+	// result = vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness);
+	result = vec_div(vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness), \
+	(scene->rec.t * scene->rec.t) * 0.05);
+	return (result);
 }

@@ -12,23 +12,34 @@
 
 #include "minirt.h"
 
+void	set_lights(t_hit_array *light)
+{
+	light[0].type = _light;
+	light[0].center = new_vec(0, 2, 0);
+	light[0].light_color = new_color(1, 1, 1);
+	light[0].bright_ratio = 0.5;
+
+	light[1].type = _end;
+}
+
 void	set_objects(t_hit_array *array)
 {
-	array[0].type = _sphere;
-	array[0].center = new_vec(0, 0, -5);
-	array[0].radius = 2;
+	// array[0].type = _sphere;
+	// array[0].center = new_vec(0, 0, -5);
+	// array[0].radius = 2;
 
 	// array[1].type = _sphere;
 	// array[1].center = new_vec(2, 0, -2);
 	// array[1].radius = 2;
 
-	// array[0].type = _cylinder;
-	// array[0].center = new_vec(0, 0, -5);
-	// array[0].norm = unit_vec(new_vec(0, 0, 1));
-	// // array[0].norm = unit_vec(new_vec(1, 1, 1));
-	// array[0].height = 2;
-	// array[0].radius = 2;
-	// array[0].albedo = new_color(0.5, 0.0, 0.0);
+	array[0].type = _cylinder;
+	array[0].center = new_vec(0, 0, 1);
+	array[0].norm = unit_vec(new_vec(0, 0, -1));
+	// array[0].norm = unit_vec(new_vec(1, 1, 1));
+	// array[0].norm = unit_vec(new_vec(0, 1, 0));
+	array[0].height = 10;
+	array[0].radius = 5;
+	array[0].albedo = new_color(0.5, 0.0, 0.0);
 	
 	array[1].type = _end;
 
@@ -59,14 +70,4 @@ void	set_objects(t_hit_array *array)
 	// array[2].albedo = new_color(0, 0, 0.5);
 
 	// array[1].type = _end;
-}
-
-void	set_lights(t_hit_array *light)
-{
-	light[0].type = _light;
-	light[0].center = new_vec(0, 5, 0);
-	light[0].light_color = new_color(1, 1, 1);
-	light[0].bright_ratio = 0.5;
-
-	light[1].type = _end;
 }
