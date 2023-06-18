@@ -31,7 +31,7 @@ SRC_DIR		= src
 OBJ_DIR		= obj
 
 SRC			= \
-			main.c init.c cal.c scene.c color.c sphere.c plane.c cylinder.c hook.c utils.c hit.c input.c cone.c phong.c
+			main.c init.c cal.c scene.c color.c sphere.c plane.c cylinder.c hook.c utils.c hit.c input.c cone.c phong.c texture.c
 #  scatter.c random.c
 
 # SRC			= \

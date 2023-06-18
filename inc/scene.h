@@ -66,6 +66,27 @@ struct	s_scene
 	t_hit_record	rec;
 };
 
+#pragma pack(push, 1)
+typedef struct s_BMPHeader
+{
+    unsigned short	signature;
+    unsigned int	fileSize;
+    unsigned int	reserved;
+    unsigned int	dataOffset;
+    unsigned int	headerSize;
+    int				width;
+    int				height;
+    unsigned short	planes;
+    unsigned short	bitsPerPixel;
+    unsigned int	compression;
+    unsigned int	dataSize;
+    int				horizontalResolution;
+    int				verticalResolution;
+    unsigned int	colors;
+    unsigned int	importantColors;
+} BMPHeader;
+#pragma pack(pop)
+
 /* scene */
 t_camera	camera(t_point org, t_vector dir, double fov);
 void		set_scene(t_scene *scene);
@@ -76,4 +97,9 @@ void		color_window(t_mlx *mlx, t_scene *scene);
 /* phong */
 t_color		phong_lighting(t_scene *scene);
 t_color		point_light_get(t_scene *scene, t_hit_array *light);
+
+/* texture */
+unsigned char	*get_bmp_addr(char *path, int *w, int *h);
+t_color		plane_texture(t_vector p, t_hit_array* pl);
+t_color		shpere_texture(t_vector p, t_hit_array* sp);
 #endif

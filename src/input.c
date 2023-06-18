@@ -24,13 +24,13 @@ void	set_lights(t_hit_array *light)
 
 void	set_objects(t_hit_array *array)
 {
-	array[0].type = _cone;
-	array[0].center = new_vec(0, 0, -5);
-	array[0].norm = unit_vec(new_vec(1, 4, -1));
-	array[0].height = 6;
-	array[0].radius = 2;
-	array[0].albedo = new_color(0.5, 0.0, 0.0);
-	array[1].type = _end;
+	// array[0].type = _cone;
+	// array[0].center = new_vec(0, 0, -5);
+	// array[0].norm = unit_vec(new_vec(1, 4, -1));
+	// array[0].height = 6;
+	// array[0].radius = 2;
+	// array[0].albedo = new_color(0.5, 0.0, 0.0);
+	// array[1].type = _end;
 	
 	// array[0].type = _cylinder;
 	// array[0].center = new_vec(0, 8, 0);
@@ -57,12 +57,13 @@ void	set_objects(t_hit_array *array)
 	// array[0].radius = 5;
 	// array[0].albedo = new_color(0.5, 0.0, 0.0);
 	
-	// array[1].type = _end;
+	array[1].type = _end;
 
-	// array[0].type = _plane; 
-	// array[0].center = new_vec(0, 0, -6);
-	// array[0].norm = unit_vec(new_vec(0, 0, -1));
-	// array[0].albedo = new_color(0.5, 0.0, 0.0);
+	array[0].type = _plane; 
+	array[0].center = new_vec(0, 0, -6);
+	array[0].norm = unit_vec(new_vec(0, 0, -1));
+	array[0].albedo = new_color(0.5, 0.0, 0.0);
+	array[0].texture_addr = get_bmp_addr("img.bmp", &array[0].texture_w, &array[0].texture_h);
 
 	// array[0].type = _cone;
 	// array[0].center = new_vec(0, 0, -5);

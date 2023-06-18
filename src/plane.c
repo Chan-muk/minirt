@@ -42,6 +42,7 @@ bool	hit_plane(t_hit_array* pl, t_ray *ray, t_hit_record *rec)
 	rec->normal = pl->norm;
 	set_face_normal(ray, rec);
 	// rec->albedo = pl->albedo;
-	rec->albedo = plane_checkerboard(rec->p);
+	// rec->albedo = plane_checkerboard(rec->p);
+	rec->albedo = plane_texture(rec->p, pl);
 	return (true);
 }
