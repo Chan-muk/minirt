@@ -51,7 +51,7 @@ bool	check_cylinder_height(t_hit_array *cy, t_ray *ray, double root)
 	return (true);
 }
 
-bool	cylinder_upper_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
+bool	__cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
 	double	denominator;
@@ -76,31 +76,6 @@ bool	cylinder_upper_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_reco
 	return (true);
 }
 
-bool	cylinder_lower_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
-{
-	double	numrator;
-	double	denominator;
-	double	root;
-	double	pc;
-
-	denominator = vec_dot(ray->dir, cy->norm);
-	if (fabs(denominator) < rec->tmin)
-		return (false);
-	numrator = vec_dot(vec_sub(center, ray->org), cy->norm);
-	root = numrator / denominator;
-	if (root < rec->tmin || root > rec->tmax)
-		return (false);
-	pc = vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), center));
-	if ((pc * pc) > (cy->radius * cy->radius) || pc < 0.0)
-		return (false);
-	rec->t = root;
-	rec->p = ray_at(ray, root);
-	rec->normal = vec_mul(cy->norm, -1);
-	set_face_normal(ray, rec);
-	rec->albedo = cy->albedo;
-	return (true);
-}
-
 bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root)
 {
 	t_vector	PC;
@@ -113,9 +88,9 @@ bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root)
 	H = vec_mul(cy->norm, cy->height);
 	condition = vec_dot(PC, H);
 	if (condition < 0.0)
-		return (cylinder_lower_cap(cy->center, cy, ray, rec));
+		return (__cylinder_cap(cy->center, cy, ray, rec));
 	if (condition > cy->height)
-		return (cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
+		return (__cylinder_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
 	return (false);
 }
 
@@ -207,3 +182,53 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 	}
 	return (flag);
 }
+
+// bool	cylinder_upper_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
+// {
+// 	double	numrator;
+// 	double	denominator;
+// 	double	root;
+// 	double	pc;
+
+// 	denominator = vec_dot(ray->dir, cy->norm);
+// 	if (fabs(denominator) < rec->tmin)
+// 		return (false);
+// 	numrator = vec_dot(vec_sub(center, ray->org), cy->norm);
+// 	root = numrator / denominator;
+// 	if (root < rec->tmin || root > rec->tmax)
+// 		return (false);
+// 	pc = vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), center));
+// 	if ((pc * pc) > (cy->radius * cy->radius) || pc < 0.0)
+// 		return (false);
+// 	rec->t = root;
+// 	rec->p = ray_at(ray, root);
+// 	rec->normal = cy->norm;
+// 	set_face_normal(ray, rec);
+// 	rec->albedo = cy->albedo;
+// 	return (true);
+// }
+
+// bool	cylinder_lower_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
+// {
+// 	double	numrator;
+// 	double	denominator;
+// 	double	root;
+// 	double	pc;
+
+// 	denominator = vec_dot(ray->dir, cy->norm);
+// 	if (fabs(denominator) < rec->tmin)
+// 		return (false);
+// 	numrator = vec_dot(vec_sub(center, ray->org), cy->norm);
+// 	root = numrator / denominator;
+// 	if (root < rec->tmin || root > rec->tmax)
+// 		return (false);
+// 	pc = vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), center));
+// 	if ((pc * pc) > (cy->radius * cy->radius) || pc < 0.0)
+// 		return (false);
+// 	rec->t = root;
+// 	rec->p = ray_at(ray, root);
+// 	rec->normal = vec_mul(cy->norm, -1);
+// 	set_face_normal(ray, rec);
+// 	rec->albedo = cy->albedo;
+// 	return (true);
+// }
