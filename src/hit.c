@@ -16,6 +16,8 @@ void	set_face_normal(t_ray *r, t_hit_record *rec)
 {
 	if (vec_dot(r->dir, rec->normal) < 0)
 		rec->front_face = true;
+	else
+		rec->front_face = false;
 	if (rec->front_face == true)
 		rec->normal = rec->normal;
 	else
