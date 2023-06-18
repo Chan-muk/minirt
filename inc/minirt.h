@@ -27,8 +27,8 @@
 # include "scene.h"
 # include "../libft/inc/libft.h"
 
-# define WIN_WIDTH		800
-# define WIN_HEIGHT		400
+# define WIN_WIDTH		2400
+# define WIN_HEIGHT		1200
 
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1

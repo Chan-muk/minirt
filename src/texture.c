@@ -90,15 +90,13 @@ t_color	plane_texture(t_vector p, t_hit_array* pl)
 	return (new_color(pl->texture_addr[index + 2] / 255.0, pl->texture_addr[index + 1] / 255.0, pl->texture_addr[index] / 255.0));
 }
 
-t_color	shpere_texture(t_vector p, t_hit_array* sp)
+t_color		shpere_texture(t_vector p, t_hit_array *sp, t_hit_record* rec)
 {
 	double	u;
 	double	v;
-	double	theta = acos(-p.y);
-	double	phi = atan2(-p.z, p.x) + M_PI;
 
-	u = phi / (2 * M_PI);
-	v = theta / M_PI;
+	u = (rec->normal.x + 1) * 0.5;
+	v = (rec->normal.y + 1) * 0.5;
 	int	x = (int)(sp->texture_w * u);
 	int	y = (int)(sp->texture_h * v);
 	int	index = (x + y * sp->texture_w) * 3;
