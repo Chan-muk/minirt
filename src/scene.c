@@ -41,7 +41,7 @@ void	set_scene(t_scene *scene)
 {
 	double	ka;
 
-	scene->cam = camera(new_point(0, 0, 0), new_point(0, 0, -1), 120);
+	scene->cam = camera(new_point(0, 0, 0), new_vec(0, 0, -1), 120);
 	set_objects(scene->world);
 	scene->rec.tmin = 0.00000001;
 	scene->rec.tmax = MAXFLOAT;

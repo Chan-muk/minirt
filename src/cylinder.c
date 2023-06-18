@@ -29,28 +29,6 @@ void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 	formula->root_2 = (-formula->b + sqrt(formula->discriminant)) / formula->a;
 }
 
-void	data_backup(t_hit_record *rec_backup, t_hit_record *rec)
-{
-	rec_backup->albedo = rec->albedo;
-	rec_backup->front_face = rec->front_face;
-	rec_backup->normal = rec->normal;
-	rec_backup->p = rec->p;
-	rec_backup->t = rec->t;
-	rec_backup->tmax = rec->tmax;
-	rec_backup->tmin = rec->tmin;
-}
-
-bool	check_cylinder_height(t_hit_array *cy, t_ray *ray, double root)
-{
-	double	point_on_line;
-
-	point_on_line = \
-	vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center), cy->norm);
-	if (point_on_line < 0.0 || point_on_line > cy->height)
-		return (false);
-	return (true);
-}
-
 bool	__cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
@@ -78,18 +56,18 @@ bool	__cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *
 
 bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root)
 {
-	t_vector	PC;
-	t_vector	H;
-	double		condition;
+	t_vector	point_center;
+	t_vector	center_height;;
+	double		height;
 
-	if (check_cylinder_height(cy, ray, root))
+	if (check_object_height(cy, ray, root))
 		return (false);
-	PC = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
-	H = vec_mul(cy->norm, cy->height);
-	condition = vec_dot(PC, H);
-	if (condition < 0.0)
+	point_center = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cy->center);
+	center_height = vec_mul(cy->norm, cy->height);
+	height = vec_dot(point_center, center_height);
+	if (height < 0.0)
 		return (__cylinder_cap(cy->center, cy, ray, rec));
-	if (condition > cy->height)
+	if (height > cy->height)
 		return (__cylinder_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
 	return (false);
 }
@@ -124,7 +102,7 @@ bool	_cylinder_side(double root, t_formula formula, t_hit_array *cy, t_ray *ray,
 
 	if (root < rec->tmin || rec->tmax < root)
 		return (false);
-	if (check_cylinder_height(cy, ray, root) == false)
+	if (check_object_height(cy, ray, root) == false)
 		return (false);
 	rec->t = root;
 	rec->p = ray_at(ray, root);
