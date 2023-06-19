@@ -41,18 +41,18 @@ struct s_hit_record
 
 struct s_hit_array
 {
-	int			type;
-	t_vector	center;
-	t_vector	norm;
-	t_vector	color;
-	double		radius;
-	double		height;
-	t_vector	light_color;
-	double		bright_ratio;
-	t_vector	albedo;
+	int				type;
+	t_vector		center;
+	t_vector		norm;
+	t_vector		color;
+	double			radius;
+	double			height;
+	t_vector		light_color;
+	double			bright_ratio;
+	t_vector		albedo;
 	unsigned char	*texture_addr;
-	int			texture_w;
-	int			texture_h;
+	int				texture_w;
+	int				texture_h;
 };
 
 bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);

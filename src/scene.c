@@ -39,13 +39,13 @@ t_camera	camera(t_point org, t_vector dir, double fov)
 
 void	set_scene(t_scene *scene)
 {
-	double	ka;
+	// double	lighting_ratio;
 
 	scene->cam = camera(new_point(0, 0, 0), new_vec(0, 0, -1), 120);
 	set_objects(scene->world);
 	scene->rec.tmin = 0.00000001;
 	scene->rec.tmax = MAXFLOAT;
 	set_lights(scene->light);
-	ka = 0.1;
-	scene->ambient = vec_mul(new_color(1, 1, 1), ka);
+	// lighting_ratio = 0.1;
+	// scene->ambient = vec_mul(new_color(1, 1, 1), lighting_ratio);
 }

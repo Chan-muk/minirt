@@ -19,33 +19,293 @@
 // sp	0,0,20 						20 				255,0,0
 // cy	50.0,0.0,20.6 	0,0,1.0 	14.2 	21.42 	10,0,255
 
-// int		parse_ambient_lightning(char *buffer)
-// {
-// 	char **array;
+double	get_ratio(char *str)
+{
+	double	ratio;
 
-// 	array = ft_split()
-// }
+	ratio = ascii_to_double(str);
+	if (ratio < 0.0 || ratio > 1.0)
+		exit_with_str("Ratio is out of range.", EXIT_FAILURE);
+	return (ratio);
+}
+
+double	get_fov(char *str)
+{
+	double	fov;
+
+	fov = ascii_to_double(str);
+	if (fov < 0.0 || fov > 180.0)
+		exit_with_str("FOV is out of range.", EXIT_FAILURE);
+	return (fov);
+}
+
+double	get_length(char *str)
+{
+	double	length;
+
+	length = ascii_to_double(str);
+	if (length <= 0.0)
+		exit_with_str("Length must be greater than zero.", EXIT_FAILURE);
+	return (length);
+}
+
+t_color	get_color(char *str)
+{
+	char	**array;
+	t_color	color;
+
+	array = _split(str, ",");
+	if (array == NULL)
+		exit_with_str("Memory problem in get color.", EXIT_FAILURE);
+	color.x = ascii_to_double(array[0]);
+	color.y = ascii_to_double(array[1]);
+	color.z = ascii_to_double(array[2]);
+	free_double_array(array);
+	if (color.x < 0.0 || color.x > 255.0 || color.y < 0.0 \
+	|| color.y > 255.0 || color.z < 0.0 || color.z > 255.0)
+		exit_with_str("Color is out of range.", EXIT_FAILURE);	
+	return (color);
+}
+
+t_point	get_point(char *str)
+{
+	char	**array;
+	t_point	point;
+
+	array = _split(str, ",");
+	if (array == NULL)
+		exit_with_str("Memory problem in get point.", EXIT_FAILURE);
+	point.x = ascii_to_double(array[0]);
+	point.y = ascii_to_double(array[1]);
+	point.z = ascii_to_double(array[2]);
+	free_double_array(array);
+	// printf("x: %f, y: %f, z: %f\n", point.x, point.y, point.z);
+	return (point);
+}
+
+t_vector	get_normal_vector(char *str)
+{
+	char		**array;
+	t_vector	vector;
+
+	array = _split(str, ",");
+	if (array == NULL)
+		exit_with_str("Memory problem in get vector.", EXIT_FAILURE);
+	vector.x = ascii_to_double(array[0]);
+	vector.y = ascii_to_double(array[1]);
+	vector.z = ascii_to_double(array[2]);
+	free_double_array(array);
+	if (vector.x < -1.0 || vector.x > 1.0 || vector.y < -1.0 \
+	|| vector.y > 1.0 || vector.z < -1.0 || vector.z > 1.0)
+		exit_with_str("Normal Vector is out of range.", EXIT_FAILURE);	
+	// printf("x: %f, y: %f, z: %f\n", vector.x, vector.y, vector.z);
+	return (vector);
+}
+
+// void	parse_ambient_lightning(char *buffer, t_scene *scene)
+void	parse_ambient_lightning(char *buffer)
+{
+	char	**array;
+	double	lighting_ratio;
+	t_color	color;
+
+	array = _split(buffer, DELIMITER);
+	if (array == NULL)
+		exit_with_str("Memory problem in parse ambient light.", EXIT_FAILURE);
+	if (size_double_array(array) != 3)
+	{
+		free_double_array(array);
+		exit_with_str("The number of ambient light parameters is wrong.", EXIT_FAILURE);
+	}
+	lighting_ratio = get_ratio(array[1]);
+	color = get_color(array[2]);
+	// scene->ambient = vec_mul(color, lighting_ratio);
+	free_double_array(array);
+	printf("\nambient light\n");
+	printf("ratio: %f\n", lighting_ratio);
+	printf("color x: %f, y: %f, z: %f\n", color.x, color.y, color.z);
+}
+
+void	parse_camera(char *buffer)
+{
+	char		**array;
+	t_point		point;
+	t_vector	normal_vector;
+	double		fov;
+
+	array = _split(buffer, DELIMITER);
+	if (array == NULL)
+		exit_with_str("Memory problem in parse camera.", EXIT_FAILURE);
+	if (size_double_array(array) != 4)
+	{
+		free_double_array(array);
+		exit_with_str("The number of camera parameters is wrong.", EXIT_FAILURE);
+	}
+	point = get_point(array[1]);
+	normal_vector = get_normal_vector(array[2]);
+	fov = get_fov(array[3]);
+	free_double_array(array);
+	printf("\ncamera\n");
+	printf("point x: %f, y: %f, z: %f\n", point.x, point.y, point.z);
+	printf("norm vec x: %f, y: %f, z: %f\n", normal_vector.x, normal_vector.y, normal_vector.z);
+	printf("fov: %f\n", fov);
+}
+
+void	parse_light(char *buffer)
+{
+	char	**array;
+	t_point	point;
+	double	ratio;
+	t_color	color;
+
+	array = _split(buffer, DELIMITER);
+	if (array == NULL)
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+	if (size_double_array(array) != 4)
+	{
+		free_double_array(array);
+		exit_with_str("The number of light parameters is wrong.", EXIT_FAILURE);
+	}
+	point = get_point(array[1]);
+	ratio = get_ratio(array[2]);
+	color = get_color(array[3]);
+	free_double_array(array);
+	printf("\nlight\n");
+	printf("point x: %f, y: %f, z: %f\n", point.x, point.y, point.z);
+	printf("ratio: %f\n", ratio);
+	printf("color x: %f, y: %f, z: %f\n", color.x, color.y, color.z);
+}
+
+void	parse_sphere(char *buffer)
+{
+	char	**array;
+	t_point	center;
+	double	diameter;
+	t_color	color;
+
+	array = _split(buffer, DELIMITER);
+	if (array == NULL)
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+	if (size_double_array(array) != 4)
+	{
+		free_double_array(array);
+		exit_with_str("The number of sphere parameters is wrong.", EXIT_FAILURE);
+	}
+	center = get_point(array[1]);
+	diameter = get_length(array[2]); // diameter > radius
+	color = get_color(array[3]);
+	free_double_array(array);
+	printf("\nsphere\n");
+	printf("point x: %f, y: %f, z: %f\n", center.x, center.y, center.z);
+	printf("diameter: %f\n", diameter);
+	printf("color x: %f, y: %f, z: %f\n", color.x, color.y, color.z);
+}
+
+void	parse_plane(char *buffer)
+{
+	char		**array;
+	t_point		point;
+	t_vector	normal_vector;
+	t_color		color;
+
+	array = _split(buffer, DELIMITER);
+	if (array == NULL)
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+	if (size_double_array(array) != 4)
+	{
+		free_double_array(array);
+		exit_with_str("The number of plane parameters is wrong.", EXIT_FAILURE);
+	}
+	point = get_point(array[1]);
+	normal_vector = get_normal_vector(array[2]);
+	color = get_color(array[3]);
+	free_double_array(array);
+	printf("\nplane\n");
+	printf("point x: %f, y: %f, z: %f\n", point.x, point.y, point.z);
+	printf("norm vec x: %f, y: %f, z: %f\n", normal_vector.x, normal_vector.y, normal_vector.z);
+	printf("color x: %f, y: %f, z: %f\n", color.x, color.y, color.z);
+}
+
+void	parse_cylinder(char *buffer)
+{
+	char		**array;
+	t_point		center;
+	t_vector	normal_vector;
+	double		diameter;
+	double		height;
+	t_color		color;
+
+	array = _split(buffer, DELIMITER);
+	if (array == NULL)
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+	if (size_double_array(array) != 6)
+	{
+		free_double_array(array);
+		exit_with_str("The number of cylinder parameters is wrong.", EXIT_FAILURE);
+	}
+	center = get_point(array[1]);
+	normal_vector = get_normal_vector(array[2]);
+	diameter = get_length(array[3]); // diameter > radius
+	height = get_length(array[4]);
+	color = get_color(array[5]);
+	free_double_array(array);
+	printf("\ncylinder\n");
+	printf("center x: %f, y: %f, z: %f\n", center.x, center.y, center.z);
+	printf("norm vec x: %f, y: %f, z: %f\n", normal_vector.x, normal_vector.y, normal_vector.z);
+	printf("diameter: %f\n", diameter);
+	printf("height: %f\n", height);
+	printf("color x: %f, y: %f, z: %f\n", color.x, color.y, color.z);
+}
 
 void	check_parameter(char *buffer)
 {
 	if (is_equal(buffer, "A"))
-		printf("This is A\n");
+		parse_ambient_lightning(buffer);
 	else if (is_equal(buffer, "C"))
-		printf("This is C\n");
+		parse_camera(buffer);
 	else if (is_equal(buffer, "L"))
-		printf("This is L\n");
+		parse_light(buffer);
 	else if (is_equal(buffer, "pl"))
-		printf("This is pl\n");
+		parse_plane(buffer);
 	else if (is_equal(buffer, "sp"))
-		printf("This is sp\n");
+		parse_sphere(buffer);
 	else if (is_equal(buffer, "cy"))
-		printf("This is cy\n");
+		parse_cylinder(buffer);
 	else if (is_equal(buffer, "co"))
-		printf("This is co\n");
-	else if (is_equal(buffer, "\n"))
-		printf("This is NL\n");
+		parse_cylinder(buffer);
+	// else if (is_equal(buffer, "\n"))
+	// 	printf("This is NL\n");
 	else
 		printf("Wrong Paramters: %s", buffer);
+}
+
+int	get_hit_array_size(int fd)
+{
+	int		total_count;
+	int		count;
+	char	*buffer;
+
+	total_count = 0;
+	count = 0;
+	while (TRUE)
+	{
+		buffer = get_next_line(fd);
+		if (buffer == NULL)
+			break ;
+		if (is_equal(buffer, "A") || is_equal(buffer, "C"))
+			;
+		else if (is_equal(buffer, "L") || is_equal(buffer, "pl") \
+		|| is_equal(buffer, "sp") || is_equal(buffer, "cy") \
+		|| is_equal(buffer, "co"))
+			count++;
+		else
+			exit_with_str("There is wrong Paramter.", EXIT_FAILURE);
+		total_count++;
+		free(buffer);
+	}
+	if (total_count == 0)
+		exit_with_str("Check the RT file.", EXIT_FAILURE);
+	return (count);
 }
 
 int	parse(char *file_name)
@@ -53,12 +313,13 @@ int	parse(char *file_name)
 	int		fd;
 	char	*buffer;
 
-	/*
-		1. When the file is empty
-	*/
-	
+
 	fd = open(file_name, O_RDONLY);
-	while (1)
+
+	get_hit_array_size(fd);
+	return (0);
+
+	while (TRUE)
 	{
 		buffer = get_next_line(fd);
 		if (buffer == NULL)
