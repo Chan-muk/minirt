@@ -19,6 +19,9 @@ int	main(int argc, char **argv)
 	t_hit_array	lights_array[10];
 	t_scene		scene;
 
+	parse("test.rt");
+	return (0);
+
 	// arguments_check(argc, argv, &mlx);
 	scene.world = objects_array;
 	scene.light = lights_array;

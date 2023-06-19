@@ -30,6 +30,9 @@
 # define WIN_WIDTH		800
 # define WIN_HEIGHT		400
 
+# define TRUE			1
+# define FALSE			0
+
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1
 # define CAMERA_NS		100
@@ -46,6 +49,9 @@
 # define LEFT			123
 # define RIGHT			124
 # define R_KEY			15
+
+/* parse */
+int		parse(char *file_name);
 
 /* input */
 void	set_objects(t_hit_array *array);
