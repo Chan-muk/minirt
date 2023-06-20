@@ -57,6 +57,7 @@ bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 	set_face_normal(ray, rec);
 	// rec->color = shpere_checkerboard(rec->p);
 	// rec->color = shpere_texture(rec->p, sp, rec);
+	rec->color = sp->color;
 	return (true);
 }
 
