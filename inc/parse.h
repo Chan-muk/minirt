@@ -13,23 +13,37 @@
 #ifndef PARSE_H
 # define PARSE_H
 
-void	test_print_double_array(char **array);
-
 /* parse */
-// int		parse(char *file_name);
-// void	parse(char *file_name, t_hit_array *array, t_scene *scene);
-void	parse(char *file_name, t_hit_array **array, t_scene *scene);
+void		parse(char *file_name, t_hit_array **array, t_scene *scene);
 
-/* split */
-char	**_split(char *str, char *charset);
+/* _scene */
+void		parse_ambient_lightning(char *buffer, t_scene *scene);
+void		parse_camera(char *buffer, t_scene *scene);
 
-/* parse utils */
-int		is_equal(char *str1, char *str2);
-int		size_double_array(char **array);
-char	**copy_double_array(char **origin_array);
-void	free_double_array(char **array);
+/* _objects */
+void		parse_light(char *buffer, t_hit_array **hit_array, int *index);
+void		parse_plane(char *buffer, t_hit_array **hit_array, int *index);
+void		parse_sphere(char *buffer, t_hit_array **hit_array, int *index);
+void		parse_cylinder(char *buffer, t_hit_array **hit_array, int *index);
+void		parse_cone(char *buffer, t_hit_array **hit_array, int *index);
 
-// int		ascii_to_int(const char *str);
-double	ascii_to_double(char *str);
+/* _atod */
+double		ascii_to_double(char *str);
+
+/* _split */
+char		**_split(char *str, char *charset);
+
+/* _utils0 */
+double		get_ratio(char *str);
+double		get_length(char *str);
+t_color		get_color(char *str);
+t_point		get_point(char *str);
+t_vector	get_normal_vector(char *str);
+
+/* _utils0 */
+int			is_equal(char *str1, char *str2);
+int			size_double_array(char **array);
+char		**copy_double_array(char **origin_array);
+void		free_double_array(char **array);
 
 #endif

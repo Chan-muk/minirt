@@ -1,83 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   _atod.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/19 13:07:39 by chajung           #+#    #+#             */
-/*   Updated: 2023/06/19 13:07:42 by chajung          ###   ########.fr       */
+/*   Created: 2023/06/20 14:19:58 by chajung           #+#    #+#             */
+/*   Updated: 2023/06/20 14:19:59 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	test_print_double_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
-}
-
-int	is_equal(char *str1, char *str2)
-{
-	if (ft_strncmp(str1, str2, ft_strlen(str2)) == 0)
-		return (TRUE);
-	return (FALSE);
-}
-
-int	size_double_array(char **array)
-{
-	int	size;
-
-	size = 0;
-	while (array[size])
-		size++;
-	return (size);
-}
-
-char	**copy_double_array(char **origin_array)
-{
-	int		i;
-	int		size;
-	char	**copied_array;
-
-	size = 0;
-	while (origin_array[size])
-		size++;
-	copied_array = (char **)malloc(sizeof(char *) * (size + 1));
-	if (!copied_array)
-		return (NULL);
-	i = 0;
-	while (origin_array[i])
-	{
-		copied_array[i] = ft_strdup(origin_array[i]);
-		if (!copied_array)
-			return (NULL);
-		i++;
-	}
-	copied_array[i] = NULL;
-	return (copied_array);
-}
-
-void	free_double_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	array = NULL;
-}
 
 static int	white_space_sign_check(char *str, int *index)
 {
@@ -148,24 +81,3 @@ double	ascii_to_double(char *str)
 	}
 	return (sign * number * pow(0.1, decimal_count));
 }
-
-// int	ascii_to_int(const char *str)
-// {
-// 	int64_t	value;
-// 	int		index;
-
-// 	value = 0;
-// 	index = 0;
-// 	while (str[index])
-// 	{
-// 		if (ft_isdigit(str[index]) == FAILURE)
-// 			return (FAILURE);
-// 		value = value * 10 + (str[index] - '0');
-// 		if (value > INT_MAX)
-// 			return (FAILURE);
-// 		index++;
-// 	}
-// 	if (value == 0)
-// 		return (FAILURE);
-// 	return ((int)value);
-// }
