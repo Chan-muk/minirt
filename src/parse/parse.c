@@ -19,6 +19,23 @@
 // sp	0,0,20 						20 				255,0,0
 // cy	50.0,0.0,20.6 	0,0,1.0 	14.2 	21.42 	10,0,255
 
+// void	test_print_hit_array(t_hit_array *array)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (array[i].type != 0)
+// 	{
+// 		printf("type: %d\n", array[i].type);
+// 		printf("center x: %f, y: %f, z: %f\n", array[i].center.x, array[i].center.y, array[i].center.z);
+// 		printf("norm x: %f, y: %f, z: %f\n", array[i].norm.x, array[i].norm.y, array[i].norm.z);
+// 		printf("color x: %f, y: %f, z: %f\n", array[i].color.x, array[i].color.y, array[i].color.z);
+// 		printf("radius: %f\n", array[i].radius);
+// 		printf("height: %f\n", array[i].height);
+// 		i++;
+// 	}
+// }
+
 double	get_ratio(char *str)
 {
 	double	ratio;
@@ -116,6 +133,7 @@ void	parse_ambient_lightning(char *buffer,  t_scene *scene)
 	}
 	scene->ambient_ratio = get_ratio(array[1]);
 	scene->color = get_color(array[2]);
+	scene->ambient = vec_mul(scene->color, scene->ambient_ratio);
 	free_double_array(array);
 }
 
@@ -135,14 +153,6 @@ void	parse_camera(char *buffer, t_scene *scene)
 	scene->cam_org = get_point(array[1]);
 	scene->cam_dir = get_normal_vector(array[2]); // Need to check
 	scene->cam_fov = get_fov(array[3]);
-
-	// scene->cam.org = get_point(array[1]);
-	// scene->cam.dir = get_normal_vector(array[2]); // Need to check
-	// scene->cam.fov = get_fov(array[3]);
-
-	// printf("pnt x: %f, y: %f, z: %f\n", (scene->cam.org).x, (scene->cam.org).y, (scene->cam.org).z);
-	// printf("nor x: %f, y: %f, z: %f\n", (scene->cam.dir).x, (scene->cam.dir).y, (scene->cam.dir).z);
-	// printf("fov %f\n", scene->cam.fov);
 	free_double_array(array);
 }
 
@@ -302,23 +312,6 @@ int	get_hit_array_size(char *file_name)
 	return (count);
 }
 
-void	test_print_hit_array(t_hit_array *array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i].type != 0)
-	{
-		printf("type: %d\n", array[i].type);
-		printf("center x: %f, y: %f, z: %f\n", array[i].center.x, array[i].center.y, array[i].center.z);
-		printf("norm x: %f, y: %f, z: %f\n", array[i].norm.x, array[i].norm.y, array[i].norm.z);
-		printf("color x: %f, y: %f, z: %f\n", array[i].color.x, array[i].color.y, array[i].color.z);
-		printf("radius: %f\n", array[i].radius);
-		printf("height: %f\n", array[i].height);
-		i++;
-	}
-}
-
 void	parse(char *file_name, t_hit_array **array, t_scene *scene)
 {
 	int		fd;
@@ -342,7 +335,4 @@ void	parse(char *file_name, t_hit_array **array, t_scene *scene)
 		free(buffer);
 	}
 	close(fd);
-	// printf("pnt x: %f, y: %f, z: %f\n", (scene->cam_org).x, (scene->cam_org).y, (scene->cam_org).z);
-	// printf("nor x: %f, y: %f, z: %f\n", (scene->cam_dir).x, (scene->cam_dir).y, (scene->cam_dir).z);
-	// printf("fov %f\n", scene->cam_fov);
 }

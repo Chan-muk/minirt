@@ -50,7 +50,7 @@ bool	__cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, t_hit_record *
 	rec->p = ray_at(ray, root);
 	rec->normal = cy->norm;
 	set_face_normal(ray, rec);
-	rec->albedo = cy->albedo;
+	rec->color = cy->color;
 	return (true);
 }
 
@@ -92,7 +92,7 @@ bool	cylinder_side(t_formula formula, t_hit_array *cy, t_ray *ray, t_hit_record 
 	rec->normal = \
 	unit_vec(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), vec_add(cy->center, vec_mul(cy->norm, qc))));
 	set_face_normal(ray, rec);
-	rec->albedo = cy->albedo;
+	rec->color = cy->color;
 	return (true);
 }
 
@@ -109,7 +109,7 @@ bool	_cylinder_side(double root, t_formula formula, t_hit_array *cy, t_ray *ray,
 	rec->normal = \
 	unit_vec(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), vec_add(cy->center, vec_mul(cy->norm, qc))));
 	set_face_normal(ray, rec);
-	rec->albedo = cy->albedo;
+	rec->color = cy->color;
 	return (true);
 }
 
@@ -182,7 +182,7 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 // 	rec->p = ray_at(ray, root);
 // 	rec->normal = cy->norm;
 // 	set_face_normal(ray, rec);
-// 	rec->albedo = cy->albedo;
+// 	rec->color = cy->color;
 // 	return (true);
 // }
 
@@ -207,6 +207,6 @@ bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 // 	rec->p = ray_at(ray, root);
 // 	rec->normal = vec_mul(cy->norm, -1);
 // 	set_face_normal(ray, rec);
-// 	rec->albedo = cy->albedo;
+// 	rec->color = cy->color;
 // 	return (true);
 // }

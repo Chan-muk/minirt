@@ -30,7 +30,7 @@ bool	check_object_height(t_hit_array *obj, t_ray *ray, double root)
 
 void	data_backup(t_hit_record *rec_backup, t_hit_record *rec)
 {
-	rec_backup->albedo = rec->albedo;
+	rec_backup->color = rec->color;
 	rec_backup->front_face = rec->front_face;
 	rec_backup->normal = rec->normal;
 	rec_backup->p = rec->p;

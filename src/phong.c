@@ -47,7 +47,7 @@ t_color		phong_lighting(t_scene *scene)
 		lights_array++;
 	}
 	light_color = vec_add(light_color, scene->ambient);
-	return (vec_cmp(vec_mul_(light_color, scene->rec.albedo), new_color(1, 1, 1)));	
+	return (vec_cmp(vec_mul_(light_color, scene->rec.color), new_color(1, 1, 1)));	
 }
 
 t_color		point_light_get(t_scene *scene, t_hit_array *light)
@@ -85,6 +85,8 @@ t_color		point_light_get(t_scene *scene, t_hit_array *light)
 	spec = pow(fmax(vec_dot(view_dir, reflect_dir), 0.0), ksn);
 	specular = vec_mul(vec_mul(light->light_color, ks), spec);
 	brightness = light->bright_ratio * 3; // 기준 광속/광량을 정의한 매크로
+
+	// printf("ratio: %f", light->bright_ratio);
 
 	t_color	result;
 	// result = vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness);

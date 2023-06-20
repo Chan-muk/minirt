@@ -46,6 +46,7 @@ int	main(int argc, char **argv)
 	set_scene(&scene);
 
 	initialize(argc, argv, &mlx);
+
 	color_window(&mlx, &scene);
 	set_hooks(&mlx);
 	mlx_loop(mlx.mlx_ptr);

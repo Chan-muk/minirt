@@ -27,7 +27,7 @@ t_camera	camera(t_point org, t_vector dir, double fov)
 	if (vec_len(vec_prod(vec_y, cam.dir)))
 		cam.right_normal = unit_vec(vec_prod(cam.dir, vec_y));
 	else 
-		cam.right_normal = unit_vec(vec_prod(cam.dir, vec_z)); // seg
+		cam.right_normal = unit_vec(vec_prod(cam.dir, vec_z));
 	cam.up_normal = unit_vec(vec_prod(cam.right_normal, cam.dir));
 	cam.focal_len = (double)(WIN_WIDTH * 0.5) / tan((cam.fov * 0.5) * (M_PI / 180));
 	temp = vec_add(cam.org, vec_mul(cam.dir, cam.focal_len));

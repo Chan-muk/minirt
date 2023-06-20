@@ -36,7 +36,7 @@ struct s_hit_record
 	double		tmax;
 	double		t;
 	bool		front_face;
-	t_vector	albedo;
+	t_vector	color;
 };
 
 struct s_hit_array
@@ -49,7 +49,7 @@ struct s_hit_array
 	double			height;
 	t_vector		light_color;
 	double			bright_ratio;
-	t_vector		albedo;
+	// t_vector		color;
 	unsigned char	*texture_addr;
 	int				texture_w;
 	int				texture_h;
