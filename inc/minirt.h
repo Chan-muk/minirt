@@ -25,11 +25,16 @@
 # include "calculate.h"
 # include "object.h"
 # include "scene.h"
+# include "parse.h"
 # include "../libft/inc/libft.h"
 
 # define WIN_WIDTH		2400
 # define WIN_HEIGHT		1200
 
+# define DELIMITER		" \t\v\f\r\n"
+
+# define TRUE			1
+# define FALSE			0
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1
 # define CAMERA_NS		100
@@ -46,6 +51,7 @@
 # define LEFT			123
 # define RIGHT			124
 # define R_KEY			15
+# define INT_MAX		2147483647
 
 /* input */
 void	set_objects(t_hit_array *array);

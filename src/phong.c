@@ -38,7 +38,8 @@ t_color		phong_lighting(t_scene *scene)
 	t_hit_array	*lights_array;
 
 	light_color = new_color(0, 0, 0);
-	lights_array = scene->light;
+	// lights_array = scene->light;
+	lights_array = scene->world;
 	while (lights_array->type) //여러 광원에서 나오는 모든 빛에 대해 각각 diffuse, specular 값을 모두 구해줘야 한다
 	{
 		if(lights_array->type == _light)
@@ -46,7 +47,7 @@ t_color		phong_lighting(t_scene *scene)
 		lights_array++;
 	}
 	light_color = vec_add(light_color, scene->ambient);
-	return (vec_cmp(vec_mul_(light_color, scene->rec.albedo), new_color(1, 1, 1)));	
+	return (vec_cmp(vec_mul_(light_color, scene->rec.color), new_color(1, 1, 1)));	
 }
 
 t_color		point_light_get(t_scene *scene, t_hit_array *light)
@@ -84,6 +85,8 @@ t_color		point_light_get(t_scene *scene, t_hit_array *light)
 	spec = pow(fmax(vec_dot(view_dir, reflect_dir), 0.0), ksn);
 	specular = vec_mul(vec_mul(light->light_color, ks), spec);
 	brightness = light->bright_ratio * 3; // 기준 광속/광량을 정의한 매크로
+
+	// printf("ratio: %f", light->bright_ratio);
 
 	t_color	result;
 	// result = vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness);

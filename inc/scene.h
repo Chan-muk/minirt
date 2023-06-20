@@ -52,19 +52,39 @@ struct  s_camera
 	t_vector	right_normal;
 	t_vector	up_normal;
 	t_point		left_bottom;
-	double      fov;
-	double      focal_len;
+	double		fov;
+	double		focal_len;
 };
 
 struct	s_scene
 {
 	t_camera		cam;
+
+	t_point			cam_org;
+	t_vector		cam_dir;
+	double			cam_fov;
+
+	// t_hit_array		*array;
 	t_hit_array		*world;
-	t_hit_array		*light;
+	// t_hit_array		*light;
 	t_vector		ambient; // 8.4에서 설명할 요소
 	t_ray			ray;
 	t_hit_record	rec;
+	double			ambient_ratio;
+	t_color			color;
 };
+
+// struct	s_scene
+// {
+// 	t_camera		cam;
+// 	t_hit_array		*world;
+// 	t_hit_array		*light;
+// 	t_vector		ambient; // 8.4에서 설명할 요소
+// 	t_ray			ray;
+// 	t_hit_record	rec;
+// 	double			ambient_ratio;
+// 	t_color			color;
+// };
 
 #pragma pack(push, 1)
 typedef struct s_BMPHeader

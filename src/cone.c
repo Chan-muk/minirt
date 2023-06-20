@@ -60,7 +60,7 @@ bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 	rec->p = ray_at(ray, root);
 	rec->normal = unit_vec(cone_normal_vector(cone, ray, root));
 	set_face_normal(ray, rec);
-	rec->albedo = cone->albedo;
+	rec->color = cone->color;
 	return (true);
 }
 
@@ -85,7 +85,7 @@ bool	__cone_cap(t_hit_array* cone, t_ray *ray, t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = cone->norm;
 	set_face_normal(ray, rec);
-	rec->albedo = cone->albedo;
+	rec->color = cone->color;
 	return (true);
 }
 
@@ -267,6 +267,6 @@ bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 // 	// set_face_normal(ray, rec);
 
 // 	set_face_normal(ray, rec);
-// 	rec->albedo = cone->albedo;
+// 	rec->color = cone->color;
 // 	return (true);
 // }

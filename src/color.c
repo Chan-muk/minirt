@@ -81,7 +81,9 @@ void	color_pixels(t_mlx *mlx, t_scene *scene)
 void	color_window(t_mlx *mlx, t_scene *scene)
 {
 	mlx_clear_window(mlx->mlx_ptr, mlx->win_ptr);
+	// printf("> seg test\n");
 	color_pixels(mlx, scene);
+	// printf("> seg test\n");
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 }
 

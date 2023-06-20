@@ -15,10 +15,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-// # include "get_next_line.h"
+# include "get_next_line.h"
 
-# define SUCCESS		0
-# define FAILURE		-1
+# define SUCCESS	0
+# define FAILURE	-1
 
 // typedef struct s_list
 // {
