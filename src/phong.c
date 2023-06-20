@@ -38,7 +38,8 @@ t_color		phong_lighting(t_scene *scene)
 	t_hit_array	*lights_array;
 
 	light_color = new_color(0, 0, 0);
-	lights_array = scene->light;
+	// lights_array = scene->light;
+	lights_array = scene->world;
 	while (lights_array->type) //여러 광원에서 나오는 모든 빛에 대해 각각 diffuse, specular 값을 모두 구해줘야 한다
 	{
 		if(lights_array->type == _light)

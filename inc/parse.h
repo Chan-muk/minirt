@@ -16,7 +16,9 @@
 void	test_print_double_array(char **array);
 
 /* parse */
-int		parse(char *file_name);
+// int		parse(char *file_name);
+// void	parse(char *file_name, t_hit_array *array, t_scene *scene);
+void	parse(char *file_name, t_hit_array **array, t_scene *scene);
 
 /* split */
 char	**_split(char *str, char *charset);

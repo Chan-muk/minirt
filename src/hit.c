@@ -43,6 +43,7 @@ bool	hit_world(t_scene *scene)
 	bool	hit;
 
 	array = scene->world;
+	// array = scene->array;
 	hit = false;
 	while (array->type)
 	{
