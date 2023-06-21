@@ -29,6 +29,9 @@ struct s_counts
 /* parse */
 void		parse(char *file_name, t_hit_array **array, t_scene *scene);
 
+/* parse_bonus */
+void		parse_bonus(char *file_name, t_hit_array **array, t_scene *scene);
+
 /* _scene */
 void		parse_ambient_lightning(char *buffer, t_scene *scene);
 void		parse_camera(char *buffer, t_scene *scene);
@@ -38,7 +41,13 @@ void		parse_light(char *buffer, t_hit_array **hit_array, int *index);
 void		parse_plane(char *buffer, t_hit_array **hit_array, int *index);
 void		parse_sphere(char *buffer, t_hit_array **hit_array, int *index);
 void		parse_cylinder(char *buffer, t_hit_array **hit_array, int *index);
-void		parse_cone(char *buffer, t_hit_array **hit_array, int *index);
+
+/* _objects_bonus */
+void		_parse_light(char *buffer, t_hit_array **hit_array, int *index);
+void		_parse_plane(char *buffer, t_hit_array **hit_array, int *index);
+void		_parse_sphere(char *buffer, t_hit_array **hit_array, int *index);
+void		_parse_cylinder(char *buffer, t_hit_array **hit_array, int *index);
+void		_parse_cone(char *buffer, t_hit_array **hit_array, int *index);
 
 /* _atod */
 double		ascii_to_double(char *str);
@@ -59,5 +68,11 @@ int			get_counts_data(t_counts counts);
 int			is_equal(char *str1, char *str2);
 int			size_double_array(char **array);
 void		free_double_array(char **array);
+
+/* _utils_bonus */
+void	__check_parameter(char **array, t_hit_array **hit_array, int *index, int column);
+void	__checker(char **array, t_hit_array **hit_array, int *index, int column);
+void	__color(char **array, t_hit_array **hit_array, int *index, int column);
+void	__texture(char **array, t_hit_array **hit_array, int *index, int column);
 
 #endif

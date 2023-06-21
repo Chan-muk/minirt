@@ -56,9 +56,6 @@ static int	get_hit_array_size(char *file_name)
 		exit_with_str("Error\nRT File is empty.", EXIT_FAILURE);
 	if (counts.amb != 1 || counts.cam != 1 || counts.light != 1)
 		exit_with_str("Error\nThere are no essential components.", EXIT_FAILURE);
-	if (counts.pl > 1 || counts.sp > 1 || counts.cy > 1)
-		exit_with_str("Error\nElements can only be declared once.", \
-		EXIT_FAILURE);
 	close(fd);
 	return (all_count);
 }
