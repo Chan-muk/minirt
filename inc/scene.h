@@ -106,7 +106,8 @@ t_color			phong_lighting(t_scene *scene);
 t_color			point_light_get(t_scene *scene, t_hit_array *light);
 
 /* texture */
-unsigned char	*get_bmp_addr(char *path, int *w, int *h);
+// unsigned char	*get_bmp_addr(char *path, int *w, int *h);
+void			get_bmp_addr(char *path, t_images *img);
 t_color			plane_texture(t_vector p, t_hit_array *pl);
 t_color			shpere_texture(t_vector p, t_hit_array *sp, t_hit_record *rec);
 

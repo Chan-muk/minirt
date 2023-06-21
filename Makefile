@@ -35,7 +35,7 @@ SRC_DIR		= src src/parse
 
 PAR_DIR		= src/parse
 PAR_SRC		= \
-			parse.c parse_bonus.c _scene.c _objects.c \
+			parse.c parse_bonus.c _scene.c _objects.c _objects_bonus.c \
 			_atod.c _split.c _utils0.c _utils1.c _utils_bonus.c
 
 PAR_OBJ_DIR	= obj/parse

@@ -36,7 +36,7 @@ void	__color(char **array, t_hit_array **hit_array, int *index, int column)
 	if (size_double_array(array) != (column + 2))
 	{
 		free_double_array(array);
-		exit_with_str("Error\Color parameters are not correct.", \
+		exit_with_str("Error\nColor parameters are not correct.", \
 		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].color = get_color(array[column + 1]);
