@@ -16,7 +16,7 @@
 typedef struct s_formula	t_formula;
 typedef struct s_hit_record	t_hit_record;
 typedef struct s_hit_array	t_hit_array;
-typedef	struct s_scene		t_scene;
+typedef struct s_scene		t_scene;
 
 struct s_formula
 {
@@ -49,7 +49,6 @@ struct s_hit_array
 	double			height;
 	t_vector		light_color;
 	double			bright_ratio;
-	// t_vector		color;
 	unsigned char	*texture_addr;
 	int				texture_w;
 	int				texture_h;

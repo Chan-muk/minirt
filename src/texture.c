@@ -52,8 +52,8 @@ unsigned char	*get_bmp_addr(char *path, int *w, int *h)
 	// 	return 1;
 	// }
 
-	uint32_t imageDataSize = header.dataSize != 0 ? header.dataSize : header.fileSize - header.dataOffset;
-	uint8_t *imageData = (uint8_t *)malloc(imageDataSize);
+	uint32_t imagedata_size = header.data_size != 0 ? header.data_size : header.file_size - header.data_offset;
+	uint8_t *imageData = (uint8_t *)malloc(imagedata_size);
 
 	// if (imageData == NULL)
 	// {
@@ -64,7 +64,7 @@ unsigned char	*get_bmp_addr(char *path, int *w, int *h)
 	*w = header.width;
 	*h = header.height;
 
-	read(bmpFile, imageData, imageDataSize);
+	read(bmpFile, imageData, imagedata_size);
 
 	// Assuming 24 bits per pixel (BGR order)
 	// int width = header.width;

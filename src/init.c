@@ -42,7 +42,7 @@ int	is_rt_file(char *file)
 void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene)
 {
 	t_hit_array	*array;
-	
+
 	if (argc != 2)
 		exit_with_str("Check arguments.", EXIT_FAILURE);
 	if (is_rt_file(argv[1]) == FAILURE)
@@ -52,7 +52,4 @@ void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene)
 	scene->world = array;
 	if (init_mlx(mlx) == FAILURE)
 		exit_with_str("initialization failed in init_mlx", EXIT_FAILURE);
-	// mlx->mlx_argc = argc;
-	// mlx->mlx_argv = argv;
-	// initialize_fractal_data(mlx);
 }

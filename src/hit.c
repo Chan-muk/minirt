@@ -40,10 +40,9 @@ bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 bool	hit_world(t_scene *scene)
 {
 	t_hit_array	*array;
-	bool	hit;
+	bool		hit;
 
 	array = scene->world;
-	// array = scene->array;
 	hit = false;
 	while (array->type)
 	{

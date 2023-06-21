@@ -45,7 +45,7 @@ struct s_mlx
 	struct s_img	img;
 };
 
-struct  s_camera
+struct	s_camera
 {
 	t_point		org;
 	t_vector	dir;
@@ -59,67 +59,57 @@ struct  s_camera
 struct	s_scene
 {
 	t_camera		cam;
-
 	t_point			cam_org;
 	t_vector		cam_dir;
 	double			cam_fov;
-
-	// t_hit_array		*array;
 	t_hit_array		*world;
-	// t_hit_array		*light;
-	t_vector		ambient; // 8.4에서 설명할 요소
+	t_vector		ambient;
 	t_ray			ray;
 	t_hit_record	rec;
 	double			ambient_ratio;
 	t_color			color;
 };
 
-// struct	s_scene
-// {
-// 	t_camera		cam;
-// 	t_hit_array		*world;
-// 	t_hit_array		*light;
-// 	t_vector		ambient; // 8.4에서 설명할 요소
-// 	t_ray			ray;
-// 	t_hit_record	rec;
-// 	double			ambient_ratio;
-// 	t_color			color;
-// };
-
 #pragma pack(push, 1)
+
 typedef struct s_BMPHeader
 {
-    unsigned short	signature;
-    unsigned int	fileSize;
-    unsigned int	reserved;
-    unsigned int	dataOffset;
-    unsigned int	headerSize;
-    int				width;
-    int				height;
-    unsigned short	planes;
-    unsigned short	bitsPerPixel;
-    unsigned int	compression;
-    unsigned int	dataSize;
-    int				horizontalResolution;
-    int				verticalResolution;
-    unsigned int	colors;
-    unsigned int	importantColors;
-} BMPHeader;
+	unsigned short	signature;
+	unsigned int	file_size;
+	unsigned int	reserved;
+	unsigned int	data_offset;
+	unsigned int	header_size;
+	int				width;
+	int				height;
+	unsigned short	planes;
+	unsigned short	bits_per_pixel;
+	unsigned int	compression;
+	unsigned int	data_size;
+	int				horizontal_resolution;
+	int				vertical_resolution;
+	unsigned int	colors;
+	unsigned int	important_colors;
+}	BMPHeader;
 #pragma pack(pop)
 
 /* scene */
-t_camera	camera(t_point org, t_vector dir, double fov);
-void		set_scene(t_scene *scene);
+t_camera		camera(t_point org, t_vector dir, double fov);
+void			set_scene(t_scene *scene);
 
 /* color */
-void		color_window(t_mlx *mlx, t_scene *scene);
+void			color_window(t_mlx *mlx, t_scene *scene);
+
+/* color_utils */
+void			color_each_pixel(t_img *img, int x, int y, int color);
+int				write_color(t_color pixel_color);
 
 /* phong */
-t_color		phong_lighting(t_scene *scene);
-t_color		point_light_get(t_scene *scene, t_hit_array *light);
+t_color			phong_lighting(t_scene *scene);
+t_color			point_light_get(t_scene *scene, t_hit_array *light);
 
 /* texture */
 unsigned char	*get_bmp_addr(char *path, int *w, int *h);
-t_color		plane_texture(t_vector p, t_hit_array* pl);
-t_color		shpere_texture(t_vector p, t_hit_array *sp, t_hit_record* rec);
+t_color			plane_texture(t_vector p, t_hit_array *pl);
+t_color			shpere_texture(t_vector p, t_hit_array *sp, t_hit_record *rec);
+
 #endif

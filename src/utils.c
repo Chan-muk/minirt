@@ -22,7 +22,8 @@ bool	check_object_height(t_hit_array *obj, t_ray *ray, double root)
 	double	point_on_line;
 
 	point_on_line = \
-	vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), obj->center), obj->norm);
+	vec_dot(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), \
+	obj->center), obj->norm);
 	if (point_on_line < 0.0 || point_on_line > obj->height)
 		return (false);
 	return (true);
