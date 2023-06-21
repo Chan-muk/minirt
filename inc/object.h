@@ -15,10 +15,11 @@
 
 typedef struct s_formula	t_formula;
 typedef struct s_hit_record	t_hit_record;
+typedef struct s_images		t_images;
 typedef struct s_hit_array	t_hit_array;
 typedef struct s_scene		t_scene;
 
-enum e_type
+enum e_flag
 {
 	_color = 0,
 	_checker,
@@ -46,6 +47,13 @@ struct s_hit_record
 	t_vector	color;
 };
 
+struct s_images
+{
+	unsigned char	*addr;
+	int				w;
+	int				h;
+};
+
 struct s_hit_array
 {
 	int				type;
@@ -56,12 +64,8 @@ struct s_hit_array
 	double			height;
 	int				flag;
 	double			bright_ratio;
-	unsigned char	*texture_addr;
-	int				texture_w;
-	int				texture_h;
-	unsigned char	*bump_addr;
-	int				bump_w;
-	int				bump_h;
+	t_images		texture;
+	t_images		bump_map;
 };
 
 /* hit */

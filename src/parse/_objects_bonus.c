@@ -41,7 +41,7 @@ void	__checker(char **array, t_hit_array **hit_array, int *index, int column)
 		exit_with_str("Error\nChecker board parameters are not correct.", \
 		EXIT_FAILURE);
 	}
-	(*hit_array)[*index].checker = true;
+	(*hit_array)[*index].flag = _checker;
 }
 
 void	__color(char **array, t_hit_array **hit_array, int *index, int column)
@@ -53,7 +53,15 @@ void	__color(char **array, t_hit_array **hit_array, int *index, int column)
 		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].color = get_color(array[column + 1]);
-	// (*hit_array)[*index].checker = false;
+	(*hit_array)[*index].flag = _color;
+}
+
+int	is_bmp_file(char *file)
+{
+	if (ft_strlen(file) >= 4 \
+	&& ft_strncmp(".bmp", &file[ft_strlen(file) - 4], 4) == 0)
+		return (SUCCESS);
+	return (FAILURE);
 }
 
 void	__texture(char **array, t_hit_array **hit_array, int *index, int column)
@@ -64,7 +72,12 @@ void	__texture(char **array, t_hit_array **hit_array, int *index, int column)
 		exit_with_str("Error\nTexture parameters are not correct.", \
 		EXIT_FAILURE);
 	}
-	// (*hit_array)[*index].checker = false;
+	if (is_bmp_file(array[column + 1]) == FAILURE \
+	|| is_bmp_file(array[column + 1]) == FAILURE)
+		exit_with_str("Error\nCheck BMP file types.", EXIT_FAILURE);
+	get_bmp_addr(array[column + 1], &((*hit_array)[*index].texture));
+	get_bmp_addr(array[column + 2], &((*hit_array)[*index].bump_map));
+	(*hit_array)[*index].flag = _texture;
 }
 
 void	_parse_plane(char *buffer, t_hit_array **hit_array, int *index)

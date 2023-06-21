@@ -46,7 +46,7 @@ void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene)
 	if (argc != 2)
 		exit_with_str("Error\nCheck arguments.", EXIT_FAILURE);
 	if (is_rt_file(argv[1]) == FAILURE)
-		exit_with_str("Error\nCheck file types.", EXIT_FAILURE);
+		exit_with_str("Error\nCheck RT file types.", EXIT_FAILURE);
 	parse(argv[1], &array, scene);
 	set_scene(scene);
 	scene->world = array;
