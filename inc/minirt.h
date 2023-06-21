@@ -58,7 +58,8 @@ void	set_objects(t_hit_array *array);
 void	set_lights(t_hit_array *light);
 
 /* init */
-void	initialize(int argc, char **argv, t_mlx *mlx);
+// void	initialize(int argc, char **argv, t_mlx *mlx);
+void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene);
 
 /* hooks */
 void	set_hooks(t_mlx *mlx);

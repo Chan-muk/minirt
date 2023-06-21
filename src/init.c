@@ -31,11 +31,25 @@ int	init_mlx(t_mlx *mlx)
 	return (SUCCESS);
 }
 
-void	initialize(int argc, char **argv, t_mlx *mlx)
+int	is_rt_file(char *file)
 {
-	(void)argc;
-	(void)argv;
+	if (ft_strlen(file) >= 3 \
+	&& ft_strncmp(".rt", &file[ft_strlen(file) - 3], 3) == 0)
+		return (SUCCESS);
+	return (FAILURE);
+}
+
+void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene)
+{
+	t_hit_array	*array;
 	
+	if (argc != 2)
+		exit_with_str("Check arguments.", EXIT_FAILURE);
+	if (is_rt_file(argv[1]) == FAILURE)
+		exit_with_str("Check file types.", EXIT_FAILURE);
+	parse(argv[1], &array, scene);
+	set_scene(scene);
+	scene->world = array;
 	if (init_mlx(mlx) == FAILURE)
 		exit_with_str("initialization failed in init_mlx", EXIT_FAILURE);
 	// mlx->mlx_argc = argc;
