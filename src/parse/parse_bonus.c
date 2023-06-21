@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   parse_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/19 11:26:59 by chajung           #+#    #+#             */
-/*   Updated: 2023/06/19 11:27:00 by chajung          ###   ########.fr       */
+/*   Created: 2023/06/21 16:47:28 by chajung           #+#    #+#             */
+/*   Updated: 2023/06/21 16:47:29 by chajung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void	check_rt_parameter(int fd, t_counts *counts, char *buffer)
 		else if (is_equal(buffer, "sp"))
 			(counts->sp)++;
 		else if (is_equal(buffer, "cy"))
+			(counts->cy)++;
+		else if (is_equal(buffer, "co"))
 			(counts->cy)++;
 		else if (is_equal(buffer, "\n"))
 			;
@@ -56,7 +58,7 @@ static int	get_hit_array_size(char *file_name)
 		exit_with_str("Error\nRT File is empty.", EXIT_FAILURE);
 	if (counts.amb != 1 || counts.cam != 1 || counts.light != 1)
 		exit_with_str("Error\nThere are no essential components.", EXIT_FAILURE);
-	if (counts.pl > 1 || counts.sp > 1 || counts.cy > 1)
+	if (counts.pl > 1 || counts.sp > 1 || counts.cy > 1 || counts.co > 1)
 		exit_with_str("Error\nElements can only be declared once.", \
 		EXIT_FAILURE);
 	close(fd);
@@ -78,13 +80,15 @@ int *index)
 		parse_sphere(buffer, array, index);
 	else if (is_equal(buffer, "cy"))
 		parse_cylinder(buffer, array, index);
+	else if (is_equal(buffer, "co"))
+		parse_cylinder(buffer, array, index);
 	else if (is_equal(buffer, "\n"))
 		;
 	else
 		exit_with_str("Error\nWrong parameter.", EXIT_FAILURE);
 }
 
-void	parse(char *file_name, t_hit_array **array, t_scene *scene)
+void	parse_bonus(char *file_name, t_hit_array **array, t_scene *scene)
 {
 	int		fd;
 	int		size;

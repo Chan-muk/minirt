@@ -54,6 +54,8 @@ t_point		get_point(char *str);
 t_vector	get_normal_vector(char *str);
 
 /* _utils0 */
+void		init_counts_data(t_counts *counts);
+int			get_counts_data(t_counts counts);
 int			is_equal(char *str1, char *str2);
 int			size_double_array(char **array);
 void		free_double_array(char **array);

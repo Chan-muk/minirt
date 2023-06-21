@@ -12,6 +12,26 @@
 
 #include "minirt.h"
 
+void	init_counts_data(t_counts *counts)
+{
+	counts->amb = 0;
+	counts->cam = 0;
+	counts->light = 0;
+	counts->pl = 0;
+	counts->sp = 0;
+	counts->cy = 0;
+	counts->co = 0;
+}
+
+int	get_counts_data(t_counts counts)
+{
+	int	result;
+
+	result = counts.amb + counts.cam + counts.light + \
+	counts.pl + counts.sp + counts.cy + counts.co;
+	return (result);
+}
+
 int	is_equal(char *str1, char *str2)
 {
 	if (ft_strncmp(str1, str2, ft_strlen(str2)) == 0)
