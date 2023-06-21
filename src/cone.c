@@ -66,12 +66,12 @@ bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 	return (true);
 }
 
-bool	__cone_cap(t_hit_array* cone, t_ray *ray, t_hit_record *rec)
+bool	__cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
 	double	denominator;
 	double	root;
-	double	pc;
+	double	rad;
 
 	denominator = vec_dot(ray->dir, cone->norm);
 	if (fabs(denominator) < rec->tmin)
@@ -80,8 +80,9 @@ bool	__cone_cap(t_hit_array* cone, t_ray *ray, t_hit_record *rec)
 	root = numrator / denominator;
 	if (root < rec->tmin || root > rec->tmax)
 		return (false);
-	pc = vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cone->center));
-	if ((pc * pc) > (cone->radius * cone->radius) || pc < 0.0)
+	rad = \
+	vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cone->center));
+	if ((rad * rad) > (cone->radius * cone->radius) || rad < 0.0)
 		return (false);
 	rec->t = root;
 	rec->p = ray_at(ray, root);
@@ -93,13 +94,21 @@ bool	__cone_cap(t_hit_array* cone, t_ray *ray, t_hit_record *rec)
 
 bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 {
-	t_vector	point_center;
-	t_vector	center_height;;
-	double		height;
-
 	if (check_object_height(cone, ray, root))
 		return (false);
 	return (__cone_cap(cone, ray, rec));
+}
+
+static void	check_data(double root, bool *flag, t_hit_record *rec, \
+t_hit_record *rec_backup)
+{
+	if (*flag == true && rec_backup->t < rec->t)
+		data_backup(rec, rec_backup);
+	else
+	{
+		data_backup(rec_backup, rec);
+		*flag = true;
+	}
 }
 
 bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
@@ -113,39 +122,12 @@ bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 	if (formula.discriminant < 0.0)
 		return (flag);
 	if (cone_side(cone, ray, rec, formula.root_1))
-	{
-		data_backup(&rec_backup, rec);
-		flag = true;
-	}
+		check_data(formula.root_1, &flag, rec, &rec_backup);
 	if (cone_side(cone, ray, rec, formula.root_2))
-	{
-		if (flag == true && rec_backup.t < rec->t)
-			data_backup(rec, &rec_backup);
-		else
-		{
-			data_backup(&rec_backup, rec);
-			flag = true;
-		}
-	}
+		check_data(formula.root_2, &flag, rec, &rec_backup);
 	if (cone_cap(cone, ray, rec, formula.root_1))
-	{
-		if (flag == true && rec_backup.t < rec->t)
-			data_backup(rec, &rec_backup);
-		else
-		{
-			data_backup(&rec_backup, rec);
-			flag = true;
-		}
-	}
+		check_data(formula.root_1, &flag, rec, &rec_backup);
 	if (cone_cap(cone, ray, rec, formula.root_2))
-	{
-		if (flag == true && rec_backup.t < rec->t)
-			data_backup(rec, &rec_backup);
-		else
-		{
-			data_backup(&rec_backup, rec);
-			flag = true;
-		}
-	}
+		check_data(formula.root_2, &flag, rec, &rec_backup);
 	return (flag);
 }

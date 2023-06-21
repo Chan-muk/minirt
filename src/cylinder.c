@@ -33,7 +33,7 @@ void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 	(-formula->b + sqrt(formula->discriminant)) / formula->a;
 }
 
-void	check_data(double root, bool *flag, t_hit_record *rec, \
+static void	check_data(double root, bool *flag, t_hit_record *rec, \
 t_hit_record *rec_backup)
 {
 	if (*flag == true && rec_backup->t < rec->t)

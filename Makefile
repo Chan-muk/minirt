@@ -61,7 +61,6 @@ $(COM_OBJ_DIR)/%.o : $(COM_DIR)/%.c
 $(PAR_OBJ_DIR)/%.o : $(PAR_DIR)/%.c
 	@$(CC) -c $< -o $@ $(IMLX) $(HEADER)
 
-
 ifeq ($(MAKECMDGOALS), bonus)
 # include inc/bns_mkfile
 $(NAME): $(ALL_OBJS) $(LIB)
