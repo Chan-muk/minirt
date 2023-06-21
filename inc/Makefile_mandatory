@@ -1,0 +1,40 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/04/23 12:04:47 by chajung           #+#    #+#              #
+#    Updated: 2023/04/23 12:04:49 by chajung          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+PAR_DIR		= src/parse
+PAR_SRC		= \
+			parse.c parse_bonus.c _scene.c _objects.c _objects_bonus.c \
+			_atod.c _split.c _utils0.c _utils1.c _utils_bonus.c
+
+PAR_OBJ_DIR	= obj/parse
+PAR_OBJ		= $(PAR_SRC:.c=.o)
+PAR_OBJS	= $(addprefix $(PAR_OBJ_DIR)/, $(PAR_OBJ))
+PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
+
+
+COM_DIR		= src
+COM_SRC		= \
+			main.c \
+			init.c init_bonus.c cal0.c cal1.c cal2.c scene.c color.c color_utils.c \
+			hit.c phong.c texture.c bump.c\
+			plane.c cylinder.c cylinder_utils.c sphere.c cone.c hook.c utils.c \
+
+COM_OBJ_DIR = obj
+COM_OBJS	= $(addprefix $(COM_OBJ_DIR)/, $(COM_OBJ))
+COM_OBJ		= $(COM_SRC:.c=.o)
+COM_SRCS	= $(addprefix $(COM_DIR)/, $(COM_SRC))
+
+$(COM_OBJ_DIR)/%.o : $(COM_DIR)/%.c
+	@$(CC) -c $< -o $@ $(IMLX) $(HEADER)
+
+$(PAR_OBJ_DIR)/%.o : $(PAR_DIR)/%.c
+	@$(CC) -c $< -o $@ $(IMLX) $(HEADER)

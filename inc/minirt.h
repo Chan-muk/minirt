@@ -43,6 +43,7 @@
 
 /* init */
 void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene);
+void	initialize_bonus(int argc, char **argv, t_mlx *mlx, t_scene *scene);
 
 /* hooks */
 void	set_hooks(t_mlx *mlx);
