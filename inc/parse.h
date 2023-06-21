@@ -70,9 +70,13 @@ int			size_double_array(char **array);
 void		free_double_array(char **array);
 
 /* _utils_bonus */
-void	__check_parameter(char **array, t_hit_array **hit_array, int *index, int column);
-void	__checker(char **array, t_hit_array **hit_array, int *index, int column);
-void	__color(char **array, t_hit_array **hit_array, int *index, int column);
-void	__texture(char **array, t_hit_array **hit_array, int *index, int column);
+void		__check_parameter(char **array, t_hit_array **hit_array, \
+int *index, int column);
+void		__checker(char **array, t_hit_array **hit_array, \
+int *index, int column);
+void		__color(char **array, t_hit_array **hit_array, \
+int *index, int column);
+void		__texture(char **array, t_hit_array **hit_array, \
+int *index, int column);
 
 #endif

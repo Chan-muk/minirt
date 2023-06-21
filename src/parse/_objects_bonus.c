@@ -50,14 +50,6 @@ void	_parse_plane(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].center = get_point(array[1]);
 	(*hit_array)[*index].norm = get_normal_vector(array[2]);
 	__check_parameter(array, hit_array, index, 3);
-	// if (is_equal(array[3], "CHECKER"))
-	// 	__checker(array, hit_array, index, 3);
-	// else if (is_equal(array[3], "COLOR"))
-	// 	__color(array, hit_array, index, 3);
-	// else if (is_equal(array[3], "TEXTURE"))
-	// 	__texture(array, hit_array, index, 3);
-	// else
-	// 	exit_with_str("Error\nPlane parameter is incorrect.", EXIT_FAILURE);
 	free_double_array(array);
 	(*index)++;
 }
@@ -79,14 +71,6 @@ void	_parse_sphere(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].center = get_point(array[1]);
 	(*hit_array)[*index].radius = (get_length(array[2]) * 0.5);
 	__check_parameter(array, hit_array, index, 3);
-	// if (is_equal(array[3], "CHECKER"))
-	// 	__checker(array, hit_array, index, 3);
-	// else if (is_equal(array[3], "COLOR"))
-	// 	__color(array, hit_array, index, 3);
-	// else if (is_equal(array[3], "TEXTURE"))
-	// 	__texture(array, hit_array, index, 3);
-	// else
-	// 	exit_with_str("Error\nSphere parameter is incorrect.", EXIT_FAILURE);
 	free_double_array(array);
 	(*index)++;
 }
@@ -110,14 +94,6 @@ void	_parse_cylinder(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].radius = (get_length(array[3]) * 0.5);
 	(*hit_array)[*index].height = get_length(array[4]);
 	__check_parameter(array, hit_array, index, 5);
-	// if (is_equal(array[5], "CHECKER"))
-	// 	__checker(array, hit_array, index, 5);
-	// else if (is_equal(array[5], "COLOR"))
-	// 	__color(array, hit_array, index, 5);
-	// else if (is_equal(array[5], "TEXTURE"))
-	// 	__texture(array, hit_array, index, 5);
-	// else
-	// 	exit_with_str("Error\nCylinder parameter is incorrect.", EXIT_FAILURE);
 	free_double_array(array);
 	(*index)++;
 }
@@ -141,14 +117,6 @@ void	_parse_cone(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].radius = (get_length(array[3]) * 0.5);
 	(*hit_array)[*index].height = get_length(array[4]);
 	__check_parameter(array, hit_array, index, 5);
-	// if (is_equal(array[5], "CHECKER"))
-	// 	__checker(array, hit_array, index, 5);
-	// else if (is_equal(array[5], "COLOR"))
-	// 	__color(array, hit_array, index, 5);
-	// else if (is_equal(array[5], "TEXTURE"))
-	// 	__texture(array, hit_array, index, 5);
-	// else
-	// 	exit_with_str("Error\nCone parameter is incorrect.", EXIT_FAILURE);
 	free_double_array(array);
 	(*index)++;
 }

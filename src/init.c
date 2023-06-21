@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int	init_mlx(t_mlx *mlx)
+static int	init_mlx(t_mlx *mlx)
 {
 	mlx->mlx_ptr = mlx_init();
 	if (!mlx->mlx_ptr)
@@ -31,7 +31,7 @@ int	init_mlx(t_mlx *mlx)
 	return (SUCCESS);
 }
 
-int	is_rt_file(char *file)
+static int	is_rt_file(char *file)
 {
 	if (ft_strlen(file) >= 3 \
 	&& ft_strncmp(".rt", &file[ft_strlen(file) - 3], 3) == 0)

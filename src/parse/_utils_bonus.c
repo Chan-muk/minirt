@@ -59,7 +59,8 @@ void	__texture(char **array, t_hit_array **hit_array, int *index, int column)
 	(*hit_array)[*index].flag = _texture;
 }
 
-void	__check_parameter(char **array, t_hit_array **hit_array, int *index, int column)
+void	__check_parameter(char **array, t_hit_array **hit_array, int *index, \
+int column)
 {
 	if (is_equal(array[column], "CHECKER"))
 		__checker(array, hit_array, index, column);
