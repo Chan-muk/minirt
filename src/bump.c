@@ -16,12 +16,13 @@ t_vector	bumprotatevector(t_vector normal, t_vector bump)
 {
 	const t_vector	stdvec = {0, 0, 1};
 	const double	theta = acos(vec_dot(stdvec, unit_vec(normal)));
-	const t_vector	axis = unit_vec(vec_prod(stdvec, unit_vec(normal)));
+	t_vector		axis;
 	double			rot[3][3];
 	t_vector		rotvec;
 
-	if (normal.x == stdvec.x && normal.y == stdvec.y && normal.z == stdvec.z)
-		return (unit_vec(bump));
+	if (vec_len(vec_prod(stdvec, unit_vec(normal))) == 0.0)
+		return (unit_vec(normal));
+	axis = unit_vec(vec_prod(stdvec, unit_vec(normal)));
 	bump = unit_vec(bump);
 	rot[0][0] = cos(theta) + axis.x * axis.x * (1 - cos(theta));
 	rot[0][1] = axis.x * axis.y * (1 - cos(theta)) - axis.z * sin(theta);
@@ -38,7 +39,7 @@ t_vector	bumprotatevector(t_vector normal, t_vector bump)
 	return (rotvec);
 }
 
-t_vector	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
+void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 {
 	double			u;
 	double			v;
@@ -54,10 +55,9 @@ t_vector	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 	bump = new_vec(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0);
 	bump = new_vec((bump.x - 0.5) * 2, (bump.y - 0.5) * 2, (bump.z - 0.5) * 2);
 	rec->normal = bumprotatevector(rec->normal, bump);
-	return (rec->normal);
 }
 
-t_vector	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
+void	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 {
 	double			u;
 	double			v;
@@ -73,5 +73,4 @@ t_vector	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 	bump = new_vec(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0);
 	bump = new_vec((bump.x - 0.5) * 2, (bump.y - 0.5) * 2, (bump.z - 0.5) * 2);
 	rec->normal = bumprotatevector(rec->normal, bump);
-	return (rec->normal);
 }

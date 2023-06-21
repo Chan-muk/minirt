@@ -93,7 +93,7 @@ t_color			plane_texture(t_vector p, t_hit_array *pl);
 t_color			shpere_texture(t_vector p, t_hit_array *sp);
 
 /* bump */
-t_vector		shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
-t_vector		plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec);
+void			shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
+void			plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec);
 
 #endif

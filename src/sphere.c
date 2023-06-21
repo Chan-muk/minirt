@@ -70,8 +70,7 @@ bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 	else if (sp->flag == _texture)
 	{
 		rec->color = shpere_texture(rec->p, sp);
-		// rec->color = plane_texture(rec->p, pl);
+		shpere_bump(rec->p, sp, rec);
 	}
-	rec->color = sp->color;
 	return (true);
 }

@@ -48,7 +48,7 @@ bool	hit_plane(t_hit_array *pl, t_ray *ray, t_hit_record *rec)
 	else if (pl->flag == _texture)
 	{
 		rec->color = plane_texture(rec->p, pl);
-		// rec->color = plane_texture(rec->p, pl);
+		plane_bump(rec->p, pl, rec);
 	}
 	return (true);
 }
