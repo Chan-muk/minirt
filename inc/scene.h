@@ -71,25 +71,6 @@ struct	s_scene
 	t_color			color;
 };
 
-struct s_bmpheader
-{
-	unsigned short	signature;
-	unsigned int	file_size;
-	unsigned int	reserved;
-	unsigned int	data_offset;
-	unsigned int	header_size;
-	int				width;
-	int				height;
-	unsigned short	planes;
-	unsigned short	bits_per_pixel;
-	unsigned int	compression;
-	unsigned int	data_size;
-	int				horizontal_resolution;
-	int				vertical_resolution;
-	unsigned int	colors;
-	unsigned int	important_colors;
-};
-
 /* scene */
 t_camera		camera(t_point org, t_vector dir, double fov);
 void			set_scene(t_scene *scene);
