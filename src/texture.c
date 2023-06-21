@@ -15,14 +15,14 @@
 unsigned char	*get_bmp_addr(char *path, int *w, int *h)
 {
 	ssize_t			size;
-	BMPHeader		header;
+	t_bmpheader		header;
 	unsigned char	*imageaddr;
 	const int		bmp_fd = open(path, O_RDONLY);
 
 	if (bmp_fd == -1)
 		exit_with_str("Error\nBMP: Error opening file.", EXIT_FAILURE);
-	size = read(bmp_fd, &header, sizeof(BMPHeader));
-	if (size != sizeof(BMPHeader))
+	size = read(bmp_fd, &header, sizeof(t_bmpheader));
+	if (size != sizeof(t_bmpheader))
 		exit_with_str("Error\nBMP: Error reading header.", EXIT_FAILURE);
 	if (header.data_size != 0)
 		size = header.data_size;
@@ -32,7 +32,7 @@ unsigned char	*get_bmp_addr(char *path, int *w, int *h)
 	*w = header.width;
 	*h = header.height;
 	size = read(bmp_fd, imageaddr, size);
-	if (size != sizeof(BMPHeader))
+	if (size != sizeof(t_bmpheader))
 		exit_with_str("Error\nBMP: Error reading imagedata.", EXIT_FAILURE);
 	close(bmp_fd);
 	return (imageaddr);
