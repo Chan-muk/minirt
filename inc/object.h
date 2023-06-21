@@ -18,6 +18,13 @@ typedef struct s_hit_record	t_hit_record;
 typedef struct s_hit_array	t_hit_array;
 typedef struct s_scene		t_scene;
 
+enum e_type
+{
+	_color = 0,
+	_checker,
+	_texture,
+};
+
 struct s_formula
 {
 	double	a;
@@ -47,7 +54,7 @@ struct s_hit_array
 	t_vector		color;
 	double			radius;
 	double			height;
-	bool			checker;
+	int				flag;
 	double			bright_ratio;
 	unsigned char	*texture_addr;
 	int				texture_w;

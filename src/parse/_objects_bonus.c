@@ -33,7 +33,39 @@ void	_parse_light(char *buffer, t_hit_array **hit_array, int *index)
 	(*index)++;
 }
 
+void	__checker(char **array, t_hit_array **hit_array, int *index, int column)
+{
+	if (size_double_array(array) != (column + 1))
+	{
+		free_double_array(array);
+		exit_with_str("Error\nChecker board parameters are not correct.", \
+		EXIT_FAILURE);
+	}
+	(*hit_array)[*index].checker = true;
+}
 
+void	__color(char **array, t_hit_array **hit_array, int *index, int column)
+{
+	if (size_double_array(array) != (column + 2))
+	{
+		free_double_array(array);
+		exit_with_str("Error\Color parameters are not correct.", \
+		EXIT_FAILURE);
+	}
+	(*hit_array)[*index].color = get_color(array[column + 1]);
+	// (*hit_array)[*index].checker = false;
+}
+
+void	__texture(char **array, t_hit_array **hit_array, int *index, int column)
+{
+	if (size_double_array(array) != (column + 3))
+	{
+		free_double_array(array);
+		exit_with_str("Error\nTexture parameters are not correct.", \
+		EXIT_FAILURE);
+	}
+	// (*hit_array)[*index].checker = false;
+}
 
 void	_parse_plane(char *buffer, t_hit_array **hit_array, int *index)
 {
@@ -42,7 +74,7 @@ void	_parse_plane(char *buffer, t_hit_array **hit_array, int *index)
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
 		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
-	if (size_double_array(array) != 4)
+	if (size_double_array(array) < 4)
 	{
 		free_double_array(array);
 		exit_with_str("Error\nThe number of plane parameters is wrong.", \
@@ -51,7 +83,17 @@ void	_parse_plane(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].type = _plane;
 	(*hit_array)[*index].center = get_point(array[1]);
 	(*hit_array)[*index].norm = get_normal_vector(array[2]);
-	(*hit_array)[*index].color = get_color(array[3]);
+	// (*hit_array)[*index].color = get_color(array[3]);
+	(*hit_array)[*index].checker = false;
+	if (is_equal(array[3], "CHECKER"))
+		__checker(array, hit_array, index, 3);
+	else if (is_equal(array[3], "COLOR"))
+		__color(array, hit_array, index, 3);
+	else if (is_equal(array[3], "TEXTURE"))
+		__texture(array, hit_array, index, 3);
+	
+
+	
 	free_double_array(array);
 	(*index)++;
 }

@@ -41,8 +41,9 @@ bool	hit_plane(t_hit_array *pl, t_ray *ray, t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = pl->norm;
 	set_face_normal(ray, rec);
-	if (pl->checker)
+	if (pl->flag == _checker)
 		rec->color = plane_checkerboard(rec->p);
+	// else if (pl->flag == _texture)
 	else
 		rec->color = pl->color;
 	return (true);

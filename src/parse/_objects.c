@@ -50,7 +50,7 @@ void	parse_plane(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].center = get_point(array[1]);
 	(*hit_array)[*index].norm = get_normal_vector(array[2]);
 	(*hit_array)[*index].color = get_color(array[3]);
-	(*hit_array)[*index].checker = false;
+	(*hit_array)[*index].flag = _color;
 	free_double_array(array);
 	(*index)++;
 }
@@ -72,7 +72,7 @@ void	parse_sphere(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].center = get_point(array[1]);
 	(*hit_array)[*index].radius = (get_length(array[2]) * 0.5);
 	(*hit_array)[*index].color = get_color(array[3]);
-	(*hit_array)[*index].checker = false;
+	(*hit_array)[*index].flag = _color;
 	free_double_array(array);
 	(*index)++;
 }
@@ -96,7 +96,7 @@ void	parse_cylinder(char *buffer, t_hit_array **hit_array, int *index)
 	(*hit_array)[*index].radius = (get_length(array[3]) * 0.5);
 	(*hit_array)[*index].height = get_length(array[4]);
 	(*hit_array)[*index].color = get_color(array[5]);
-	(*hit_array)[*index].checker = false;
+	(*hit_array)[*index].flag = _color;
 	free_double_array(array);
 	(*index)++;
 }
