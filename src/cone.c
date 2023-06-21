@@ -20,16 +20,18 @@ void	get_cone_data(t_formula *formula, t_hit_array *cone, t_ray *ray)
 	double		vh;
 	double		wh;
 
-	r_height = vec_sub(ray->org, vec_add(cone->center, vec_mul(cone->norm, cone->height)));
-	h = vec_len(vec_sub(cone->center, vec_add(cone->center, vec_mul(cone->norm, cone->height))));
+	r_height = vec_sub(ray->org, vec_add(cone->center, \
+	vec_mul(cone->norm, cone->height)));
+	h = vec_len(vec_sub(cone->center, vec_add(cone->center, \
+	vec_mul(cone->norm, cone->height))));
 	m = (cone->radius * cone->radius) / (h * h);
 	vh = vec_dot(ray->dir, cone->norm);
 	wh = vec_dot(r_height, cone->norm);
-
 	formula->a = vec_dot(ray->dir, ray->dir) - (m * (vh * vh)) - (vh * vh);
 	formula->b = vec_dot(ray->dir, r_height) - (m * vh * wh) - (vh * wh);
 	formula->c = vec_dot(r_height, r_height) - (m * (wh * wh)) - (wh * wh);
-	formula->discriminant = (formula->b * formula->b) - (formula->a * formula->c);
+	formula->discriminant = \
+	(formula->b * formula->b) - (formula->a * formula->c);
 	formula->root_1 = (-formula->b - sqrt(formula->discriminant)) / formula->a;
 	formula->root_2 = (-formula->b + sqrt(formula->discriminant)) / formula->a;
 }
@@ -97,18 +99,7 @@ bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 
 	if (check_object_height(cone, ray, root))
 		return (false);
-	// point_center = vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cone->center);
-	// center_height = vec_mul(cone->norm, cone->height);
-	// height = vec_dot(point_center, center_height);
-
-	// if (height < 0.0)
-	// 	return (__cone_cap(cone, ray, rec));
 	return (__cone_cap(cone, ray, rec));
-	return (false);
-	// printf("fail\n");
-	// if (height > cone->height)
-	// 	return (__cone_cap(cone, ray, rec));;
-	// 	return (__cylinder_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
 }
 
 bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)

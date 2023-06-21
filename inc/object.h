@@ -56,12 +56,25 @@ struct s_hit_array
 	int				bump_h;
 };
 
+/* hit */
 bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec);
-bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
-bool	hit_world(t_scene *scene);
 void	set_face_normal(t_ray *r, t_hit_record *rec);
-bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
+bool	hit_world(t_scene *scene);
+
+/* plane */
 bool	hit_plane(t_hit_array *pl, t_ray *r, t_hit_record *rec);
+
+/* sphere */
+bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
+
+/* cylinder */
+bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
+
+/* cylinder utils */
+bool	cylinder_side(double root, t_hit_array *cy, t_ray *ray, t_hit_record *rec);
+bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root);
+
+/* cone */
 bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec);
 
 #endif

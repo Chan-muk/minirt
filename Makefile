@@ -47,7 +47,7 @@ COM_SRC		= \
 			main.c \
 			init.c cal0.c cal1.c cal2.c scene.c color.c color_utils.c \
 			hit.c phong.c texture.c \
-			plane.c cylinder.c sphere.c cone.c hook.c utils.c \
+			plane.c cylinder.c cylinder_utils.c sphere.c cone.c hook.c utils.c \
 
 COM_OBJ_DIR = obj
 COM_OBJS	= $(addprefix $(COM_OBJ_DIR)/, $(COM_OBJ))
