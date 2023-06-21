@@ -48,6 +48,8 @@ int	get_hit_array_size(char *file_name)
 	int	count_c;
 
 	fd = open(file_name, O_RDONLY);
+	if (fd == FAILURE)
+		exit_with_str("Error\nCheck file.", EXIT_FAILURE);
 	count = 0;
 	count_a = 0;
 	count_c = 0;
@@ -90,6 +92,8 @@ void	parse(char *file_name, t_hit_array **array, t_scene *scene)
 
 	size = get_hit_array_size(file_name);
 	fd = open(file_name, O_RDONLY);
+	if (fd == FAILURE)
+		exit_with_str("Error\nCheck file.", EXIT_FAILURE);
 	*array = ft_calloc(sizeof(t_hit_array), (size + 1));
 	if (*array == NULL || scene == NULL)
 		exit_with_str("Error\nMemory problem in parse.", EXIT_FAILURE);
