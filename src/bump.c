@@ -48,8 +48,9 @@ t_vector	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 
 	u = (rec->normal.x + 1) * 0.5;
 	v = (rec->normal.y + 1) * 0.5;
-	i = ((int)(sp->bump_w * u) + (int)(sp->bump_h * v) * sp->bump_w) * 3;
-	addr = sp->bump_addr;
+	i = ((int)(sp->bump_map.w * u) + \
+	(int)(sp->bump_map.h * v) * sp->bump_map.w) * 3;
+	addr = sp->bump_map.addr;
 	bump = new_vec(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0);
 	bump = new_vec((bump.x - 0.5) * 2, (bump.y - 0.5) * 2, (bump.z - 0.5) * 2);
 	rec->normal = bumprotatevector(rec->normal, bump);
@@ -66,9 +67,9 @@ t_vector	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 
 	u = fract(p.x * 0.2);
 	v = fract(p.y * 0.2);
-	i = \
-	((int)(pl->texture_w * u) + (int)(pl->texture_h * v) * pl->texture_w) * 3;
-	addr = pl->bump_addr;
+	i = ((int)(pl->bump_map.w * u) + \
+	(int)(pl->bump_map.h * v) * pl->bump_map.w) * 3;
+	addr = pl->bump_map.addr;
 	bump = new_vec(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0);
 	bump = new_vec((bump.x - 0.5) * 2, (bump.y - 0.5) * 2, (bump.z - 0.5) * 2);
 	rec->normal = bumprotatevector(rec->normal, bump);
