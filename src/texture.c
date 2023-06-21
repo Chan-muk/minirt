@@ -10,107 +10,62 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minirt.h"
-
-// t_color	plane_checkerboard(t_vector p)
-// {
-// 	double	u;
-// 	double	v;
-
-// 	u = fract(p.x * 0.2);
-// 	v = fract(p.y * 0.2);
-// 	if (u > 0.5)
-// 	{
-// 		if (v > 0.5)
-// 			return (new_vec(1.0, 1.0, 1.0));
-// 		return (new_vec(0.0, 0.0, 0.0));
-// 	}
-// 	else
-// 	{
-// 		if (v < 0.5)
-// 			return (new_vec(1.0, 1.0, 1.0));
-// 		return (new_vec(0.0, 0.0, 0.0));
-// 	}
-// }
+#include "minirt.h"
 
 unsigned char	*get_bmp_addr(char *path, int *w, int *h)
 {
-	int bmpFile = open(path, O_RDONLY);
-	// if (bmpFile == -1)
-	// {
-	// 	perror("Error opening file");
-	// 	return 1;
-	// }
+	ssize_t			size;
+	BMPHeader		header;
+	unsigned char	*imageaddr;
+	const int		bmp_fd = open(path, O_RDONLY);
 
-	BMPHeader header;
-
-	read(bmpFile, &header, sizeof(BMPHeader));
-	// if (read(bmpFile, &header, sizeof(BMPHeader)) != sizeof(BMPHeader))
-	// {
-	// 	perror("Error reading BMP header");
-	// 	close(bmpFile);
-	// 	return 1;
-	// }
-
-	uint32_t imagedata_size = header.data_size != 0 ? header.data_size : header.file_size - header.data_offset;
-	uint8_t *imageData = (uint8_t *)malloc(imagedata_size);
-
-	// if (imageData == NULL)
-	// {
-	// 	perror("Error allocating memory");
-	// 	close(bmpFile);
-	// 	return 1;
-	// }
+	if (bmp_fd == -1)
+		exit_with_str("BMP: Error opening file.", EXIT_FAILURE);
+	size = read(bmp_fd, &header, sizeof(BMPHeader));
+	if (size != sizeof(BMPHeader))
+		exit_with_str("BMP: Error reading header.", EXIT_FAILURE);
+	if (header.data_size != 0)
+		size = header.data_size;
+	else
+		size = header.file_size - header.data_offset;
+	imageaddr = (uint8_t *)malloc(size);
 	*w = header.width;
 	*h = header.height;
-
-	read(bmpFile, imageData, imagedata_size);
-
-	// Assuming 24 bits per pixel (BGR order)
-	// int width = header.width;
-	// int height = header.height;
-
-	// for (int y = height - 1; y >= 0; y--)
-	// {
-	// 	for (int x = 0; x < width; x++)
-	// 	{
-	// 		int index = (x + y * width) * 3;
-	// 		uint8_t blue = imageData[index];
-	// 		uint8_t green = imageData[index + 1];
-	// 		uint8_t red = imageData[index + 2];
-
-	// 		// Use the RGB values as needed
-	// 		printf("Pixel at (%d, %d): R=%d, G=%d, B=%d\n", x, y, red, green, blue);
-	// 	}
-	// }
-
-	// free(imageData);
-	close(bmpFile);
-	return (imageData);
+	size = read(bmp_fd, imageaddr, size);
+	if (size != sizeof(BMPHeader))
+		exit_with_str("BMP: Error reading imagedata.", EXIT_FAILURE);
+	close(bmp_fd);
+	return (imageaddr);
 }
 
-t_color	plane_texture(t_vector p, t_hit_array* pl)
+t_color	plane_texture(t_vector p, t_hit_array *pl)
 {
-	double	u;
-	double	v;
+	double			u;
+	double			v;
+	int				i;
+	unsigned char	*addr;
 
 	u = fract(p.x * 0.2);
 	v = fract(p.y * 0.2);
-	int	x = (int)(pl->texture_w * u);
-	int	y = (int)(pl->texture_h * v);
-	int	index = (x + y * pl->texture_w) * 3;
-	return (new_color(pl->texture_addr[index + 2] / 255.0, pl->texture_addr[index + 1] / 255.0, pl->texture_addr[index] / 255.0));
+	i = \
+	((int)(pl->texture_w * u) + (int)(pl->texture_h * v) * pl->texture_w) * 3;
+	addr = pl->texture_addr;
+	return (\
+	new_color(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0));
 }
 
-t_color		shpere_texture(t_vector p, t_hit_array *sp, t_hit_record* rec)
+t_color	shpere_texture(t_vector p, t_hit_array *sp, t_hit_record *rec)
 {
-	double	u;
-	double	v;
+	double			u;
+	double			v;
+	int				i;
+	unsigned char	*addr;
 
 	u = (rec->normal.x + 1) * 0.5;
 	v = (rec->normal.y + 1) * 0.5;
-	int	x = (int)(sp->texture_w * u);
-	int	y = (int)(sp->texture_h * v);
-	int	index = (x + y * sp->texture_w) * 3;
-	return (new_color(sp->texture_addr[index + 2] / 255.0, sp->texture_addr[index + 1] / 255.0, sp->texture_addr[index] / 255.0));
+	i = \
+	((int)(sp->texture_w * u) + (int)(sp->texture_h * v) * sp->texture_w) * 3;
+	addr = sp->texture_addr;
+	return (\
+	new_color(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0));
 }
