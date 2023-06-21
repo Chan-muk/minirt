@@ -51,6 +51,9 @@ struct s_hit_array
 	unsigned char	*texture_addr;
 	int				texture_w;
 	int				texture_h;
+	unsigned char	*bump_addr;
+	int				bump_w;
+	int				bump_h;
 };
 
 bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec);
