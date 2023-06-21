@@ -44,12 +44,12 @@ void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene)
 	t_hit_array	*array;
 
 	if (argc != 2)
-		exit_with_str("Check arguments.", EXIT_FAILURE);
+		exit_with_str("Error\nCheck arguments.", EXIT_FAILURE);
 	if (is_rt_file(argv[1]) == FAILURE)
-		exit_with_str("Check file types.", EXIT_FAILURE);
+		exit_with_str("Error\nCheck file types.", EXIT_FAILURE);
 	parse(argv[1], &array, scene);
 	set_scene(scene);
 	scene->world = array;
 	if (init_mlx(mlx) == FAILURE)
-		exit_with_str("initialization failed in init_mlx", EXIT_FAILURE);
+		exit_with_str("Error\ninitialization failed in init_mlx", EXIT_FAILURE);
 }

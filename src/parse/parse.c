@@ -32,11 +32,11 @@ void	check_rt_parameter(int fd, int *count, int *count_a, int *count_c)
 		else if (is_equal(buffer, "\n"))
 			;
 		else
-			exit_with_str("There is wrong Paramter.", EXIT_FAILURE);
+			exit_with_str("Error\nThere is wrong Paramter.", EXIT_FAILURE);
 		free(buffer);
 	}
 	if ((*count_a) == 0 || (*count_c) == 0)
-		exit_with_str("Ambient light and Camera must exist.", \
+		exit_with_str("Error\nAmbient light and Camera must exist.", \
 		EXIT_FAILURE);
 }
 
@@ -53,7 +53,7 @@ int	get_hit_array_size(char *file_name)
 	count_c = 0;
 	check_rt_parameter(fd, &count, &count_a, &count_c);
 	if ((count_a + count_c + count) == 0)
-		exit_with_str("Check the RT file.", EXIT_FAILURE);
+		exit_with_str("Error\nCheck the RT file.", EXIT_FAILURE);
 	close(fd);
 	return (count);
 }
@@ -92,7 +92,7 @@ void	parse(char *file_name, t_hit_array **array, t_scene *scene)
 	fd = open(file_name, O_RDONLY);
 	*array = ft_calloc(sizeof(t_hit_array), (size + 1));
 	if (*array == NULL || scene == NULL)
-		exit_with_str("Memory problem in parse.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse.", EXIT_FAILURE);
 	index = 0;
 	while (TRUE)
 	{

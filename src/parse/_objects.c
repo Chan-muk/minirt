@@ -18,11 +18,12 @@ void	parse_light(char *buffer, t_hit_array **hit_array, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) != 4)
 	{
 		free_double_array(array);
-		exit_with_str("The number of light parameters is wrong.", EXIT_FAILURE);
+		exit_with_str("Error\nThe number of light parameters is wrong.", \
+		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].type = _light;
 	(*hit_array)[*index].center = get_point(array[1]);
@@ -38,11 +39,12 @@ void	parse_plane(char *buffer, t_hit_array **hit_array, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) != 4)
 	{
 		free_double_array(array);
-		exit_with_str("The number of plane parameters is wrong.", EXIT_FAILURE);
+		exit_with_str("Error\nThe number of plane parameters is wrong.", \
+		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].type = _plane;
 	(*hit_array)[*index].center = get_point(array[1]);
@@ -58,11 +60,11 @@ void	parse_sphere(char *buffer, t_hit_array **hit_array, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) != 4)
 	{
 		free_double_array(array);
-		exit_with_str("The number of sphere parameters is wrong.", \
+		exit_with_str("Error\nThe number of sphere parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].type = _sphere;
@@ -79,11 +81,11 @@ void	parse_cylinder(char *buffer, t_hit_array **hit_array, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) != 6)
 	{
 		free_double_array(array);
-		exit_with_str("The number of cylinder parameters is wrong.", \
+		exit_with_str("Error\nThe number of cylinder parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].type = _cylinder;
@@ -102,11 +104,11 @@ void	parse_cone(char *buffer, t_hit_array **hit_array, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) != 6)
 	{
 		free_double_array(array);
-		exit_with_str("The number of cylinder parameters is wrong.", \
+		exit_with_str("Error\nThe number of cylinder parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].type = _cone;

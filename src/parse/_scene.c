@@ -18,7 +18,7 @@ static double	get_fov(char *str)
 
 	fov = ascii_to_double(str);
 	if (fov < 0.0 || fov > 180.0)
-		exit_with_str("FOV is out of range.", EXIT_FAILURE);
+		exit_with_str("Error\nFOV is out of range.", EXIT_FAILURE);
 	return (fov);
 }
 
@@ -30,11 +30,12 @@ void	parse_ambient_lightning(char *buffer, t_scene *scene)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse ambient light.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse ambient light.", \
+		EXIT_FAILURE);
 	if (size_double_array(array) != 3)
 	{
 		free_double_array(array);
-		exit_with_str("The number of ambient light parameters is wrong.", \
+		exit_with_str("Error\nThe number of ambient light parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	scene->ambient_ratio = get_ratio(array[1]);
@@ -49,11 +50,11 @@ void	parse_camera(char *buffer, t_scene *scene)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse camera.", EXIT_FAILURE);
+		exit_with_str("Error\nMemory problem in parse camera.", EXIT_FAILURE);
 	if (size_double_array(array) != 4)
 	{
 		free_double_array(array);
-		exit_with_str("The number of camera parameters is wrong.", \
+		exit_with_str("Error\nThe number of camera parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	scene->cam_org = get_point(array[1]);

@@ -38,7 +38,7 @@ t_vector	unit_vec(t_vector vec)
 
 	len = vec_len(vec);
 	if (len == 0)
-		exit_with_str("Devider is 0.", EXIT_FAILURE);
+		exit_with_str("Error\nDevider is 0.", EXIT_FAILURE);
 	vec.x /= len;
 	vec.y /= len;
 	vec.z /= len;
