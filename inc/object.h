@@ -71,8 +71,10 @@ bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
 bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
 
 /* cylinder utils */
-bool	cylinder_side(double root, t_hit_array *cy, t_ray *ray, t_hit_record *rec);
-bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, double root);
+bool	cylinder_side(double root, t_hit_array *cy, t_ray *ray, \
+t_hit_record *rec);
+bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, \
+double root);
 
 /* cone */
 bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec);
