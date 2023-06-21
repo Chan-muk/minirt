@@ -12,11 +12,11 @@
 
 #include "minirt.h"
 
-unsigned char	*get_bmp_addr(char *path, int *w, int *h)
+void	get_bmp_addr(char *path, t_images *img)
 {
 	ssize_t			size;
+	ssize_t			tmp;
 	t_bmpheader		header;
-	unsigned char	*imageaddr;
 	const int		bmp_fd = open(path, O_RDONLY);
 
 	if (bmp_fd == -1)
@@ -28,14 +28,13 @@ unsigned char	*get_bmp_addr(char *path, int *w, int *h)
 		size = header.data_size;
 	else
 		size = header.file_size - header.data_offset;
-	imageaddr = (uint8_t *)malloc(size);
-	*w = header.width;
-	*h = header.height;
-	size = read(bmp_fd, imageaddr, size);
-	if (size != sizeof(t_bmpheader))
+	img->addr = (uint8_t *)malloc(size);
+	img->w = header.width;
+	img->h = header.height;
+	tmp = read(bmp_fd, img->addr, size);
+	if (size != tmp)
 		exit_with_str("Error\nBMP: Error reading imagedata.", EXIT_FAILURE);
 	close(bmp_fd);
-	return (imageaddr);
 }
 
 t_color	plane_texture(t_vector p, t_hit_array *pl)
@@ -48,8 +47,8 @@ t_color	plane_texture(t_vector p, t_hit_array *pl)
 	u = fract(p.x * 0.2);
 	v = fract(p.y * 0.2);
 	i = \
-	((int)(pl->texture_w * u) + (int)(pl->texture_h * v) * pl->texture_w) * 3;
-	addr = pl->texture_addr;
+	((int)(pl->texture.w * u) + (int)(pl->texture.h * v) * pl->texture.w) * 3;
+	addr = pl->texture.addr;
 	return (\
 	new_color(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0));
 }
@@ -61,11 +60,12 @@ t_color	shpere_texture(t_vector p, t_hit_array *sp, t_hit_record *rec)
 	int				i;
 	unsigned char	*addr;
 
-	u = (rec->normal.x + 1) * 0.5;
-	v = (rec->normal.y + 1) * 0.5;
+	u = \
+	1 - (atan((p.z - sp->center.z) / (p.x - sp->center.x)) / (2 * M_PI) + 0.5);
+	v = 1 - (acos((p.y - sp->center.y) / sp->radius) / M_PI);
 	i = \
-	((int)(sp->texture_w * u) + (int)(sp->texture_h * v) * sp->texture_w) * 3;
-	addr = sp->texture_addr;
+	((int)(sp->texture.w * u) + (int)(sp->texture.h * v) * sp->texture.w) * 3;
+	addr = sp->texture.addr;
 	return (\
 	new_color(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0));
 }

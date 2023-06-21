@@ -12,16 +12,24 @@
 
 #include "minirt.h"
 
-t_color	shpere_checkerboard(t_vector p)
+t_color	shpere_checkerboard(t_hit_array *sp, t_vector p)
 {
 	double	u;
 	double	v;
+	double	theta;
+	double	phi;
+	double	size;
 
-	u = fract(p.x) - 0.5;
-	v = fract(p.y) - 0.5;
-	if (u * v > 0.0)
-		return (new_vec(1.0, 1.0, 1.0));
-	return (new_vec(0, 0, 0));
+	size = 4;
+	theta = atan((p.z - sp->center.z) / (p.x - sp->center.x));
+	phi = acos((p.y - sp->center.y) / sp->radius);
+	u = 1 - (theta / (2 * M_PI) + 0.5);
+	v = 1 - (phi / M_PI);
+	u = 0.5 - fract(u * size * 2);
+	v = 0.5 - fract(v * size);
+	if (u * v < 0.0)
+		return (new_color(0, 0, 0));
+	return (new_color(1, 1, 1));
 }
 
 void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
@@ -55,6 +63,7 @@ bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = unit_vec(vec_sub(rec->p, sp->center));
 	set_face_normal(ray, rec);
+	shpere_bump(rec->p, sp, rec);
 	rec->color = sp->color;
 	return (true);
 }
