@@ -13,6 +13,19 @@
 #ifndef PARSE_H
 # define PARSE_H
 
+typedef struct s_counts	t_counts;
+
+struct s_counts
+{
+	int	amb;
+	int	cam;
+	int	light;
+	int	pl;
+	int	sp;
+	int	cy;
+	int	co;
+};
+
 /* parse */
 void		parse(char *file_name, t_hit_array **array, t_scene *scene);
 

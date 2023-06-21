@@ -48,10 +48,7 @@ static void	is_double(char *str)
 		str++;
 	}
 	if (!str || sign > 1 || dot > 1 || c > 0)
-	{
-		printf("sign: %d, dot: %d, c: %d\n", sign, dot, c);
-		exit_with_str("Error\nThe Number is not a double type.", EXIT_FAILURE);
-	}
+		exit_with_str("Error\nThe Number is incorrect.", EXIT_FAILURE);
 }
 
 double	ascii_to_double(char *str)

@@ -13,10 +13,11 @@
 #ifndef SCENE_H
 # define SCENE_H
 
-typedef struct s_img	t_img;
-typedef struct s_mlx	t_mlx;
-typedef struct s_camera	t_camera;
-typedef struct s_scene	t_scene;
+typedef struct s_img		t_img;
+typedef struct s_mlx		t_mlx;
+typedef struct s_camera		t_camera;
+typedef struct s_scene		t_scene;
+typedef struct s_bmpheader	t_bmpheader;
 
 enum e_type
 {
@@ -70,7 +71,7 @@ struct	s_scene
 	t_color			color;
 };
 
-typedef struct s_bmpheader
+struct s_bmpheader
 {
 	unsigned short	signature;
 	unsigned int	file_size;
@@ -87,7 +88,7 @@ typedef struct s_bmpheader
 	int				vertical_resolution;
 	unsigned int	colors;
 	unsigned int	important_colors;
-}	t_bmpheader;
+};
 
 /* scene */
 t_camera		camera(t_point org, t_vector dir, double fov);
