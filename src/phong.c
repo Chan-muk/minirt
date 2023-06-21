@@ -62,40 +62,25 @@ t_color	phong_lighting(t_scene *scene)
 
 t_color	point_light_get(t_scene *scene, t_hit_array *light)
 {
-	t_color	diffuse;
-	t_vector		light_dir;
-	double		kd;
-	t_color	specular;
-	t_vector		view_dir;
-	t_vector		reflect_dir;
-	double		spec;
-	double		ksn;
-	double		ks;
-	double		brightness;
+	t_color		diffuse;
+	t_vector	light_dir;
+	t_color		specular;
 	double		light_len;
 	t_ray		light_ray;
 
 	light_dir = vec_sub(light->center, scene->rec.p);
 	light_len = vec_len(light_dir);
-	light_ray = ray(vec_add(scene->rec.p, vec_mul(scene->rec.normal, 0.000001)), light_dir);
+	light_ray = \
+	ray(vec_add(scene->rec.p, vec_mul(scene->rec.normal, 0.000001)), light_dir);
 	if (in_shadow(scene->world, light_ray, light_len))
-		return (new_color(0,0,0));
+		return (new_color(0, 0, 0));
 	light_dir = unit_vec(light_dir);
-
-	// light_dir = unit_vec(vec_sub(light->center, scene->rec.p));
-	kd = fmax(vec_dot(scene->rec.normal, light_dir), 0.0);// diffuse strength;
-	diffuse = vec_mul(light->color, kd);
-	view_dir = unit_vec(vec_mul(scene->ray.dir, -1));
-	reflect_dir = reflect(vec_mul(light_dir, -1), scene->rec.normal);
-	ksn = 64; // shininess value
-	ks = 0.5; // specular strength;
-	spec = pow(fmax(vec_dot(view_dir, reflect_dir), 0.0), ksn);
-	specular = vec_mul(vec_mul(light->color, ks), spec);
-	brightness = light->bright_ratio * 3;
-
-	t_color	result;
-	// result = vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness);
-	result = vec_div(vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness), \
-	(scene->rec.t * scene->rec.t) * 0.05);
-	return (result);
+	diffuse = \
+	vec_mul(light->color, fmax(vec_dot(scene->rec.normal, light_dir), 0.0));
+	specular = vec_mul(vec_mul(light->color, 0.5), \
+	pow(fmax(vec_dot(unit_vec(vec_mul(scene->ray.dir, -1)), \
+	reflect(vec_mul(light_dir, -1), scene->rec.normal)), 0.0), 64));
+	return (vec_div(vec_mul(vec_add(vec_add(\
+	scene->ambient, diffuse), specular), \
+	light->bright_ratio * 3), (scene->rec.t * scene->rec.t) * 0.05));
 }
