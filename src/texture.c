@@ -53,7 +53,7 @@ t_color	plane_texture(t_vector p, t_hit_array *pl)
 	new_color(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0));
 }
 
-t_color	shpere_texture(t_vector p, t_hit_array *sp, t_hit_record *rec)
+t_color	shpere_texture(t_vector p, t_hit_array *sp)
 {
 	double			u;
 	double			v;

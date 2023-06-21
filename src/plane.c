@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_color	plane_checkerboard(t_vector p)
+static t_color	plane_checkerboard(t_vector p)
 {
 	double	u;
 	double	v;
@@ -41,10 +41,14 @@ bool	hit_plane(t_hit_array *pl, t_ray *ray, t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = pl->norm;
 	set_face_normal(ray, rec);
-	if (pl->flag == _checker)
-		rec->color = plane_checkerboard(rec->p);
-	// else if (pl->flag == _texture)
-	else
+	if (pl->flag == _color)
 		rec->color = pl->color;
+	else if (pl->flag == _checker)
+		rec->color = plane_checkerboard(rec->p);
+	else if (pl->flag == _texture)
+	{
+		rec->color = plane_texture(rec->p, pl);
+		// rec->color = plane_texture(rec->p, pl);
+	}
 	return (true);
 }

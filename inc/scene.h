@@ -109,7 +109,7 @@ t_color			point_light_get(t_scene *scene, t_hit_array *light);
 // unsigned char	*get_bmp_addr(char *path, int *w, int *h);
 void			get_bmp_addr(char *path, t_images *img);
 t_color			plane_texture(t_vector p, t_hit_array *pl);
-t_color			shpere_texture(t_vector p, t_hit_array *sp, t_hit_record *rec);
+t_color			shpere_texture(t_vector p, t_hit_array *sp);
 
 /* bump */
 t_vector		shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);

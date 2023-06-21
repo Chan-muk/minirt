@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_color	shpere_checkerboard(t_hit_array *sp, t_vector p)
+t_color	shpere_checkerboard(t_vector p, t_hit_array *sp)
 {
 	double	u;
 	double	v;
@@ -63,7 +63,15 @@ bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = unit_vec(vec_sub(rec->p, sp->center));
 	set_face_normal(ray, rec);
-	// shpere_bump(rec->p, sp, rec);
+	if (sp->flag == _color)
+		rec->color = sp->color;
+	else if (sp->flag == _checker)
+		rec->color = shpere_checkerboard(rec->p, sp);
+	else if (sp->flag == _texture)
+	{
+		rec->color = shpere_texture(rec->p, sp);
+		// rec->color = plane_texture(rec->p, pl);
+	}
 	rec->color = sp->color;
 	return (true);
 }
