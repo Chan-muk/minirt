@@ -43,7 +43,6 @@ t_vector	get_normal_vector(char *str);
 /* _utils0 */
 int			is_equal(char *str1, char *str2);
 int			size_double_array(char **array);
-char		**copy_double_array(char **origin_array);
 void		free_double_array(char **array);
 
 #endif
