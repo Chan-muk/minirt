@@ -70,9 +70,7 @@ struct	s_scene
 	t_color			color;
 };
 
-#pragma pack(push, 1)
-
-typedef struct s_BMPHeader
+typedef struct s_bmpheader
 {
 	unsigned short	signature;
 	unsigned int	file_size;
@@ -89,8 +87,7 @@ typedef struct s_BMPHeader
 	int				vertical_resolution;
 	unsigned int	colors;
 	unsigned int	important_colors;
-}	BMPHeader;
-#pragma pack(pop)
+}	t_bmpheader;
 
 /* scene */
 t_camera		camera(t_point org, t_vector dir, double fov);
@@ -111,5 +108,9 @@ t_color			point_light_get(t_scene *scene, t_hit_array *light);
 unsigned char	*get_bmp_addr(char *path, int *w, int *h);
 t_color			plane_texture(t_vector p, t_hit_array *pl);
 t_color			shpere_texture(t_vector p, t_hit_array *sp, t_hit_record *rec);
+
+/* bump */
+t_vector		shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
+t_vector		plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec);
 
 #endif
