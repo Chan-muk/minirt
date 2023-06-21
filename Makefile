@@ -45,7 +45,7 @@ PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
 COM_DIR		= src
 COM_SRC		= \
 			main.c \
-			init.c cal.c scene.c color.c color_utils.c \
+			init.c cal0.c cal1.c cal2.c scene.c color.c color_utils.c \
 			hit.c phong.c texture.c \
 			plane.c cylinder.c sphere.c cone.c hook.c utils.c \
 

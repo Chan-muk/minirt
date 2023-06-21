@@ -47,13 +47,13 @@ struct s_hit_array
 	t_vector		color;
 	double			radius;
 	double			height;
-	t_vector		light_color;
 	double			bright_ratio;
 	unsigned char	*texture_addr;
 	int				texture_w;
 	int				texture_h;
 };
 
+bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec);
 bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
 bool	hit_world(t_scene *scene);
 void	set_face_normal(t_ray *r, t_hit_record *rec);
