@@ -47,6 +47,7 @@ struct s_hit_array
 	t_vector		color;
 	double			radius;
 	double			height;
+	bool			checker;
 	double			bright_ratio;
 	unsigned char	*texture_addr;
 	int				texture_w;
