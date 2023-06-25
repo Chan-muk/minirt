@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void	get_cone_data(t_formula *formula, t_hit_array *cone, t_ray *ray)
+static void	get_cone_data(t_formula *formula, t_hit_array *cone, t_ray *ray)
 {
 	t_vector	r_height;
 	double		h;
@@ -97,18 +97,6 @@ bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 	if (check_object_height(cone, ray, root))
 		return (false);
 	return (__cone_cap(cone, ray, rec));
-}
-
-static void	check_data(double root, bool *flag, t_hit_record *rec, \
-t_hit_record *rec_backup)
-{
-	if (*flag == true && rec_backup->t < rec->t)
-		data_backup(rec, rec_backup);
-	else
-	{
-		data_backup(rec_backup, rec);
-		*flag = true;
-	}
 }
 
 bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)

@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
+static void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 {
 	t_vector	r_center;
 	double		vh;
@@ -31,18 +31,6 @@ void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 	(-formula->b - sqrt(formula->discriminant)) / formula->a;
 	formula->root_2 = \
 	(-formula->b + sqrt(formula->discriminant)) / formula->a;
-}
-
-static void	check_data(double root, bool *flag, t_hit_record *rec, \
-t_hit_record *rec_backup)
-{
-	if (*flag == true && rec_backup->t < rec->t)
-		data_backup(rec, rec_backup);
-	else
-	{
-		data_backup(rec_backup, rec);
-		*flag = true;
-	}
 }
 
 bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
