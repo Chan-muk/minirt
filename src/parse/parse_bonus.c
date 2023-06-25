@@ -78,7 +78,7 @@ int *index)
 	else if (is_equal(buffer, "cy"))
 		_parse_cylinder(buffer, array, index);
 	else if (is_equal(buffer, "co"))
-		_parse_cylinder(buffer, array, index);
+		_parse_cone(buffer, array, index);
 	else if (is_equal(buffer, "\n"))
 		;
 	else

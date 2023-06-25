@@ -105,10 +105,10 @@ void	_parse_cone(char *buffer, t_hit_array **hit_array, int *index)
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
 		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
-	if (size_double_array(array) != 6)
+	if (size_double_array(array) < 6)
 	{
 		free_double_array(array);
-		exit_with_str("Error\nThe number of cylinder parameters is wrong.", \
+		exit_with_str("Error\nThe number of cone parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	(*hit_array)[*index].type = _cone;
