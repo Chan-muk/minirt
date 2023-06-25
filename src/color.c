@@ -34,12 +34,7 @@ t_color	ray_color(t_scene *scene)
 	if (hit_world(scene))
 		return (phong_lighting(scene));
 	else
-	{
 		return (scene->ambient);
-		// t = 0.5 * (scene->ray.dir.y + 1.0);
-		// return (vec_add(vec_mul(new_color(1, 1, 1), 1.0 - t), \
-		// vec_mul(new_color(0.5, 0.7, 1.0), t)));
-	}
 }
 
 void	color_pixels(t_mlx *mlx, t_scene *scene)
