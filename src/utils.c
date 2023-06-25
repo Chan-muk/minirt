@@ -40,6 +40,18 @@ void	data_backup(t_hit_record *rec_backup, t_hit_record *rec)
 	rec_backup->tmin = rec->tmin;
 }
 
+void	check_data(double root, bool *flag, t_hit_record *rec, \
+t_hit_record *rec_backup)
+{
+	if (*flag == true && rec_backup->t < rec->t)
+		data_backup(rec, rec_backup);
+	else
+	{
+		data_backup(rec_backup, rec);
+		*flag = true;
+	}
+}
+
 void	exit_with_str(const char *str, int exit_code)
 {
 	ft_putendl_fd((char *)str, STDERR_FILENO);
