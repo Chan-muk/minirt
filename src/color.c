@@ -35,9 +35,10 @@ t_color	ray_color(t_scene *scene)
 		return (phong_lighting(scene));
 	else
 	{
-		t = 0.5 * (scene->ray.dir.y + 1.0);
-		return (vec_add(vec_mul(new_color(1, 1, 1), 1.0 - t), \
-		vec_mul(new_color(0.5, 0.7, 1.0), t)));
+		return (scene->ambient);
+		// t = 0.5 * (scene->ray.dir.y + 1.0);
+		// return (vec_add(vec_mul(new_color(1, 1, 1), 1.0 - t), \
+		// vec_mul(new_color(0.5, 0.7, 1.0), t)));
 	}
 }
 

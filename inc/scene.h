@@ -64,7 +64,7 @@ struct	s_scene
 	t_vector		cam_dir;
 	double			cam_fov;
 	t_hit_array		*world;
-	t_vector		ambient;
+	t_color			ambient;
 	t_ray			ray;
 	t_hit_record	rec;
 	double			ambient_ratio;
