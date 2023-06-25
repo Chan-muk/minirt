@@ -38,7 +38,7 @@ ifeq ($(MAKECMDGOALS), bonus)
 include inc/Makefile_bonus
 $(NAME): $(ALL_OBJS) $(LIB)
 	@$(CC) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
-	@echo "make done"
+	@echo "make bonus done"
 
 $(OBJ_B_DIR):
 	@$(RM) $(RMFLAGS) $(OBJ_DIR) $(NAME)
