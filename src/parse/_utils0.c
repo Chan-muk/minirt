@@ -48,7 +48,7 @@ t_color	get_color(char *str)
 	|| color.x > 255.0 || color.y > 255.0 || color.z > 255.0)
 		exit_with_str("Error\nColor is out of range.", EXIT_FAILURE);
 	color = \
-	new_color((int)(color.x / 255), (int)(color.y / 255), (int)(color.z / 255));
+	new_color((color.x / 255), (color.y / 255), (color.z / 255));
 	return (color);
 }
 

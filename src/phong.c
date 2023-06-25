@@ -60,6 +60,39 @@ t_color	phong_lighting(t_scene *scene)
 	return (vec_cmp(vec_mul_(l_color, scene->rec.color), new_color(1, 1, 1)));
 }
 
+// t_color3		point_light_get(t_scene *scene, t_light *light)
+// {
+// 	t_color3	diffuse;
+// 	t_vector		light_dir;
+// 	double		kd;
+// 	t_color3	specular;
+// 	t_vector		view_dir;
+// 	t_vector		reflect_dir;
+// 	double		spec;
+// 	double		ksn;
+// 	double		ks;
+// 	// 추가
+// 	double		brightness;
+// 	// 추가 끝
+
+// 	light_dir = unit_vec(vec_sub(light->origin, scene->rec.p));
+// 	kd = fmax(vec_dot(scene->rec.normal, light_dir), 0.0);// diffuse strength;
+// 	diffuse = vec_mul(light->light_color, kd);
+// 	view_dir = unit_vec(vmult(scene->ray.dir, -1));
+// 	reflect_dir = reflect(vmult(light_dir, -1), scene->rec.normal);
+// 	ksn = 64; // shininess value
+// 	ks = 0.5; // specular strength;
+// 	spec = pow(fmax(vdot(view_dir, reflect_dir), 0.0), ksn);
+// 	specular = vmult(vmult(light->light_color, ks), spec);
+// 	// 제거
+// 	return (vplus(diffuse, specular));
+// 	// 제거 끝
+// 	// 추가
+// 	brightness = light->bright_ratio * LUMEN; // 기준 광속/광량을 정의한 매크로
+// 	return (vmult(vplus(vplus(ambient, diffuse), specular), brightness));
+// 	// 추가 끝
+// }
+
 t_color	point_light_get(t_scene *scene, t_hit_array *light)
 {
 	t_color		diffuse;
@@ -83,4 +116,7 @@ t_color	point_light_get(t_scene *scene, t_hit_array *light)
 	return (vec_div(vec_mul(vec_add(vec_add(\
 	scene->ambient, diffuse), specular), \
 	light->bright_ratio * 3), (scene->rec.t * scene->rec.t) * 0.05));
+	// return (vec_mul(vec_add(vec_add(\
+	// scene->ambient, diffuse), specular), \
+	// light->bright_ratio * 3));
 }
