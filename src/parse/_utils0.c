@@ -44,9 +44,11 @@ t_color	get_color(char *str)
 	color.y = ascii_to_double(array[1]);
 	color.z = ascii_to_double(array[2]);
 	free_double_array(array);
-	if (color.x < 0.0 || color.x > 255.0 || color.y < 0.0 \
-	|| color.y > 255.0 || color.z < 0.0 || color.z > 255.0)
+	if (color.x < 0.0 || color.y < 0.0 || color.z < 0.0 \
+	|| color.x > 255.0 || color.y > 255.0 || color.z > 255.0)
 		exit_with_str("Error\nColor is out of range.", EXIT_FAILURE);
+	color = \
+	new_color((int)(color.x / 255), (int)(color.y / 255), (int)(color.z / 255));
 	return (color);
 }
 
@@ -77,8 +79,8 @@ t_vector	get_normal_vector(char *str)
 	vector.y = ascii_to_double(array[1]);
 	vector.z = ascii_to_double(array[2]);
 	free_double_array(array);
-	if (vector.x < -1.0 || vector.x > 1.0 || vector.y < -1.0 \
-	|| vector.y > 1.0 || vector.z < -1.0 || vector.z > 1.0)
+	if (vector.x < -1.0 || vector.y < -1.0 || vector.z < -1.0 \
+	|| vector.x > 1.0 || vector.y > 1.0 || vector.z > 1.0)
 		exit_with_str("Error\nNormal Vector is out of range.", EXIT_FAILURE);
 	return (unit_vec(vector));
 }
