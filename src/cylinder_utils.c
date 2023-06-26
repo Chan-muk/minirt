@@ -12,6 +12,29 @@
 
 #include "minirt.h"
 
+t_color	cylinder_checkerboard(t_vector p, t_hit_array *cy)
+{
+	double		u;
+	double		v;
+	double		size;
+	t_vector	stdvec;
+	t_vector	vec_u;
+
+	size = 4;
+	if (vec_len(vec_prod(cy->norm, new_vec(0, 1, 0))) == 0.0)
+		stdvec = new_vec(0, 0, 1);
+	else
+		stdvec = vec_prod(cy->norm, new_vec(0, 1, 0));
+	v = vec_dot(vec_sub(p, cy->center), cy->norm); //  0 ~ cy->height;
+	vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, v))));
+	u = acos(vec_dot(stdvec, vec_u)); // 0 ~ M_PI
+	u = 0.5 - fract(u / M_PI * size * 3);
+	v = 0.5 - fract(v * size);
+	if (u * v < 0.0)
+		return (new_color(0, 0, 0));
+	return (new_color(1, 1, 1));
+}
+
 bool	_cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, \
 t_hit_record *rec)
 {
@@ -34,7 +57,15 @@ t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = cy->norm;
 	set_face_normal(ray, rec);
-	rec->color = cy->color;
+	if (cy->flag == _color)
+		rec->color = cy->color;
+	else if (cy->flag == _checker)
+		rec->color = cylinder_checkerboard(rec->p, cy);
+	else if (cy->flag == _texture)
+	{
+		rec->color = shpere_texture(rec->p, cy);
+		shpere_bump(rec->p, cy, rec);
+	}
 	return (true);
 }
 
@@ -76,6 +107,15 @@ t_hit_record *rec)
 	unit_vec(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), \
 	vec_add(cy->center, vec_mul(cy->norm, height))));
 	set_face_normal(ray, rec);
-	rec->color = cy->color;
+	if (cy->flag == _color)
+		rec->color = cy->color;
+	else if (cy->flag == _checker)
+		rec->color = cylinder_checkerboard(rec->p, cy);
+	else if (cy->flag == _texture)
+	{
+		rec->color = shpere_texture(rec->p, cy);
+		shpere_bump(rec->p, cy, rec);
+	}
 	return (true);
 }
+
