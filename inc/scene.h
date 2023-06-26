@@ -72,30 +72,29 @@ struct	s_scene
 };
 
 /* scene */
-t_camera		camera(t_point org, t_vector dir, double fov);
-void			set_scene(t_scene *scene);
+t_camera	camera(t_point org, t_vector dir, double fov);
+void		set_scene(t_scene *scene);
 
 /* color */
-void			color_window(t_mlx *mlx, t_scene *scene);
+void		color_window(t_mlx *mlx, t_scene *scene);
 
 /* color_utils */
-void			color_each_pixel(t_img *img, int x, int y, int color);
-int				write_color(t_color pixel_color);
+void		color_each_pixel(t_img *img, int x, int y, int color);
+int			write_color(t_color pixel_color);
 
 /* phong */
-t_color			phong_lighting(t_scene *scene);
+t_color		phong_lighting(t_scene *scene);
 
 /* phong_utils */
-bool	in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
+bool		in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
 
 /* texture */
-// unsigned char	*get_bmp_addr(char *path, int *w, int *h);
-void			get_bmp_addr(char *path, t_images *img);
-t_color			plane_texture(t_vector p, t_hit_array *pl);
-t_color			shpere_texture(t_vector p, t_hit_array *sp);
+void		get_bmp_addr(char *path, t_images *img);
+t_color		plane_texture(t_vector p, t_hit_array *pl);
+t_color		shpere_texture(t_vector p, t_hit_array *sp);
 
 /* bump */
-void			shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
-void			plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec);
+void		shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
+void		plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec);
 
 #endif

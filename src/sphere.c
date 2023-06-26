@@ -32,7 +32,7 @@ t_color	shpere_checkerboard(t_vector p, t_hit_array *sp)
 	return (new_color(1, 1, 1));
 }
 
-void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
+static void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
 {
 	t_vector	r_center;
 
@@ -42,6 +42,19 @@ void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
 	formula->c = vec_dot(r_center, r_center) - (sp->radius * sp->radius);
 	formula->discriminant = \
 	(formula->b * formula->b) - (formula->a * formula->c);
+}
+
+static void	surface_flag(t_hit_array *sp, t_hit_record *rec)
+{
+	if (sp->flag == _color)
+		rec->color = sp->color;
+	else if (sp->flag == _checker)
+		rec->color = shpere_checkerboard(rec->p, sp);
+	else if (sp->flag == _texture)
+	{
+		rec->color = shpere_texture(rec->p, sp);
+		shpere_bump(rec->p, sp, rec);
+	}
 }
 
 bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
@@ -63,14 +76,6 @@ bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = unit_vec(vec_sub(rec->p, sp->center));
 	set_face_normal(ray, rec);
-	if (sp->flag == _color)
-		rec->color = sp->color;
-	else if (sp->flag == _checker)
-		rec->color = shpere_checkerboard(rec->p, sp);
-	else if (sp->flag == _texture)
-	{
-		rec->color = shpere_texture(rec->p, sp);
-		shpere_bump(rec->p, sp, rec);
-	}
+	surface_flag(sp, rec);
 	return (true);
 }
