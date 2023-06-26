@@ -40,6 +40,13 @@
 # define DESTROYNOTIFY	17
 # define ESC			53
 # define INT_MAX		2147483647
+/* shininess value */
+# define KSN			64
+/* specular strength */
+# define KS				0.5
+/* standard luminous flux/light quantity */
+# define LUMEN			3
+# define EPSILON		0.000001
 
 /* init */
 void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene);

@@ -84,7 +84,9 @@ int				write_color(t_color pixel_color);
 
 /* phong */
 t_color			phong_lighting(t_scene *scene);
-t_color			point_light_get(t_scene *scene, t_hit_array *light);
+
+/* phong_utils */
+bool	in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
 
 /* texture */
 // unsigned char	*get_bmp_addr(char *path, int *w, int *h);

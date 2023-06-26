@@ -12,9 +12,45 @@
 
 #include "minirt.h"
 
-t_vector	reflect(t_vector v, t_vector n)
+static t_vector	reflect(t_vector v, t_vector n)
 {
 	return (vec_sub(v, vec_mul(n, vec_dot(v, n) * 2)));
+}
+
+static t_color	get_specular(t_scene *scene, t_hit_array *light)
+{
+	t_vector	light_dir;
+	t_vector	view_dir;
+	t_vector	reflect_dir;
+	double		spec;
+
+	light_dir = unit_vec(vec_sub(light->center, scene->rec.p));
+	view_dir = unit_vec(vec_mul(scene->ray.dir, -1));
+	reflect_dir = reflect(vec_mul(light_dir, -1), scene->rec.normal);
+	spec = pow(fmax(vec_dot(view_dir, reflect_dir), 0.0), (double)KSN);
+	return (vec_mul(vec_mul(light->color, (double)KS), spec));
+}
+
+static t_color	point_light_get(t_scene *scene, t_hit_array *light)
+{
+	t_vector	light_dir;
+	t_color		diffuse;
+	t_color		specular;
+	double		brightness;
+	t_ray		light_ray;
+
+	light_dir = vec_sub(light->center, scene->rec.p);
+	light_ray = ray(vec_add(scene->rec.p, vec_mul(scene->rec.normal, EPSILON)), \
+	unit_vec(light_dir));
+	if (in_shadow(scene->world, light_ray, vec_len(light_dir)))
+		return (new_color(0.0, 0.0, 0.0));
+	light_dir = unit_vec(light_dir);
+	diffuse = \
+	vec_mul(light->color, fmax(vec_dot(scene->rec.normal, light_dir), 0.0));
+	specular = get_specular(scene, light);
+	brightness = light->bright_ratio * (double)LUMEN;
+	return \
+	(vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness));
 }
 
 t_color	phong_lighting(t_scene *scene)
@@ -33,63 +69,4 @@ t_color	phong_lighting(t_scene *scene)
 	}
 	l_color = vec_add(l_color, scene->ambient);
 	return (vec_cmp(vec_mul_(l_color, scene->rec.color), new_color(1, 1, 1)));
-}
-
-t_color	get_specular(t_scene *scene, t_hit_array *light)
-{
-	t_vector	light_dir;
-	t_vector	view_dir;
-	t_vector	reflect_dir;
-	double		spec;
-
-	light_dir = unit_vec(vec_sub(light->center, scene->rec.p));
-	view_dir = unit_vec(vec_mul(scene->ray.dir, -1));
-	reflect_dir = reflect(vec_mul(light_dir, -1), scene->rec.normal);
-	spec = pow(fmax(vec_dot(view_dir, reflect_dir), 0.0), (double)KSN);
-	return (vec_mul(vec_mul(light->color, (double)KS), spec));
-}
-
-bool	hit_shadow(t_hit_array *array, t_ray *ray, t_hit_record *rec)
-{
-	bool	hit;
-
-	hit = false;
-	while (array->type)
-	{
-		if (hit_objects(array, ray, rec))
-			hit = true;
-		array++;
-	}
-	return (hit);
-}
-
-bool	in_shadow(t_hit_array *objs, t_ray light_ray, double light_len)
-{
-	t_hit_record	rec;
-
-	rec.tmin = 0;
-	rec.tmax = light_len;
-	if (hit_shadow(objs, &light_ray, &rec))
-		return (true);
-	return (false);
-}
-
-t_color		point_light_get(t_scene *scene, t_hit_array *light)
-{
-	t_vector	light_dir;
-	t_color		diffuse;
-	t_color		specular;
-	double		brightness;
-	t_ray		light_ray;
-
-	light_dir = vec_sub(light->center, scene->rec.p);
-	light_ray = ray(vec_add(scene->rec.p, vec_mul(scene->rec.normal, EPSILON)), \
-	unit_vec(light_dir));
-	if (in_shadow(scene->world, light_ray, vec_len(light_dir)))
-		return (new_color(0,0,0));
-	light_dir = unit_vec(light_dir);
-	diffuse = vec_mul(light->color, fmax(vec_dot(scene->rec.normal, light_dir), 0.0));
-	specular = get_specular(scene, light);
-	brightness = light->bright_ratio * (double)LUMEN;
-	return (vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness));
 }
