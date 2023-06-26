@@ -49,8 +49,7 @@ static t_color	point_light_get(t_scene *scene, t_hit_array *light)
 	vec_mul(light->color, fmax(vec_dot(scene->rec.normal, light_dir), 0.0));
 	specular = get_specular(scene, light);
 	brightness = light->bright_ratio * (double)LUMEN;
-	return \
-	(vec_mul(vec_add(vec_add(scene->ambient, diffuse), specular), brightness));
+	return (vec_mul(vec_add(diffuse, specular), brightness));
 }
 
 t_color	phong_lighting(t_scene *scene)

@@ -19,11 +19,11 @@ t_camera	camera(t_point org, t_vector dir, double fov)
 	t_vector	vec_z;
 	t_vector	temp;
 
-	vec_y = new_vec(0.0, 1.0, 0.0);
-	vec_z = new_vec(0.0, 0.0, -1.0);
 	cam.org = org;
 	cam.dir = dir;
 	cam.fov = fov;
+	vec_y = new_vec(0.0, 1.0, 0.0);
+	vec_z = new_vec(0.0, 0.0, -1.0);
 	if (vec_len(vec_prod(vec_y, cam.dir)))
 		cam.right_normal = unit_vec(vec_prod(cam.dir, vec_y));
 	else

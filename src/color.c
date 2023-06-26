@@ -34,7 +34,7 @@ t_color	ray_color(t_scene *scene)
 	if (hit_world(scene))
 		return (phong_lighting(scene));
 	else
-		return (scene->ambient);
+		return (new_color(0, 0, 0));
 }
 
 void	color_pixels(t_mlx *mlx, t_scene *scene)

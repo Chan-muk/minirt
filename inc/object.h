@@ -56,16 +56,16 @@ struct s_images
 
 struct s_hit_array
 {
-	int				type;
-	t_vector		center;
-	t_vector		norm;
-	t_vector		color;
-	double			radius;
-	double			height;
-	int				flag;
-	double			bright_ratio;
-	t_images		texture;
-	t_images		bump_map;
+	int			type;
+	t_point		center;
+	t_vector	norm;
+	t_color		color;
+	double		radius;
+	double		height;
+	int			flag;
+	double		bright_ratio;
+	t_images	texture;
+	t_images	bump_map;
 };
 
 /* hit */

@@ -12,22 +12,48 @@
 
 #include "minirt.h"
 
+// t_color	cylinder_checkerboard(t_vector p, t_hit_array *cy)
+// {
+// 	double		u;
+// 	double		v;
+// 	double		size;
+// 	t_vector	stdvec;
+// 	t_vector	vec_u;
+
+// 	size = 4;
+// 	if (vec_len(vec_prod(cy->norm, new_vec(0, 1, 0))) == 0.0)
+// 		stdvec = new_vec(0, 0, 1);
+// 	else
+// 		stdvec = vec_prod(cy->norm, new_vec(0, 1, 0));
+// 	v = vec_dot(vec_sub(p, cy->center), cy->norm); //  0 ~ cy->height;
+// 	vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, v))));
+// 	u = acos(vec_dot(stdvec, vec_u)); // 0 ~ M_PI
+// 	u = 0.5 - fract(u / M_PI * size * 3);
+// 	v = 0.5 - fract(v * size);
+// 	if (u * v < 0.0)
+// 		return (new_color(0, 0, 0));
+// 	return (new_color(1, 1, 1));
+// }
+
 t_color	cylinder_checkerboard(t_vector p, t_hit_array *cy)
 {
 	double		u;
 	double		v;
 	double		size;
-	t_vector	stdvec;
+	t_vector	std_vec;
 	t_vector	vec_u;
 
 	size = 4;
-	if (vec_len(vec_prod(cy->norm, new_vec(0, 1, 0))) == 0.0)
-		stdvec = new_vec(0, 0, 1);
+	if (vec_len(vec_prod(cy->norm, new_vec(0, 1, 0))))
+		// std_vec = vec_prod(cy->norm, new_vec(0, 1, 0));
+		std_vec = unit_vec(vec_prod(cy->norm, new_vec(0, 1, 0)));
 	else
-		stdvec = vec_prod(cy->norm, new_vec(0, 1, 0));
+		// std_vec = unit_vec(vec_prod(cy->norm, new_vec(0, 0, 1)));
+		std_vec = unit_vec(new_vec(0, 0, 1));
+		
 	v = vec_dot(vec_sub(p, cy->center), cy->norm); //  0 ~ cy->height;
 	vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, v))));
-	u = acos(vec_dot(stdvec, vec_u)); // 0 ~ M_PI
+	u = acos(vec_dot(std_vec, vec_u)); // 0 ~ M_PI
 	u = 0.5 - fract(u / M_PI * size * 3);
 	v = 0.5 - fract(v * size);
 	if (u * v < 0.0)
@@ -118,4 +144,3 @@ t_hit_record *rec)
 	}
 	return (true);
 }
-
