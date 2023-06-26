@@ -54,16 +54,17 @@ static void	get_cone_data(t_formula *formula, t_hit_array *cone, t_ray *ray)
 
 t_vector	cone_normal_vector(t_hit_array *cone, t_ray *ray, double root)
 {
-	t_point		P = vec_add(ray->org, vec_mul(ray->dir, root));
-	double		qc = vec_dot(vec_sub(P, cone->center), cone->norm);
-	t_point		Q = vec_add(cone->center, vec_mul(cone->norm, qc));
-	t_point		H = vec_add(cone->center, vec_mul(cone->norm, cone->height));
-	t_vector	PH = vec_sub(P, H);
-	t_vector	PQ = vec_sub(P, Q);
-	t_vector	C1 = vec_prod(PH, PQ);
-	t_vector	PP = unit_vec(vec_prod(PH, C1));
-	t_vector	normal_vector = vec_prod(vec_sub(P, H), vec_prod(PH, PQ));
-
+	t_point		point;
+	t_point		_point;
+	t_point		height;
+	t_vector	normal_vector;
+	
+	point = vec_add(ray->org, vec_mul(ray->dir, root));
+	_point = vec_add(cone->center, vec_mul(cone->norm, \
+	vec_dot(vec_sub(point, cone->center), cone->norm)));
+	height = vec_add(cone->center, vec_mul(cone->norm, cone->height));
+	normal_vector = vec_prod(vec_sub(point, height), \
+	vec_prod(vec_sub(point, height), vec_sub(point, _point)));
 	return (unit_vec(normal_vector));
 }
 
