@@ -44,5 +44,5 @@ void	set_scene(t_scene *scene)
 {
 	scene->cam = camera(scene->cam_org, scene->cam_dir, scene->cam_fov);
 	scene->rec.tmin = 0.00000001;
-	scene->rec.tmax = MAXFLOAT;
+	scene->rec.tmax = (double)(INT_MAX);
 }

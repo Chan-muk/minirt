@@ -30,7 +30,7 @@ t_color	ray_color(t_scene *scene)
 	double			t;
 
 	scene->rec.tmin = 0.00000001;
-	scene->rec.tmax = MAXFLOAT;
+	scene->rec.tmax = (double)(INT_MAX);
 	if (hit_world(scene))
 		return (phong_lighting(scene));
 	else
