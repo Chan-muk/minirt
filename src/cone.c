@@ -42,7 +42,7 @@ t_vector	cone_normal_vector(t_hit_array *cone, t_ray *ray, double root)
 	t_point		_point;
 	t_point		height;
 	t_vector	normal_vector;
-	
+
 	point = vec_add(ray->org, vec_mul(ray->dir, root));
 	_point = vec_add(cone->center, vec_mul(cone->norm, \
 	vec_dot(vec_sub(point, cone->center), cone->norm)));
@@ -66,16 +66,16 @@ bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 	return (true);
 }
 
-bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double height)
+bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
+double height)
 {
-	if (check_object_height(cone, ray, height))
-		return (false);
-	// return (__cone_cap(cone, ray, rec));
 	double	numrator;
 	double	denominator;
 	double	root;
 	double	rad;
 
+	if (check_object_height(cone, ray, height))
+		return (false);
 	denominator = vec_dot(ray->dir, cone->norm);
 	if (fabs(denominator) < rec->tmin)
 		return (false);
@@ -115,45 +115,3 @@ bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 		check_data(formula.root_2, &flag, rec, &rec_backup);
 	return (flag);
 }
-
-// t_vector	cone_normal_vector(t_hit_array *cone, t_ray *ray, double root)
-// {
-// 	t_point		point;
-// 	t_point		height;
-// 	t_vector	hp_vec;
-// 	t_vector	normal_vector;
-
-// 	point = vec_add(ray->org, vec_mul(ray->dir, root));
-// 	height = vec_add(cone->center, vec_mul(cone->norm, cone->height));
-// 	hp_vec = vec_sub(height, point);
-// 	normal_vector = \
-// 	vec_sub(hp_vec, vec_mul(ray->dir, ((vec_len(hp_vec) * vec_len(hp_vec)) \
-// 	/ vec_dot(hp_vec, ray->dir))));
-// 	return (unit_vec(normal_vector));
-// }
-
-// bool	__cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
-// {
-// 	double	numrator;
-// 	double	denominator;
-// 	double	root;
-// 	double	rad;
-
-// 	denominator = vec_dot(ray->dir, cone->norm);
-// 	if (fabs(denominator) < rec->tmin)
-// 		return (false);
-// 	numrator = vec_dot(vec_sub(cone->center, ray->org), cone->norm);
-// 	root = numrator / denominator;
-// 	if (root < rec->tmin || root > rec->tmax)
-// 		return (false);
-// 	rad = \
-// 	vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cone->center));
-// 	if ((rad * rad) > (cone->radius * cone->radius) || rad < 0.0)
-// 		return (false);
-// 	rec->t = root;
-// 	rec->p = ray_at(ray, root);
-// 	rec->normal = cone->norm;
-// 	set_face_normal(ray, rec);
-// 	rec->color = cone->color;
-// 	return (true);
-// }
