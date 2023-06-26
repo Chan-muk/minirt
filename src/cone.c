@@ -36,20 +36,35 @@ static void	get_cone_data(t_formula *formula, t_hit_array *cone, t_ray *ray)
 	formula->root_2 = (-formula->b + sqrt(formula->discriminant)) / formula->a;
 }
 
+// t_vector	cone_normal_vector(t_hit_array *cone, t_ray *ray, double root)
+// {
+// 	t_point		point;
+// 	t_point		height;
+// 	t_vector	hp_vec;
+// 	t_vector	normal_vector;
+
+// 	point = vec_add(ray->org, vec_mul(ray->dir, root));
+// 	height = vec_add(cone->center, vec_mul(cone->norm, cone->height));
+// 	hp_vec = vec_sub(height, point);
+// 	normal_vector = \
+// 	vec_sub(hp_vec, vec_mul(ray->dir, ((vec_len(hp_vec) * vec_len(hp_vec)) \
+// 	/ vec_dot(hp_vec, ray->dir))));
+// 	return (unit_vec(normal_vector));
+// }
+
 t_vector	cone_normal_vector(t_hit_array *cone, t_ray *ray, double root)
 {
-	t_point		point;
-	t_point		height;
-	t_vector	hp_vec;
-	t_vector	normal_vector;
+	t_point		P = vec_add(ray->org, vec_mul(ray->dir, root));
+	double		qc = vec_dot(vec_sub(P, cone->center), cone->norm);
+	t_point		Q = vec_add(cone->center, vec_mul(cone->norm, qc));
+	t_point		H = vec_add(cone->center, vec_mul(cone->norm, cone->height));
+	t_vector	PH = vec_sub(P, H);
+	t_vector	PQ = vec_sub(P, Q);
+	t_vector	C1 = vec_prod(PH, PQ);
+	t_vector	PP = unit_vec(vec_prod(PH, C1));
+	t_vector	normal_vector = vec_prod(vec_sub(P, H), vec_prod(PH, PQ));
 
-	point = vec_add(ray->org, vec_mul(ray->dir, root));
-	height = vec_add(cone->center, vec_mul(cone->norm, cone->height));
-	hp_vec = vec_sub(height, point);
-	normal_vector = \
-	vec_sub(hp_vec, vec_mul(ray->dir, ((vec_len(hp_vec) * vec_len(hp_vec)) \
-	/ vec_dot(hp_vec, ray->dir))));
-	return (normal_vector);
+	return (unit_vec(normal_vector));
 }
 
 bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
@@ -60,14 +75,43 @@ bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 		return (false);
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = unit_vec(cone_normal_vector(cone, ray, root));
+	rec->normal = cone_normal_vector(cone, ray, root);
 	set_face_normal(ray, rec);
 	rec->color = cone->color;
 	return (true);
 }
 
-bool	__cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
+// bool	__cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
+// {
+// 	double	numrator;
+// 	double	denominator;
+// 	double	root;
+// 	double	rad;
+
+// 	denominator = vec_dot(ray->dir, cone->norm);
+// 	if (fabs(denominator) < rec->tmin)
+// 		return (false);
+// 	numrator = vec_dot(vec_sub(cone->center, ray->org), cone->norm);
+// 	root = numrator / denominator;
+// 	if (root < rec->tmin || root > rec->tmax)
+// 		return (false);
+// 	rad = \
+// 	vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cone->center));
+// 	if ((rad * rad) > (cone->radius * cone->radius) || rad < 0.0)
+// 		return (false);
+// 	rec->t = root;
+// 	rec->p = ray_at(ray, root);
+// 	rec->normal = cone->norm;
+// 	set_face_normal(ray, rec);
+// 	rec->color = cone->color;
+// 	return (true);
+// }
+
+bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double height)
 {
+	if (check_object_height(cone, ray, height))
+		return (false);
+	// return (__cone_cap(cone, ray, rec));
 	double	numrator;
 	double	denominator;
 	double	root;
@@ -90,13 +134,6 @@ bool	__cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 	set_face_normal(ray, rec);
 	rec->color = cone->color;
 	return (true);
-}
-
-bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
-{
-	if (check_object_height(cone, ray, root))
-		return (false);
-	return (__cone_cap(cone, ray, rec));
 }
 
 bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
