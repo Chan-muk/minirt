@@ -18,6 +18,7 @@ typedef struct s_mlx		t_mlx;
 typedef struct s_camera		t_camera;
 typedef struct s_scene		t_scene;
 typedef struct s_bmpheader	t_bmpheader;
+typedef struct s_uvbox		t_uvbox;
 
 enum e_type
 {
@@ -71,6 +72,18 @@ struct	s_scene
 	t_color			color;
 };
 
+struct s_uvbox
+{
+	double			u;
+	double			v;
+	int				i;
+	unsigned char	*addr;
+	t_vector		stdvec1;
+	t_vector		stdvec2;
+	t_vector		vec_u;
+	t_vector		bump;
+};
+
 /* scene */
 t_camera	camera(t_point org, t_vector dir, double fov);
 void		set_scene(t_scene *scene);
@@ -88,13 +101,22 @@ t_color		phong_lighting(t_scene *scene);
 /* phong_utils */
 bool		in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
 
+/* checker */
+t_color		plane_checkerboard(t_vector p);
+t_color		shpere_checkerboard(t_vector p, t_hit_array *sp);
+t_color		cylinder_checkerboard_side(t_vector p, t_hit_array *cy);
+t_color		cylinder_checkerboard_cap(t_vector p, t_hit_array *cy);
+
 /* texture */
 void		get_bmp_addr(char *path, t_images *img);
 t_color		plane_texture(t_vector p, t_hit_array *pl);
 t_color		shpere_texture(t_vector p, t_hit_array *sp);
+t_color		cylinder_texture_side(t_vector p, t_hit_array *cy);
+t_color		cylinder_texture_cap(t_vector p, t_hit_array *cy);
 
 /* bump */
-void		shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
 void		plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec);
+void		shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
+void		cylinder_bump(t_vector p, t_hit_array *cy, t_hit_record *rec);
 
 #endif

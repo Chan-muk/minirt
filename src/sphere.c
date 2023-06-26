@@ -12,26 +12,6 @@
 
 #include "minirt.h"
 
-t_color	shpere_checkerboard(t_vector p, t_hit_array *sp)
-{
-	double	u;
-	double	v;
-	double	theta;
-	double	phi;
-	double	size;
-
-	size = 4;
-	theta = atan((p.z - sp->center.z) / (p.x - sp->center.x));
-	phi = acos((p.y - sp->center.y) / sp->radius);
-	u = 1 - (theta / (2 * M_PI) + 0.5);
-	v = 1 - (phi / M_PI);
-	u = 0.5 - fract(u * size * 2);
-	v = 0.5 - fract(v * size);
-	if (u * v < 0.0)
-		return (new_color(0, 0, 0));
-	return (new_color(1, 1, 1));
-}
-
 static void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
 {
 	t_vector	r_center;

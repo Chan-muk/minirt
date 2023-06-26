@@ -12,53 +12,17 @@
 
 #include "minirt.h"
 
-// t_color	cylinder_checkerboard(t_vector p, t_hit_array *cy)
-// {
-// 	double		u;
-// 	double		v;
-// 	double		size;
-// 	t_vector	stdvec;
-// 	t_vector	vec_u;
-
-// 	size = 4;
-// 	if (vec_len(vec_prod(cy->norm, new_vec(0, 1, 0))) == 0.0)
-// 		stdvec = new_vec(0, 0, 1);
-// 	else
-// 		stdvec = vec_prod(cy->norm, new_vec(0, 1, 0));
-// 	v = vec_dot(vec_sub(p, cy->center), cy->norm); //  0 ~ cy->height;
-// 	vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, v))));
-// 	u = acos(vec_dot(stdvec, vec_u)); // 0 ~ M_PI
-// 	u = 0.5 - fract(u / M_PI * size * 3);
-// 	v = 0.5 - fract(v * size);
-// 	if (u * v < 0.0)
-// 		return (new_color(0, 0, 0));
-// 	return (new_color(1, 1, 1));
-// }
-
-t_color	cylinder_checkerboard(t_vector p, t_hit_array *cy)
+static void	_cylinder_cap_color(t_hit_array *cy, t_hit_record *rec)
 {
-	double		u;
-	double		v;
-	double		size;
-	t_vector	std_vec;
-	t_vector	vec_u;
-
-	size = 4;
-	if (vec_len(vec_prod(cy->norm, new_vec(0, 1, 0))))
-		// std_vec = vec_prod(cy->norm, new_vec(0, 1, 0));
-		std_vec = unit_vec(vec_prod(cy->norm, new_vec(0, 1, 0)));
-	else
-		// std_vec = unit_vec(vec_prod(cy->norm, new_vec(0, 0, 1)));
-		std_vec = unit_vec(new_vec(0, 0, 1));
-		
-	v = vec_dot(vec_sub(p, cy->center), cy->norm); //  0 ~ cy->height;
-	vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, v))));
-	u = acos(vec_dot(std_vec, vec_u)); // 0 ~ M_PI
-	u = 0.5 - fract(u / M_PI * size * 3);
-	v = 0.5 - fract(v * size);
-	if (u * v < 0.0)
-		return (new_color(0, 0, 0));
-	return (new_color(1, 1, 1));
+	if (cy->flag == _color)
+		rec->color = cy->color;
+	else if (cy->flag == _checker)
+		rec->color = cylinder_checkerboard_cap(rec->p, cy);
+	else if (cy->flag == _texture)
+	{
+		rec->color = cylinder_texture_cap(rec->p, cy);
+		// cylinder_bump(rec->p, cy, rec);
+	}
 }
 
 bool	_cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, \
@@ -83,15 +47,7 @@ t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = cy->norm;
 	set_face_normal(ray, rec);
-	if (cy->flag == _color)
-		rec->color = cy->color;
-	else if (cy->flag == _checker)
-		rec->color = cylinder_checkerboard(rec->p, cy);
-	else if (cy->flag == _texture)
-	{
-		rec->color = shpere_texture(rec->p, cy);
-		shpere_bump(rec->p, cy, rec);
-	}
+	_cylinder_cap_color(cy, rec);
 	return (true);
 }
 
@@ -136,11 +92,11 @@ t_hit_record *rec)
 	if (cy->flag == _color)
 		rec->color = cy->color;
 	else if (cy->flag == _checker)
-		rec->color = cylinder_checkerboard(rec->p, cy);
+		rec->color = cylinder_checkerboard_side(rec->p, cy);
 	else if (cy->flag == _texture)
 	{
-		rec->color = shpere_texture(rec->p, cy);
-		shpere_bump(rec->p, cy, rec);
+		rec->color = cylinder_texture_side(rec->p, cy);
+		// cylinder_bump(rec->p, cy, rec);
 	}
 	return (true);
 }

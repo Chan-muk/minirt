@@ -12,18 +12,6 @@
 
 #include "minirt.h"
 
-static t_color	plane_checkerboard(t_vector p)
-{
-	double	u;
-	double	v;
-
-	u = fract(p.x * 0.2) - 0.5;
-	v = fract(p.y * 0.4) - 0.5;
-	if (u * v > 0.0)
-		return (new_vec(1.0, 1.0, 1.0));
-	return (new_vec(0, 0, 0));
-}
-
 bool	hit_plane(t_hit_array *pl, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
