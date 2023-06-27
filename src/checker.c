@@ -59,8 +59,8 @@ t_color	cylinder_checkerboard_side(t_vector p, t_hit_array *cy)
 	stdvec2 = unit_vec(vec_prod(cy->norm, stdvec1));
 	v = vec_dot(vec_sub(p, cy->center), cy->norm);
 	vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, v))));
-	u = atan2(vec_dot(vec_u, stdvec1), vec_dot(vec_u, stdvec2));
-	u = 0.5 - fract(u * 4);
+	u = atan2(vec_dot(vec_u, stdvec1), vec_dot(vec_u, stdvec2)) / M_PI;
+	u = 0.5 - fract(u * 12);
 	v = 0.5 - fract(v * 4);
 	if (u * v < 0.0)
 		return (new_color(0, 0, 0));
@@ -81,8 +81,8 @@ t_color	cylinder_checkerboard_cap(t_vector p, t_hit_array *cy)
 	stdvec2 = unit_vec(vec_prod(cy->norm, stdvec1));
 	u = vec_dot(vec_sub(p, cy->center), cy->norm);
 	vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, u))));
-	u = atan2(vec_dot(vec_u, stdvec1), vec_dot(vec_u, stdvec2));
-	u = 0.5 - fract(u * 4);
+	u = -atan2(vec_dot(vec_u, stdvec1), vec_dot(vec_u, stdvec2)) / M_PI;
+	u = 0.5 - fract(u * 12);
 	if (u < 0.0)
 		return (new_color(0, 0, 0));
 	return (new_color(1, 1, 1));
