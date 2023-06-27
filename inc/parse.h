@@ -26,12 +26,6 @@ struct s_counts
 	int	co;
 };
 
-// /* parse */
-// void		parse(char *file_name, t_hit_array **array, t_scene *scene);
-
-// /* parse_bonus */
-// void		parse_bonus(char *file_name, t_hit_array **array, t_scene *scene);
-
 /* parse */
 void		parse(char *file_name, t_data *data);
 
@@ -41,19 +35,6 @@ void		parse_bonus(char *file_name, t_data *data);
 /* _scene */
 void		parse_ambient_lightning(char *buffer, t_scene *scene);
 void		parse_camera(char *buffer, t_scene *scene);
-
-// /* _objects */
-// void		parse_light(char *buffer, t_hit_array **hit_array, int *index);
-// void		parse_plane(char *buffer, t_hit_array **hit_array, int *index);
-// void		parse_sphere(char *buffer, t_hit_array **hit_array, int *index);
-// void		parse_cylinder(char *buffer, t_hit_array **hit_array, int *index);
-
-// /* _objects_bonus */
-// void		_parse_light(char *buffer, t_hit_array **hit_array, int *index);
-// void		_parse_plane(char *buffer, t_hit_array **hit_array, int *index);
-// void		_parse_sphere(char *buffer, t_hit_array **hit_array, int *index);
-// void		_parse_cylinder(char *buffer, t_hit_array **hit_array, int *index);
-// void		_parse_cone(char *buffer, t_hit_array **hit_array, int *index);
 
 /* _objects */
 void		parse_light(char *buffer, t_data *data, int *index);
@@ -89,17 +70,7 @@ int			size_double_array(char **array);
 void		free_double_array(char **array);
 
 /* _utils_bonus */
-// void		__check_parameter(char **array, t_hit_array **hit_array, \
-// int *index, int column);
-void	__check_parameter(char **array, t_data *data, int *index, int column);
-
-
-// void		__checker(char **array, t_hit_array **hit_array, \
-// int *index, int column);
-// void		__color(char **array, t_hit_array **hit_array, \
-// int *index, int column);
-// void		__texture(char **array, t_hit_array **hit_array, \
-// int *index, int column);
-
+void		__check_parameter(char **array, t_data *data, int *index, \
+int column);
 
 #endif

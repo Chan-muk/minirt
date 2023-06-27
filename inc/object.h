@@ -20,8 +20,6 @@ typedef struct s_hit_array	t_hit_array;
 typedef struct s_scene		t_scene;
 typedef struct s_data		t_data;
 
-
-
 enum e_flag
 {
 	_color = 0,
@@ -53,8 +51,8 @@ struct s_hit_record
 struct s_images
 {
 	char	*addr;
-	int				w;
-	int				h;
+	int		w;
+	int		h;
 };
 
 struct s_hit_array

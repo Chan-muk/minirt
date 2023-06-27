@@ -62,8 +62,6 @@ static int	get_hit_array_size(char *file_name)
 	return (all_count);
 }
 
-// static void	check_parameter(char *buffer, t_hit_array **array, t_scene *scene, \
-// int *index)
 static void	check_parameter(char *buffer, t_data *data, int *index)
 {
 	if (is_equal(buffer, "A"))
@@ -86,7 +84,6 @@ static void	check_parameter(char *buffer, t_data *data, int *index)
 		exit_with_str("Error\nWrong parameter.", EXIT_FAILURE);
 }
 
-// void	parse_bonus(char *file_name, t_hit_array **array, t_scene *scene)
 void	parse_bonus(char *file_name, t_data *data)
 {
 	int		fd;
@@ -98,16 +95,12 @@ void	parse_bonus(char *file_name, t_data *data)
 	fd = open(file_name, O_RDONLY);
 	if (fd == FAILURE)
 		exit_with_str("Error\nFile open fail.", EXIT_FAILURE);
-	// *array = ft_calloc(sizeof(t_hit_array), (size + 1));
-	// if (*array == NULL)
-	// 	exit_with_str("Error\nMemory problem in parse.", EXIT_FAILURE);
 	index = 0;
 	while (TRUE)
 	{
 		buffer = get_next_line(fd);
 		if (buffer == NULL)
 			break ;
-		// check_parameter(buffer, array, scene, &index);
 		check_parameter(buffer, data, &index);
 		free(buffer);
 	}

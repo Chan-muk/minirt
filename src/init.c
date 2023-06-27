@@ -39,17 +39,15 @@ static int	is_rt_file(char *file)
 	return (FAILURE);
 }
 
-// void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene)
 void	initialize(int argc, char **argv, t_data *data)
 {
-	t_hit_array	array[1000];
-
 	if (argc != 2)
 		exit_with_str("Error\nCheck arguments.", EXIT_FAILURE);
 	if (is_rt_file(argv[1]) == FAILURE)
 		exit_with_str("Error\nCheck RT file types.", EXIT_FAILURE);
 	parse(argv[1], data);
-	data->scene.cam = set_camera(data->scene.cam_org, data->scene.cam_dir, data->scene.cam_fov);
+	data->scene.cam = \
+	set_camera(data->scene.cam_org, data->scene.cam_dir, data->scene.cam_fov);
 	if (init_mlx(&(data->mlx)) == FAILURE)
 		exit_with_str("Error\ninitialization failed in init_mlx", EXIT_FAILURE);
 }

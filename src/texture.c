@@ -39,9 +39,9 @@
 
 t_color	plane_texture(t_vector p, t_hit_array *pl)
 {
-	double			u;
-	double			v;
-	int				i;
+	double	u;
+	double	v;
+	int		i;
 	char	*addr;
 
 	u = fract(p.x * 0.2);
@@ -55,9 +55,9 @@ t_color	plane_texture(t_vector p, t_hit_array *pl)
 
 t_color	shpere_texture(t_vector p, t_hit_array *sp)
 {
-	double			u;
-	double			v;
-	int				i;
+	double	u;
+	double	v;
+	int		i;
 	char	*addr;
 
 	u = \

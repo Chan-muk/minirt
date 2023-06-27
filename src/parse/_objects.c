@@ -25,10 +25,6 @@ void	parse_light(char *buffer, t_data *data, int *index)
 		exit_with_str("Error\nThe number of light parameters is wrong.", \
 		EXIT_FAILURE);
 	}
-	// (*hit_array)[*index].type = _light;
-	// (*hit_array)[*index].center = get_point(array[1]);
-	// (*hit_array)[*index].bright_ratio = get_ratio(array[2]);
-	// (*hit_array)[*index].color = new_color(1, 1, 1);
 	data->scene.world[*index].type = _light;
 	data->scene.world[*index].center = get_point(array[1]);
 	data->scene.world[*index].bright_ratio = get_ratio(array[2]);

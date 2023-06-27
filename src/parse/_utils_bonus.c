@@ -43,8 +43,6 @@ void	__color(char **array, t_data *data, int *index, int column)
 	data->scene.world[*index].flag = _color;
 }
 
-// void	*mlx_xpm_file_to_image(void *mlx_ptr, char *filename, int *width, int *height);
-
 void	__texture(char **array, t_data *data, int *index, int column)
 {
 	if (size_double_array(array) != (column + 3))
@@ -54,17 +52,13 @@ void	__texture(char **array, t_data *data, int *index, int column)
 		EXIT_FAILURE);
 	}
 	if (is_bmp_file(array[column + 1]) == FAILURE \
-	|| is_bmp_file(array[column + 1]) == FAILURE)
+	|| is_bmp_file(array[column + 2]) == FAILURE)
 		exit_with_str("Error\nCheck BMP file types.", EXIT_FAILURE);
-	mlx_xpm_file_to_image(data->mlx.mlx_ptr, data->scene.world[*index].bump_map.addr, &(data->scene.world[*index].bump_map.w), &(data->scene.world[*index].bump_map.h));
-	mlx_xpm_file_to_image(data->mlx.mlx_ptr, data->scene.world[*index].bump_map.addr, &(data->scene.world[*index].bump_map.w), &(data->scene.world[*index].bump_map.h));
-	// get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
-	// get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
+	mlx_xpm_file_to_image(data->mlx.mlx_ptr, array[column + 1], &(data->scene.world[*index].bump_map.w), &(data->scene.world[*index].bump_map.h));
+	mlx_xpm_file_to_image(data->mlx.mlx_ptr, array[column + 2], &(data->scene.world[*index].bump_map.w), &(data->scene.world[*index].bump_map.h));
 	data->scene.world[*index].flag = _texture;
 }
 
-// void	__check_parameter(char **array, t_hit_array **hit_array, int *index, \
-// int column)
 void	__check_parameter(char **array, t_data *data, int *index, int column)
 {
 	if (is_equal(array[column], "CHECKER"))

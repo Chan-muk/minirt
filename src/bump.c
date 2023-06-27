@@ -41,11 +41,11 @@ t_vector	bumprotatevector(t_vector normal, t_vector bump)
 
 void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 {
-	double			u;
-	double			v;
-	int				i;
-	char	*addr;
-	t_vector		bump;
+	double		u;
+	double		v;
+	int			i;
+	char		*addr;
+	t_vector	bump;
 
 	u = (rec->normal.x + 1) * 0.5;
 	v = (rec->normal.y + 1) * 0.5;
@@ -59,11 +59,11 @@ void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 
 void	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 {
-	double			u;
-	double			v;
-	int				i;
-	char	*addr;
-	t_vector		bump;
+	double		u;
+	double		v;
+	int			i;
+	char		*addr;
+	t_vector	bump;
 
 	u = fract(p.x * 0.2);
 	v = fract(p.y * 0.2);
