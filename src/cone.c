@@ -12,40 +12,6 @@
 
 #include "minirt.h"
 
-t_color	cone_checkerboard(t_vector p, t_hit_array *sp)
-{
-	double	u;
-	double	v;
-	double	theta;
-	double	phi;
-	double	size;
-
-	size = 4;
-	theta = atan((p.z - sp->center.z) / (p.x - sp->center.x));
-	phi = acos((p.y - sp->center.y) / sp->radius);
-	u = 1 - (theta / (2 * M_PI) + 0.5);
-	v = 1 - (phi / M_PI);
-	u = 0.5 - fract(u * size * 2);
-	v = 0.5 - fract(v * size);
-	if (u * v < 0.0)
-		return (new_color(0, 0, 0));
-	return (new_color(1, 1, 1));
-}
-
-static void	surface_flag(t_hit_array *cone, t_hit_record *rec)
-{
-	if (cone->flag == _color)
-		rec->color = cone->color;
-	else if (cone->flag == _checker)
-		rec->color = cone_checkerboard(rec->p, cone);
-	else if (cone->flag == _texture)
-	{
-		rec->color = shpere_texture(rec->p, cone);
-		shpere_bump(rec->p, cone, rec);
-	}
-}
-
-
 void	get_cone_data(t_formula *formula, t_hit_array *cone, t_ray *ray)
 {
 	t_vector	r_height;
@@ -96,38 +62,12 @@ bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 	rec->p = ray_at(ray, root);
 	rec->normal = cone_normal_vector(cone, ray, root);
 	set_face_normal(ray, rec);
-	surface_flag(cone, rec);
-	// rec->color = cone->color;
-	return (true);
-}
-
-bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
-double height)
-{
-	double	numrator;
-	double	denominator;
-	double	root;
-	double	rad;
-
-	if (check_object_height(cone, ray, height))
-		return (false);
-	denominator = vec_dot(ray->dir, cone->norm);
-	if (fabs(denominator) < rec->tmin)
-		return (false);
-	numrator = vec_dot(vec_sub(cone->center, ray->org), cone->norm);
-	root = numrator / denominator;
-	if (root < rec->tmin || root > rec->tmax)
-		return (false);
-	rad = \
-	vec_len(vec_sub(vec_add(ray->org, vec_mul(ray->dir, root)), cone->center));
-	if ((rad * rad) > (cone->radius * cone->radius) || rad < 0.0)
-		return (false);
-	rec->t = root;
-	rec->p = ray_at(ray, root);
-	rec->normal = cone->norm;
-	set_face_normal(ray, rec);
-	surface_flag(cone, rec);
-	// rec->color = cone->color;
+	if (cone->flag == _color)
+		rec->color = cone->color;
+	else if (cone->flag == _checker)
+		rec->color = cylinder_checkerboard_side(rec->p, cone);
+	else if (cone->flag == _texture)
+		rec->color = cylinder_texture_side(rec->p, cone);
 	return (true);
 }
 

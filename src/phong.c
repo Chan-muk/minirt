@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <fenv.h>
 
 static t_vector	reflect(t_vector v, t_vector n)
 {

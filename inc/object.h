@@ -91,4 +91,8 @@ double root);
 /* cone */
 bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec);
 
+/* cone utils */
+bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
+double height);
+
 #endif
