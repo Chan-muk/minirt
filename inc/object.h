@@ -18,6 +18,7 @@ typedef struct s_hit_record	t_hit_record;
 typedef struct s_images		t_images;
 typedef struct s_hit_array	t_hit_array;
 typedef struct s_scene		t_scene;
+typedef struct s_data		t_data;
 
 enum e_flag
 {
@@ -66,6 +67,12 @@ struct s_hit_array
 	double		bright_ratio;
 	t_images	texture;
 	t_images	bump_map;
+};
+
+struct s_data
+{
+	t_mlx	mlx;
+	t_scene	scene;
 };
 
 /* hit */

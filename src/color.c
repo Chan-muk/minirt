@@ -29,8 +29,8 @@ t_color	ray_color(t_scene *scene)
 	t_vector		n;
 	double			t;
 
-	scene->rec.tmin = 0.00000001;
-	scene->rec.tmax = (double)(INT_MAX);
+	scene->rec.tmin = REC_TMIN;
+	scene->rec.tmax = REC_TMAX;
 	if (hit_world(scene))
 		return (phong_lighting(scene));
 	else

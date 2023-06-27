@@ -34,18 +34,20 @@
 # define FALSE			0
 # define EXIT_SUCCESS	0
 # define EXIT_FAILURE	1
-# define CAMERA_NS		100
+# define INT_MAX		2147483647
+# define REC_TMIN		1.0e-8
+# define REC_TMAX		INT_MAX
 # define KEYPRESS		2
 # define DESTROYNOTIFY	17
 # define ESC			53
-# define INT_MAX		2147483647
+
 /* shininess value */
 # define KSN			64
 /* specular strength */
 # define KS				0.5
 /* standard luminous flux/light quantity */
 # define LUMEN			3
-# define EPSILON		0.000001
+# define EPSILON		1.0e-3
 
 /* init */
 void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene);
