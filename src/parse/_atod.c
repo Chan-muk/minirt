@@ -55,10 +55,12 @@ double	ascii_to_double(char *str)
 {
 	int		index;
 	int		sign;
+	int		count;
 	int		decimal_count;
 	double	number;
 
 	index = 0;
+	count = 0;
 	decimal_count = 0;
 	number = 0.0;
 	is_double(str);
@@ -76,5 +78,7 @@ double	ascii_to_double(char *str)
 		index++;
 		decimal_count++;
 	}
+	if (count > 10 || decimal_count > 10)
+		exit_with_str("Check the number", EXIT_FAILURE);
 	return (sign * number * pow(0.1, decimal_count));
 }

@@ -33,7 +33,7 @@ void	get_bmp_addr(char *path, t_images *img)
 	img->h = *(int *)(header + 22);
 	tmp = read(bmp_fd, img->addr, size);
 	if (size != tmp)
-		exit_with_str("Error\nBMP: Error reading imagedata.", EXIT_FAILURE);
+		exit_with_str("Error\nBMP: Error reading image data.", EXIT_FAILURE);
 	close(bmp_fd);
 }
 
