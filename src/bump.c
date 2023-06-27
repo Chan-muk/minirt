@@ -75,7 +75,7 @@ void	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 	rec->normal = bumprotatevector(rec->normal, bump);
 }
 
-void	cylinder_bump(t_vector p, t_hit_array *cy, t_hit_record *rec)
+void	cylinder_bump_side(t_vector p, t_hit_array *cy, t_hit_record *rec)
 {
 	t_uvbox	o;
 
@@ -87,10 +87,41 @@ void	cylinder_bump(t_vector p, t_hit_array *cy, t_hit_record *rec)
 	o.v = (vec_dot(vec_sub(p, cy->center), cy->norm));
 	o.vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, o.v))));
 	o.u = -atan2(vec_dot(o.vec_u, o.stdvec1), \
-	vec_dot(o.vec_u, o.stdvec2)) / M_PI;
+	vec_dot(o.vec_u, o.stdvec2)) / (M_PI * 2);
 	o.v /= cy->height;
-	o.i = ((int)(cy->bump_map.w * o.u) + \
+	if (o.u > 0.0)
+		o.i = ((int)(cy->bump_map.w * o.u) + \
 	(int)(cy->bump_map.h * o.v) * cy->bump_map.w) * 3;
+	else
+		o.i = ((int)(cy->bump_map.w * o.u) + \
+	(int)(cy->bump_map.h * o.v + 1) * cy->bump_map.w) * 3;
+	o.addr = cy->bump_map.addr;
+	o.bump = new_vec(o.addr[o.i + 2] / \
+	255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0);
+	o.bump = \
+	new_vec((o.bump.x - 0.5) * 2, (o.bump.y - 0.5) * 2, (o.bump.z - 0.5) * 2);
+	rec->normal = bumprotatevector(rec->normal, o.bump);
+}
+
+void	cylinder_bump_cap(t_vector p, t_hit_array *cy, t_hit_record *rec)
+{
+	t_uvbox	o;
+
+	if (vec_len(vec_prod(cy->norm, new_vec(0, 1, 0))) == 0.0)
+		o.stdvec1 = new_vec(0, 0, 1);
+	else
+		o.stdvec1 = unit_vec(vec_prod(cy->norm, new_vec(0, 1, 0)));
+	o.stdvec2 = unit_vec(vec_prod(cy->norm, o.stdvec1));
+	o.v = (vec_dot(vec_sub(p, cy->center), cy->norm));
+	o.vec_u = unit_vec(vec_sub(p, vec_add(cy->center, vec_mul(cy->norm, o.v))));
+	o.u = -atan2(vec_dot(o.vec_u, o.stdvec1), \
+	vec_dot(o.vec_u, o.stdvec2)) / (M_PI * 2);
+	o.v /= cy->height;
+	if (o.v < 0.5)
+		o.i = ((int)(cy->texture.w * o.u) + 1 * cy->texture.w) * 3;
+	else
+		o.i = ((int)(cy->texture.w * o.u) + \
+		(cy->texture.h - 1) * cy->texture.w) * 3;
 	o.addr = cy->bump_map.addr;
 	o.bump = new_vec(o.addr[o.i + 2] / \
 	255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0);

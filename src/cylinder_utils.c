@@ -19,7 +19,10 @@ static void	_cylinder_cap_color(t_hit_array *cy, t_hit_record *rec)
 	else if (cy->flag == _checker)
 		rec->color = cylinder_checkerboard_cap(rec->p, cy);
 	else if (cy->flag == _texture)
+	{
 		rec->color = cylinder_texture_cap(rec->p, cy);
+		cylinder_bump_cap(rec->p, cy, rec);
+	}
 }
 
 bool	_cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, \
@@ -91,6 +94,9 @@ t_hit_record *rec)
 	else if (cy->flag == _checker)
 		rec->color = cylinder_checkerboard_side(rec->p, cy);
 	else if (cy->flag == _texture)
+	{
 		rec->color = cylinder_texture_side(rec->p, cy);
+		cylinder_bump_side(rec->p, cy, rec);
+	}
 	return (true);
 }

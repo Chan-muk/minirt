@@ -117,6 +117,7 @@ t_color		cylinder_texture_cap(t_vector p, t_hit_array *cy);
 /* bump */
 void		plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec);
 void		shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec);
-void		cylinder_bump(t_vector p, t_hit_array *cy, t_hit_record *rec);
+void		cylinder_bump_side(t_vector p, t_hit_array *cy, t_hit_record *rec);
+void		cylinder_bump_cap(t_vector p, t_hit_array *cy, t_hit_record *rec);
 
 #endif
