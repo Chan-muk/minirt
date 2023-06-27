@@ -8,4 +8,4 @@ L   0,-10,0    		 0.1								255,255,255
 L   0,0,10    		 0.1								255,255,255
 L   0,0,-10    		 0.1								255,255,255
 
-cy	0,-1,-6			1,1,1		2	2	TEXTURE	img.bmp blockbump.bmp
+cy	0,-1,-6			1,1,1		2	2	TEXTURE earthmap.bmp blockbump.bmp
