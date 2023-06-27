@@ -67,7 +67,10 @@ int	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 	else if (cone->flag == _checker)
 		rec->color = cylinder_checkerboard_side(rec->p, cone);
 	else if (cone->flag == _texture)
+	{
 		rec->color = cylinder_texture_side(rec->p, cone);
+		cylinder_bump_side(rec->p, cone, rec);
+	}
 	return (true);
 }
 
