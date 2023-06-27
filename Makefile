@@ -12,7 +12,7 @@
 
 .DEFAULT_GOAL := all
 
-NAME		= minirt
+NAME		= miniRT
 
 CC			= cc -g3 -O3
 CFLAGS		= -Wall -Wextra -Werror

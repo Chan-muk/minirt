@@ -51,24 +51,29 @@ static void	is_double(char *str)
 		exit_with_str("Error\nThe Number is incorrect.", EXIT_FAILURE);
 }
 
+void	init_variable(int *index, int *count, int *d_count, double *number)
+{
+	*index = 0;
+	*count = 0;
+	*d_count = 0;
+	*number = 0.0;
+}
+
 double	ascii_to_double(char *str)
 {
 	int		index;
 	int		sign;
-	int		count;
-	int		decimal_count;
+	int		count[2];
 	double	number;
 
-	index = 0;
-	count = 0;
-	decimal_count = 0;
-	number = 0.0;
 	is_double(str);
+	init_variable(&index, &count[0], &count[1], &number);
 	sign = white_space_sign_check(str, &index);
 	while (str[index] && ft_isdigit(str[index]))
 	{
 		number = 10.0 * number + (str[index] - '0');
 		index++;
+		(count[0])++;
 	}
 	if (str[index] == '.')
 		index++;
@@ -76,9 +81,9 @@ double	ascii_to_double(char *str)
 	{
 		number = 10.0 * number + (str[index] - '0');
 		index++;
-		decimal_count++;
+		(count[1])++;
 	}
-	if (count > 10 || decimal_count > 10)
+	if (count[0] > 10 || count[1] > 10)
 		exit_with_str("Check the number", EXIT_FAILURE);
-	return (sign * number * pow(0.1, decimal_count));
+	return (sign * number * pow(0.1, count[1]));
 }

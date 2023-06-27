@@ -14,7 +14,7 @@
 
 void	texture_free(t_hit_array array[])
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i].type)
