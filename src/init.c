@@ -48,7 +48,7 @@ void	initialize(int argc, char **argv, t_mlx *mlx, t_scene *scene)
 	if (is_rt_file(argv[1]) == FAILURE)
 		exit_with_str("Error\nCheck RT file types.", EXIT_FAILURE);
 	parse(argv[1], &array, scene);
-	set_scene(scene);
+	scene->cam = set_camera(scene->cam_org, scene->cam_dir, scene->cam_fov);
 	scene->world = array;
 	if (init_mlx(mlx) == FAILURE)
 		exit_with_str("Error\ninitialization failed in init_mlx", EXIT_FAILURE);

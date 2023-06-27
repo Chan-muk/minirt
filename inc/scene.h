@@ -85,8 +85,7 @@ struct s_uvbox
 };
 
 /* scene */
-t_camera	camera(t_point org, t_vector dir, double fov);
-void		set_scene(t_scene *scene);
+t_camera	set_camera(t_point org, t_vector dir, double fov);
 
 /* color */
 void		color_window(t_mlx *mlx, t_scene *scene);

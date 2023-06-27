@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-t_camera	camera(t_point org, t_vector dir, double fov)
+t_camera	set_camera(t_point org, t_vector dir, double fov)
 {
 	t_camera	cam;
 	t_vector	vec_y;
@@ -38,11 +38,4 @@ t_camera	camera(t_point org, t_vector dir, double fov)
 	vec_sub(temp, vec_mul(cam.up_normal, (double)((WIN_HEIGHT - 1) * 0.5)));
 	cam.left_bottom = temp;
 	return (cam);
-}
-
-void	set_scene(t_scene *scene)
-{
-	scene->cam = camera(scene->cam_org, scene->cam_dir, scene->cam_fov);
-	// scene->rec.tmin = 0.00000001;
-	// scene->rec.tmax = (double)(INT_MAX);
 }
