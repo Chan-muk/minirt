@@ -12,30 +12,30 @@
 
 #include "minirt.h"
 
-// void	get_bmp_addr(char *path, t_images *img)
-// {
-// 	ssize_t			size;
-// 	ssize_t			tmp;
-// 	const int		bmp_fd = open(path, O_RDONLY);
-// 	char			header[54];
+void	get_bmp_addr(char *path, t_images *img)
+{
+	ssize_t			size;
+	ssize_t			tmp;
+	const int		bmp_fd = open(path, O_RDONLY);
+	char			header[54];
 
-// 	if (bmp_fd == -1)
-// 		exit_with_str("Error\nBMP: Error opening file.", EXIT_FAILURE);
-// 	size = read(bmp_fd, &header, 54);
-// 	if (size != 54)
-// 		exit_with_str("Error\nBMP: Error reading header.", EXIT_FAILURE);
-// 	if (*(unsigned int *)(header + 34) != 0)
-// 		size = *(unsigned int *)(header + 34);
-// 	else
-// 		size = *(unsigned int *)(header + 2) - *(unsigned int *)(header + 10);
-// 	img->addr = (uint8_t *)malloc(size);
-// 	img->w = *(int *)(header + 18);
-// 	img->h = *(int *)(header + 22);
-// 	tmp = read(bmp_fd, img->addr, size);
-// 	if (size != tmp)
-// 		exit_with_str("Error\nBMP: Error reading imagedata.", EXIT_FAILURE);
-// 	close(bmp_fd);
-// }
+	if (bmp_fd == -1)
+		exit_with_str("Error\nBMP: Error opening file.", EXIT_FAILURE);
+	size = read(bmp_fd, &header, 54);
+	if (size != 54)
+		exit_with_str("Error\nBMP: Error reading header.", EXIT_FAILURE);
+	if (*(unsigned int *)(header + 34) != 0)
+		size = *(unsigned int *)(header + 34);
+	else
+		size = *(unsigned int *)(header + 2) - *(unsigned int *)(header + 10);
+	img->addr = (uint8_t *)malloc(size);
+	img->w = *(int *)(header + 18);
+	img->h = *(int *)(header + 22);
+	tmp = read(bmp_fd, img->addr, size);
+	if (size != tmp)
+		exit_with_str("Error\nBMP: Error reading image data.", EXIT_FAILURE);
+	close(bmp_fd);
+}
 
 t_color	plane_texture(t_vector p, t_hit_array *pl)
 {
