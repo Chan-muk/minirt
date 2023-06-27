@@ -104,7 +104,7 @@ int			write_color(t_color pixel_color);
 t_color		phong_lighting(t_scene *scene);
 
 /* phong_utils */
-int		in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
+int			in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
 
 /* checker */
 t_color		plane_checkerboard(t_vector p);

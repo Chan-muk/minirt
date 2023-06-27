@@ -56,7 +56,7 @@ void	set_hooks(t_mlx *mlx);
 
 /* utils */
 double	fract(double x);
-int	check_object_height(t_hit_array *obj, t_ray *ray, double root);
+int		check_object_height(t_hit_array *obj, t_ray *ray, double root);
 void	data_backup(t_hit_record *rec_backup, t_hit_record *rec);
 void	check_data(double root, int *flag, t_hit_record *rec, \
 t_hit_record *rec_backup);
