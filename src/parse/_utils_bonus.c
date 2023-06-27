@@ -54,36 +54,11 @@ void	__texture(char **array, t_data *data, int *index, int column)
 		exit_with_str("Error\nTexture parameters are not correct.", \
 		EXIT_FAILURE);
 	}
-<<<<<<< HEAD
 	if (is_bmp_file(array[column + 1]) == FAILURE \
 	|| is_bmp_file(array[column + 1]) == FAILURE)
 		exit_with_str("Error\nCheck BMP file types.", EXIT_FAILURE);
 	get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
 	get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
-=======
-	if (is_xpm_file(array[column + 1]) == FAILURE \
-	|| is_xpm_file(array[column + 2]) == FAILURE)
-		exit_with_str("Error\nCheck XPM file types.", EXIT_FAILURE);
-	// data->scene.world[*index].texture.addr = mlx_xpm_file_to_image(&(data->mlx.mlx_ptr), array[column + 1], &width, &height);
-
-	ptr = mlx_xpm_file_to_image(&(data->mlx.mlx_ptr), array[column + 1], &(data->scene.world->texture.w), &(data->scene.world->texture.h));
-	data->scene.world[*index].texture.addr = ptr;
-	// data->scene.world[*index].texture.addr = mlx_get_data_addr(ptr, &(data->mlx.img.bits_per_pixel), &(data->mlx.img.size_line), &(data->mlx.img.endian));
-
-	ptr2 = mlx_xpm_file_to_image(&(data->mlx.mlx_ptr), array[column + 2], &(data->scene.world->bump_map.w), &(data->scene.world->bump_map.h));
-	data->scene.world[*index].bump_map.addr = ptr2;
-	// data->scene.world[*index].bump_map.addr = mlx_get_data_addr(ptr2, &(data->mlx.img.bits_per_pixel), &(data->mlx.img.size_line), &(data->mlx.img.endian));
-
-	// printf("p1: %p, p2: %p\n", ptr, ptr2);
-	// printf("p1: %p, p2: %p\n", data->scene.world[*index].texture.addr, data->scene.world[*index].bump_map.addr);
-	// exit(1);
-
-	// data->scene.world[*index].bump_map.addr = mlx_xpm_file_to_image(&(data->mlx.mlx_ptr), array[column + 2], &width, &height);
-	// if (data->scene.world[*index].texture.addr == NULL || data->scene.world[*index].texture.addr == NULL)
-	// 	exit_with_str("Error\nMLX Error.", EXIT_FAILURE);
-	// get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
-	// get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
->>>>>>> 84471271a11dbac285d6bfe9dab6f9d1d8823703
 	data->scene.world[*index].flag = _texture;
 }
 
