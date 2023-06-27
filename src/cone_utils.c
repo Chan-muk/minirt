@@ -19,7 +19,10 @@ static void	_cone_cap_color(t_hit_array *obj, t_hit_record *rec)
 	else if (obj->flag == _checker)
 		rec->color = cylinder_checkerboard_cap(rec->p, obj);
 	else if (obj->flag == _texture)
+	{
 		rec->color = cylinder_texture_cap(rec->p, obj);
+		cylinder_bump_cap(rec->p, obj, rec);
+	}
 }
 
 bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
