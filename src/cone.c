@@ -52,7 +52,7 @@ t_vector	cone_normal_vector(t_hit_array *cone, t_ray *ray, double root)
 	return (unit_vec(normal_vector));
 }
 
-bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
+int	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 {
 	if (root < rec->tmin || rec->tmax < root)
 		return (false);
@@ -71,11 +71,11 @@ bool	cone_side(t_hit_array *cone, t_ray *ray, t_hit_record *rec, double root)
 	return (true);
 }
 
-bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
+int	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 {
 	t_formula		formula;
 	t_hit_record	rec_backup;
-	bool			flag;
+	int			flag;
 
 	flag = false;
 	get_cone_data(&formula, cone, ray);

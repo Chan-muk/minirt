@@ -16,7 +16,6 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdbool.h>
 # include <fcntl.h>
 # include <math.h>
 # include <time.h>
@@ -57,9 +56,9 @@ void	set_hooks(t_mlx *mlx);
 
 /* utils */
 double	fract(double x);
-bool	check_object_height(t_hit_array *obj, t_ray *ray, double root);
+int	check_object_height(t_hit_array *obj, t_ray *ray, double root);
 void	data_backup(t_hit_record *rec_backup, t_hit_record *rec);
-void	check_data(double root, bool *flag, t_hit_record *rec, \
+void	check_data(double root, int *flag, t_hit_record *rec, \
 t_hit_record *rec_backup);
 void	exit_with_str(const char *str, int exit_code);
 

@@ -22,7 +22,7 @@ static void	_cone_cap_color(t_hit_array *obj, t_hit_record *rec)
 		rec->color = cylinder_texture_cap(rec->p, obj);
 }
 
-bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
+int	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
 double height)
 {
 	double	numrator;

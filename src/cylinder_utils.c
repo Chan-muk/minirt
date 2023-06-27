@@ -22,7 +22,7 @@ static void	_cylinder_cap_color(t_hit_array *cy, t_hit_record *rec)
 		rec->color = cylinder_texture_cap(rec->p, cy);
 }
 
-bool	_cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, \
+int	_cylinder_cap(t_vector center, t_hit_array *cy, t_ray *ray, \
 t_hit_record *rec)
 {
 	double	numrator;
@@ -48,7 +48,7 @@ t_hit_record *rec)
 	return (true);
 }
 
-bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, \
+int	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, \
 double root)
 {
 	t_vector	point_center;
@@ -69,7 +69,7 @@ double root)
 	return (false);
 }
 
-bool	cylinder_side(double root, t_hit_array *cy, t_ray *ray, \
+int	cylinder_side(double root, t_hit_array *cy, t_ray *ray, \
 t_hit_record *rec)
 {
 	double	height;

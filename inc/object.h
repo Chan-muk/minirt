@@ -43,7 +43,7 @@ struct s_hit_record
 	double		tmin;
 	double		tmax;
 	double		t;
-	bool		front_face;
+	int			front_face;
 	t_vector	color;
 };
 
@@ -69,30 +69,30 @@ struct s_hit_array
 };
 
 /* hit */
-bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec);
+int	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec);
 void	set_face_normal(t_ray *r, t_hit_record *rec);
-bool	hit_world(t_scene *scene);
+int	hit_world(t_scene *scene);
 
 /* plane */
-bool	hit_plane(t_hit_array *pl, t_ray *r, t_hit_record *rec);
+int	hit_plane(t_hit_array *pl, t_ray *r, t_hit_record *rec);
 
 /* sphere */
-bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
+int	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec);
 
 /* cylinder */
-bool	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
+int	hit_cylinder(t_hit_array *cy, t_ray *r, t_hit_record *rec);
 
 /* cylinder utils */
-bool	cylinder_side(double root, t_hit_array *cy, t_ray *ray, \
+int	cylinder_side(double root, t_hit_array *cy, t_ray *ray, \
 t_hit_record *rec);
-bool	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, \
+int	cylinder_cap(t_hit_array *cy, t_ray *ray, t_hit_record *rec, \
 double root);
 
 /* cone */
-bool	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec);
+int	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec);
 
 /* cone utils */
-bool	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
+int	cone_cap(t_hit_array *cone, t_ray *ray, t_hit_record *rec, \
 double height);
 
 #endif

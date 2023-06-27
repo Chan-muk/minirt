@@ -24,7 +24,7 @@ void	set_face_normal(t_ray *r, t_hit_record *rec)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
-bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
+int	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 {
 	if (array->type == _plane)
 		return (hit_plane(array, ray, rec));
@@ -37,10 +37,10 @@ bool	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 	return (false);
 }
 
-bool	hit_world(t_scene *scene)
+int	hit_world(t_scene *scene)
 {
 	t_hit_array	*array;
-	bool		hit;
+	int		hit;
 
 	array = scene->world;
 	hit = false;

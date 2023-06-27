@@ -37,7 +37,7 @@ static void	surface_flag(t_hit_array *sp, t_hit_record *rec)
 	}
 }
 
-bool	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
+int	hit_sphere(t_hit_array *sp, t_ray *ray, t_hit_record *rec)
 {
 	t_formula	formula;
 	double		root;

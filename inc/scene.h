@@ -20,6 +20,12 @@ typedef struct s_scene		t_scene;
 typedef struct s_bmpheader	t_bmpheader;
 typedef struct s_uvbox		t_uvbox;
 
+enum e_bool
+{
+	false = 0,
+	true,
+};
+
 enum e_type
 {
 	_end = 0,
@@ -98,7 +104,7 @@ int			write_color(t_color pixel_color);
 t_color		phong_lighting(t_scene *scene);
 
 /* phong_utils */
-bool		in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
+int		in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
 
 /* checker */
 t_color		plane_checkerboard(t_vector p);

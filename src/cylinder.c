@@ -33,11 +33,11 @@ static void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 	(-formula->b + sqrt(formula->discriminant)) / formula->a;
 }
 
-bool	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
+int	hit_cylinder(t_hit_array *cy, t_ray *ray, t_hit_record *rec)
 {
 	t_formula		formula;
 	t_hit_record	rec_backup;
-	bool			flag;
+	int			flag;
 
 	flag = false;
 	get_cylinder_data(&formula, cy, ray);

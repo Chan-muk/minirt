@@ -12,9 +12,9 @@
 
 #include "minirt.h"
 
-static bool	hit_shadow(t_hit_array *array, t_ray *ray, t_hit_record *rec)
+static int	hit_shadow(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 {
-	bool	hit;
+	int	hit;
 
 	hit = false;
 	while (array->type)
@@ -26,7 +26,7 @@ static bool	hit_shadow(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 	return (hit);
 }
 
-bool	in_shadow(t_hit_array *objs, t_ray light_ray, double light_len)
+int	in_shadow(t_hit_array *objs, t_ray light_ray, double light_len)
 {
 	t_hit_record	rec;
 

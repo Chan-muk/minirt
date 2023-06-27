@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-bool	hit_plane(t_hit_array *pl, t_ray *ray, t_hit_record *rec)
+int	hit_plane(t_hit_array *pl, t_ray *ray, t_hit_record *rec)
 {
 	double	numrator;
 	double	denominator;
