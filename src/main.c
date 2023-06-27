@@ -12,6 +12,22 @@
 
 #include "minirt.h"
 
+void	texture_free(t_hit_array	array[])
+{
+	int i;
+
+	i = 0;
+	while (array[i].type)
+	{
+		if (array[i].flag == _texture)
+		{
+			free(array[i].texture.addr);
+			free(array[i].bump_map.addr);
+		}
+		i++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_data		data;
@@ -20,6 +36,7 @@ int	main(int argc, char **argv)
 	data.scene.world = array;
 	initialize(argc, argv, &data);
 	color_window(&data.mlx, &data.scene);
+	texture_free(array);
 	set_hooks(&data.mlx);
 	mlx_loop(data.mlx.mlx_ptr);
 	return (0);

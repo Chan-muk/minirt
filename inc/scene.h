@@ -83,7 +83,7 @@ struct s_uvbox
 	double			u;
 	double			v;
 	int				i;
-	char	*addr;
+	unsigned char	*addr;
 	t_vector		stdvec1;
 	t_vector		stdvec2;
 	t_vector		vec_u;

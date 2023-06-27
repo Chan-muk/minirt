@@ -56,10 +56,8 @@ void	__texture(char **array, t_data *data, int *index, int column)
 	if (is_bmp_file(array[column + 1]) == FAILURE \
 	|| is_bmp_file(array[column + 1]) == FAILURE)
 		exit_with_str("Error\nCheck BMP file types.", EXIT_FAILURE);
-	mlx_xpm_file_to_image(data->mlx.mlx_ptr, data->scene.world[*index].bump_map.addr, &(data->scene.world[*index].bump_map.w), &(data->scene.world[*index].bump_map.h));
-	mlx_xpm_file_to_image(data->mlx.mlx_ptr, data->scene.world[*index].bump_map.addr, &(data->scene.world[*index].bump_map.w), &(data->scene.world[*index].bump_map.h));
-	// get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
-	// get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
+	get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
+	get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
 	data->scene.world[*index].flag = _texture;
 }
 
