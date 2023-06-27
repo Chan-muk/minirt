@@ -68,4 +68,7 @@ void	check_data(double root, int *flag, t_hit_record *rec, \
 t_hit_record *rec_backup);
 void	exit_with_str(const char *str, int exit_code);
 
+/* free */
+void	texture_free(t_hit_array array[]);
+
 #endif

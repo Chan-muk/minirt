@@ -12,22 +12,6 @@
 
 #include "minirt.h"
 
-void	texture_free(t_hit_array	array[])
-{
-	int i;
-
-	i = 0;
-	while (array[i].type)
-	{
-		if (array[i].flag == _texture)
-		{
-			free(array[i].texture.addr);
-			free(array[i].bump_map.addr);
-		}
-		i++;
-	}
-}
-
 int	main(int argc, char **argv)
 {
 	t_data		data;
