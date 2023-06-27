@@ -52,7 +52,7 @@ struct s_hit_record
 
 struct s_images
 {
-	unsigned char	*addr;
+	char	*addr;
 	int				w;
 	int				h;
 };

@@ -14,12 +14,11 @@
 
 int	main(int argc, char **argv)
 {
-	// t_mlx		mlx;
-	// t_scene		scene;
-	t_data	data;
+	t_data		data;
+	t_hit_array	array[OBJ_COUNT];
 
+	data.scene.world = array;
 	initialize_bonus(argc, argv, &data);
-
 	color_window(&data.mlx, &data.scene);
 	set_hooks(&data.mlx);
 	mlx_loop(data.mlx.mlx_ptr);

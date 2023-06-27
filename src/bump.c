@@ -44,7 +44,7 @@ void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 	double			u;
 	double			v;
 	int				i;
-	unsigned char	*addr;
+	char	*addr;
 	t_vector		bump;
 
 	u = (rec->normal.x + 1) * 0.5;
@@ -62,7 +62,7 @@ void	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 	double			u;
 	double			v;
 	int				i;
-	unsigned char	*addr;
+	char	*addr;
 	t_vector		bump;
 
 	u = fract(p.x * 0.2);
