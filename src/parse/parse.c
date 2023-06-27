@@ -60,28 +60,30 @@ static int	get_hit_array_size(char *file_name)
 	return (all_count);
 }
 
-static void	check_parameter(char *buffer, t_hit_array **array, t_scene *scene, \
-int *index)
+// static void	check_parameter(char *buffer, t_hit_array **array, t_scene *scene, \
+// int *index)
+static void	check_parameter(char *buffer, t_data *data, int *index)
 {
 	if (is_equal(buffer, "A"))
-		parse_ambient_lightning(buffer, scene);
+		parse_ambient_lightning(buffer, &(data->scene));
 	else if (is_equal(buffer, "C"))
-		parse_camera(buffer, scene);
+		parse_camera(buffer, &(data->scene));
 	else if (is_equal(buffer, "L"))
-		parse_light(buffer, array, index);
+		parse_light(buffer, data, index);
 	else if (is_equal(buffer, "pl"))
-		parse_plane(buffer, array, index);
+		parse_plane(buffer, data, index);
 	else if (is_equal(buffer, "sp"))
-		parse_sphere(buffer, array, index);
+		parse_sphere(buffer, data, index);
 	else if (is_equal(buffer, "cy"))
-		parse_cylinder(buffer, array, index);
+		parse_cylinder(buffer, data, index);
 	else if (is_equal(buffer, "\n"))
 		;
 	else
 		exit_with_str("Error\nWrong parameter.", EXIT_FAILURE);
 }
 
-void	parse(char *file_name, t_hit_array **array, t_scene *scene)
+// void	parse(char *file_name, t_hit_array **array, t_scene *scene)
+void	parse(char *file_name, t_data *data)
 {
 	int		fd;
 	int		size;
@@ -92,16 +94,17 @@ void	parse(char *file_name, t_hit_array **array, t_scene *scene)
 	fd = open(file_name, O_RDONLY);
 	if (fd == FAILURE)
 		exit_with_str("Error\nFile open fail.", EXIT_FAILURE);
-	*array = ft_calloc(sizeof(t_hit_array), (size + 1));
-	if (*array == NULL)
-		exit_with_str("Error\nMemory problem in parse.", EXIT_FAILURE);
+	// *array = ft_calloc(sizeof(t_hit_array), (size + 1));
+	// if (*array == NULL)
+	// 	exit_with_str("Error\nMemory problem in parse.", EXIT_FAILURE);
 	index = 0;
 	while (TRUE)
 	{
 		buffer = get_next_line(fd);
 		if (buffer == NULL)
 			break ;
-		check_parameter(buffer, array, scene, &index);
+		// check_parameter(buffer, array, scene, &index);
+		check_parameter(buffer, data, &index);
 		free(buffer);
 	}
 	close(fd);

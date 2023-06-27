@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-void	parse_light(char *buffer, t_hit_array **hit_array, int *index)
+void	parse_light(char *buffer, t_data *data, int *index)
 {
 	char	**array;
 
@@ -25,15 +25,19 @@ void	parse_light(char *buffer, t_hit_array **hit_array, int *index)
 		exit_with_str("Error\nThe number of light parameters is wrong.", \
 		EXIT_FAILURE);
 	}
-	(*hit_array)[*index].type = _light;
-	(*hit_array)[*index].center = get_point(array[1]);
-	(*hit_array)[*index].bright_ratio = get_ratio(array[2]);
-	(*hit_array)[*index].color = new_color(1, 1, 1);
+	// (*hit_array)[*index].type = _light;
+	// (*hit_array)[*index].center = get_point(array[1]);
+	// (*hit_array)[*index].bright_ratio = get_ratio(array[2]);
+	// (*hit_array)[*index].color = new_color(1, 1, 1);
+	data->scene.world[*index].type = _light;
+	data->scene.world[*index].center = get_point(array[1]);
+	data->scene.world[*index].bright_ratio = get_ratio(array[2]);
+	data->scene.world[*index].color = new_color(1, 1, 1);
 	free_double_array(array);
 	(*index)++;
 }
 
-void	parse_plane(char *buffer, t_hit_array **hit_array, int *index)
+void	parse_plane(char *buffer, t_data *data, int *index)
 {
 	char		**array;
 
@@ -46,16 +50,16 @@ void	parse_plane(char *buffer, t_hit_array **hit_array, int *index)
 		exit_with_str("Error\nThe number of plane parameters is wrong.", \
 		EXIT_FAILURE);
 	}
-	(*hit_array)[*index].type = _plane;
-	(*hit_array)[*index].center = get_point(array[1]);
-	(*hit_array)[*index].norm = get_normal_vector(array[2]);
-	(*hit_array)[*index].color = get_color(array[3]);
-	(*hit_array)[*index].flag = _color;
+	data->scene.world[*index].type = _plane;
+	data->scene.world[*index].center = get_point(array[1]);
+	data->scene.world[*index].norm = get_normal_vector(array[2]);
+	data->scene.world[*index].color = get_color(array[3]);
+	data->scene.world[*index].flag = _color;
 	free_double_array(array);
 	(*index)++;
 }
 
-void	parse_sphere(char *buffer, t_hit_array **hit_array, int *index)
+void	parse_sphere(char *buffer, t_data *data, int *index)
 {
 	char	**array;
 
@@ -68,16 +72,16 @@ void	parse_sphere(char *buffer, t_hit_array **hit_array, int *index)
 		exit_with_str("Error\nThe number of sphere parameters is wrong.", \
 		EXIT_FAILURE);
 	}
-	(*hit_array)[*index].type = _sphere;
-	(*hit_array)[*index].center = get_point(array[1]);
-	(*hit_array)[*index].radius = (get_length(array[2]) * 0.5);
-	(*hit_array)[*index].color = get_color(array[3]);
-	(*hit_array)[*index].flag = _color;
+	data->scene.world[*index].type = _sphere;
+	data->scene.world[*index].center = get_point(array[1]);
+	data->scene.world[*index].radius = (get_length(array[2]) * 0.5);
+	data->scene.world[*index].color = get_color(array[3]);
+	data->scene.world[*index].flag = _color;
 	free_double_array(array);
 	(*index)++;
 }
 
-void	parse_cylinder(char *buffer, t_hit_array **hit_array, int *index)
+void	parse_cylinder(char *buffer, t_data *data, int *index)
 {
 	char		**array;
 
@@ -90,13 +94,13 @@ void	parse_cylinder(char *buffer, t_hit_array **hit_array, int *index)
 		exit_with_str("Error\nThe number of cylinder parameters is wrong.", \
 		EXIT_FAILURE);
 	}
-	(*hit_array)[*index].type = _cylinder;
-	(*hit_array)[*index].center = get_point(array[1]);
-	(*hit_array)[*index].norm = get_normal_vector(array[2]);
-	(*hit_array)[*index].radius = (get_length(array[3]) * 0.5);
-	(*hit_array)[*index].height = get_length(array[4]);
-	(*hit_array)[*index].color = get_color(array[5]);
-	(*hit_array)[*index].flag = _color;
+	data->scene.world[*index].type = _cylinder;
+	data->scene.world[*index].center = get_point(array[1]);
+	data->scene.world[*index].norm = get_normal_vector(array[2]);
+	data->scene.world[*index].radius = (get_length(array[3]) * 0.5);
+	data->scene.world[*index].height = get_length(array[4]);
+	data->scene.world[*index].color = get_color(array[5]);
+	data->scene.world[*index].flag = _color;
 	free_double_array(array);
 	(*index)++;
 }

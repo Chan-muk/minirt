@@ -14,12 +14,16 @@
 
 int	main(int argc, char **argv)
 {
-	t_mlx		mlx;
-	t_scene		scene;
+	// t_mlx		mlx;
+	// t_scene		scene;
+	t_data	data;
 
-	initialize(argc, argv, &mlx, &scene);
-	color_window(&mlx, &scene);
-	set_hooks(&mlx);
-	mlx_loop(mlx.mlx_ptr);
+	// initialize(argc, argv, &mlx, &scene);
+	initialize(argc, argv, &data);
+	// color_window(&mlx, &scene);
+	// set_hooks(&mlx);
+	color_window(&data.mlx, &data.scene);
+	set_hooks(&data.mlx);
+	mlx_loop(data.mlx.mlx_ptr);
 	return (0);
 }

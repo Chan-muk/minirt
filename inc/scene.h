@@ -90,6 +90,12 @@ struct s_uvbox
 	t_vector		bump;
 };
 
+struct s_data
+{
+	struct s_mlx	mlx;
+	struct s_scene	scene;
+};
+
 /* scene */
 t_camera	set_camera(t_point org, t_vector dir, double fov);
 

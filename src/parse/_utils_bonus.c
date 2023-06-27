@@ -20,7 +20,7 @@ static int	is_bmp_file(char *file)
 	return (FAILURE);
 }
 
-void	__checker(char **array, t_hit_array **hit_array, int *index, int column)
+void	__checker(char **array, t_data *data, int *index, int column)
 {
 	if (size_double_array(array) != (column + 1))
 	{
@@ -28,10 +28,10 @@ void	__checker(char **array, t_hit_array **hit_array, int *index, int column)
 		exit_with_str("Error\nChecker board parameters are not correct.", \
 		EXIT_FAILURE);
 	}
-	(*hit_array)[*index].flag = _checker;
+	data->scene.world[*index].flag = _checker;
 }
 
-void	__color(char **array, t_hit_array **hit_array, int *index, int column)
+void	__color(char **array, t_data *data, int *index, int column)
 {
 	if (size_double_array(array) != (column + 2))
 	{
@@ -39,11 +39,11 @@ void	__color(char **array, t_hit_array **hit_array, int *index, int column)
 		exit_with_str("Error\nColor parameters are not correct.", \
 		EXIT_FAILURE);
 	}
-	(*hit_array)[*index].color = get_color(array[column + 1]);
-	(*hit_array)[*index].flag = _color;
+	data->scene.world[*index].color = get_color(array[column + 1]);
+	data->scene.world[*index].flag = _color;
 }
 
-void	__texture(char **array, t_hit_array **hit_array, int *index, int column)
+void	__texture(char **array, t_data *data, int *index, int column)
 {
 	if (size_double_array(array) != (column + 3))
 	{
@@ -54,20 +54,21 @@ void	__texture(char **array, t_hit_array **hit_array, int *index, int column)
 	if (is_bmp_file(array[column + 1]) == FAILURE \
 	|| is_bmp_file(array[column + 1]) == FAILURE)
 		exit_with_str("Error\nCheck BMP file types.", EXIT_FAILURE);
-	get_bmp_addr(array[column + 1], &((*hit_array)[*index].texture));
-	get_bmp_addr(array[column + 2], &((*hit_array)[*index].bump_map));
-	(*hit_array)[*index].flag = _texture;
+	get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
+	get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
+	data->scene.world[*index].flag = _texture;
 }
 
-void	__check_parameter(char **array, t_hit_array **hit_array, int *index, \
-int column)
+// void	__check_parameter(char **array, t_hit_array **hit_array, int *index, \
+// int column)
+void	__check_parameter(char **array, t_data *data, int *index, int column)
 {
 	if (is_equal(array[column], "CHECKER"))
-		__checker(array, hit_array, index, column);
+		__checker(array, data, index, column);
 	else if (is_equal(array[column], "COLOR"))
-		__color(array, hit_array, index, column);
+		__color(array, data, index, column);
 	else if (is_equal(array[column], "TEXTURE"))
-		__texture(array, hit_array, index, column);
+		__texture(array, data, index, column);
 	else
 		exit_with_str("Error\nLast parameter is incorrect.", EXIT_FAILURE);
 }
