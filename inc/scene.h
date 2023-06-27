@@ -48,9 +48,9 @@ struct s_img
 
 struct s_mlx
 {
-	void			*mlx_ptr;
-	void			*win_ptr;
-	struct s_img	img;
+	void	*mlx_ptr;
+	void	*win_ptr;
+	t_img	img;
 };
 
 struct	s_camera

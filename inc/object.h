@@ -45,7 +45,7 @@ struct s_hit_record
 	double		tmax;
 	double		t;
 	int			front_face;
-	t_vector	color;
+	t_color		color;
 };
 
 struct s_images
