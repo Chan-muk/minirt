@@ -40,7 +40,7 @@ int	hit_objects(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 int	hit_world(t_scene *scene)
 {
 	t_hit_array	*array;
-	int		hit;
+	int			hit;
 
 	array = scene->world;
 	hit = false;

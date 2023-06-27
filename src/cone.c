@@ -75,7 +75,7 @@ int	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 {
 	t_formula		formula;
 	t_hit_record	rec_backup;
-	int			flag;
+	int				flag;
 
 	flag = false;
 	get_cone_data(&formula, cone, ray);
