@@ -39,18 +39,20 @@ void	get_bmp_addr(char *path, t_images *img)
 
 t_color	plane_texture(t_vector p, t_hit_array *pl)
 {
-	double			u;
-	double			v;
-	int				i;
-	unsigned char	*addr;
+	t_uvbox	o;
 
-	u = fract(p.x * 0.2);
-	v = fract(p.y * 0.2);
-	i = \
-	((int)(pl->texture.w * u) + (int)(pl->texture.h * v) * pl->texture.w) * 3;
-	addr = pl->texture.addr;
+	if (vec_len(vec_prod(pl->norm, new_vec(0, 1, 0))) == 0.0)
+		o.stdvec1 = new_vec(0, 0, 1);
+	else
+		o.stdvec1 = unit_vec(vec_prod(pl->norm, new_vec(0, 1, 0)));
+	o.stdvec2 = unit_vec(vec_prod(pl->norm, o.stdvec1));
+	o.u = fract(vec_dot(p, o.stdvec1) * 0.2);
+	o.v = fract(vec_dot(p, o.stdvec2) * 0.2);
+	o.i = \
+	((int)(pl->texture.w * o.u) + (int)(pl->texture.h * o.v) * pl->texture.w) * 3;
+	o.addr = pl->texture.addr;
 	return \
-	(new_color(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0));
+	(new_color(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0));
 }
 
 t_color	shpere_texture(t_vector p, t_hit_array *sp)

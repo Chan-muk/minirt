@@ -59,20 +59,21 @@ void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 
 void	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 {
-	double			u;
-	double			v;
-	int				i;
-	unsigned char	*addr;
-	t_vector		bump;
+	t_uvbox	o;
 
-	u = fract(p.x * 0.2);
-	v = fract(p.y * 0.2);
-	i = ((int)(pl->bump_map.w * u) + \
-	(int)(pl->bump_map.h * v) * pl->bump_map.w) * 3;
-	addr = pl->bump_map.addr;
-	bump = new_vec(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0);
-	bump = new_vec((bump.x - 0.5) * 2, (bump.y - 0.5) * 2, (bump.z - 0.5) * 2);
-	rec->normal = bumprotatevector(rec->normal, bump);
+	if (vec_len(vec_prod(pl->norm, new_vec(0, 1, 0))) == 0.0)
+		o.stdvec1 = new_vec(0, 0, 1);
+	else
+		o.stdvec1 = unit_vec(vec_prod(pl->norm, new_vec(0, 1, 0)));
+	o.stdvec2 = unit_vec(vec_prod(pl->norm, o.stdvec1));
+	o.u = fract(vec_dot(p, o.stdvec1) * 0.2);
+	o.v = fract(vec_dot(p, o.stdvec2) * 0.2);
+	o.i = ((int)(pl->bump_map.w * o.u) + \
+	(int)(pl->bump_map.h * o.v) * pl->bump_map.w) * 3;
+	o.addr = pl->bump_map.addr;
+	o.bump = new_vec(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0);
+	o.bump = new_vec((o.bump.x - 0.5) * 2, (o.bump.y - 0.5) * 2, (o.bump.z - 0.5) * 2);
+	rec->normal = bumprotatevector(rec->normal, o.bump);
 }
 
 void	cylinder_bump_side(t_vector p, t_hit_array *cy, t_hit_record *rec)
