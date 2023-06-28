@@ -41,20 +41,28 @@ t_vector	bumprotatevector(t_vector normal, t_vector bump)
 
 void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 {
-	double			u;
-	double			v;
-	int				i;
-	unsigned char	*addr;
-	t_vector		bump;
+	t_uvbox	o;
 
-	u = (rec->normal.x + 1) * 0.5;
-	v = (rec->normal.y + 1) * 0.5;
-	i = ((int)(sp->bump_map.w * u) + \
-	(int)(sp->bump_map.h * v) * sp->bump_map.w) * 3;
-	addr = sp->bump_map.addr;
-	bump = new_vec(addr[i + 2] / 255.0, addr[i + 1] / 255.0, addr[i] / 255.0);
-	bump = new_vec((bump.x - 0.5) * 2, (bump.y - 0.5) * 2, (bump.z - 0.5) * 2);
-	rec->normal = bumprotatevector(rec->normal, bump);
+	o.stdvec1 = new_vec(0, 0, 1);
+	o.stdvec2 =	new_vec(1, 0, 0);
+	sp->norm = new_vec(0, 1, 0);
+	o.v = (vec_dot(vec_sub(p, sp->center), sp->norm));
+	o.vec_u = unit_vec(vec_sub(p, vec_add(sp->center, vec_mul(sp->norm, o.v))));
+	o.u = -atan2(vec_dot(o.vec_u, o.stdvec1), \
+	vec_dot(o.vec_u, o.stdvec2)) / (M_PI * 2);
+	if (o.u > 0.0)
+		o.i = ((int)(sp->texture.w * o.u) + \
+	(int)(sp->texture.h * o.v) * sp->texture.w) * 3;
+	else
+		o.i = ((int)(sp->texture.w * o.u) + \
+	(int)(sp->texture.h * o.v + 1) * sp->texture.w) * 3;
+	o.v = 1 - acos(o.v / sp->radius) / M_PI;
+	o.i = ((int)(sp->bump_map.w * o.u) + \
+	(int)(sp->bump_map.h * o.v) * sp->bump_map.w) * 3;
+	o.addr = sp->bump_map.addr;
+	o.bump = new_vec(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0);
+	o.bump = new_vec((o.bump.x - 0.5) * 2, (o.bump.y - 0.5) * 2, (o.bump.z - 0.5) * 2);
+	rec->normal = bumprotatevector(rec->normal, o.bump);
 }
 
 void	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)

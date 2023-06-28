@@ -32,7 +32,7 @@ int	hit_plane(t_hit_array *pl, t_ray *ray, t_hit_record *rec)
 	if (pl->flag == _color)
 		rec->color = pl->color;
 	else if (pl->flag == _checker)
-		rec->color = plane_checkerboard(rec->p);
+		rec->color = plane_checkerboard(rec->p, pl);
 	else if (pl->flag == _texture)
 	{
 		rec->color = plane_texture(rec->p, pl);
