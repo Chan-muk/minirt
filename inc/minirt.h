@@ -27,7 +27,10 @@
 # include "parse.h"
 # include "../libft/inc/libft.h"
 
-# define OBJ_COUNT		1000
+# ifndef OBJ_COUNT
+#  define OBJ_COUNT 1024
+# endif
+
 # define WIN_WIDTH		1200
 # define WIN_HEIGHT		600
 # define DELIMITER		" \t\v\f\r\n"
