@@ -39,7 +39,7 @@ void	_parse_plane(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse plane.", EXIT_FAILURE);
 	if (size_double_array(array) < 4)
 	{
 		free_double_array(array);
@@ -60,7 +60,7 @@ void	_parse_sphere(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse sphere.", EXIT_FAILURE);
 	if (size_double_array(array) < 4)
 	{
 		free_double_array(array);
@@ -81,7 +81,7 @@ void	_parse_cylinder(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse cylinder.", EXIT_FAILURE);
 	if (size_double_array(array) < 6)
 	{
 		free_double_array(array);
@@ -104,7 +104,7 @@ void	_parse_cone(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse cone.", EXIT_FAILURE);
 	if (size_double_array(array) < 6)
 	{
 		free_double_array(array);

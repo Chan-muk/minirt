@@ -34,7 +34,7 @@ static void	check_rt_parameter(int fd, t_counts *counts, char *buffer)
 		else if (is_equal(buffer, "\n"))
 			;
 		else
-			exit_with_str("There is wrong paramter.", EXIT_FAILURE);
+			exit_with_str("There is wrong paramter in RT file.", EXIT_FAILURE);
 		free(buffer);
 	}
 }
@@ -48,7 +48,7 @@ static int	get_hit_array_size(char *file_name)
 
 	fd = open(file_name, O_RDONLY);
 	if (fd == FAILURE)
-		exit_with_str("File open fail.", EXIT_FAILURE);
+		exit_with_str("Failed to open RT file.", EXIT_FAILURE);
 	init_counts_data(&counts);
 	check_rt_parameter(fd, &counts, buffer);
 	all_count = get_counts_data(counts);
@@ -77,7 +77,8 @@ static void	check_parameter(char *buffer, t_data *data, int *index)
 	else if (is_equal(buffer, "\n"))
 		;
 	else
-		exit_with_str("Wrong parameter.", EXIT_FAILURE);
+		exit_with_str("There is wrong paramter in RT file.", \
+		EXIT_FAILURE);
 }
 
 void	parse(char *file_name, t_data *data)
@@ -90,7 +91,7 @@ void	parse(char *file_name, t_data *data)
 	size = get_hit_array_size(file_name);
 	fd = open(file_name, O_RDONLY);
 	if (fd == FAILURE)
-		exit_with_str("File open fail.", EXIT_FAILURE);
+		exit_with_str("Failed to open RT file.", EXIT_FAILURE);
 	index = 0;
 	while (TRUE)
 	{

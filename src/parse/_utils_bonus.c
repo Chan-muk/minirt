@@ -15,7 +15,7 @@
 static int	is_bmp_file(char *file)
 {
 	if (ft_strlen(file) >= 4 \
-	&& !ft_strncmp(".xpm", &file[ft_strlen(file) - 4], 4))
+	&& !ft_strncmp(".bmp", &file[ft_strlen(file) - 4], 4))
 		return (SUCCESS);
 	return (FAILURE);
 }
@@ -25,7 +25,7 @@ void	__checker(char **array, t_data *data, int *index, int column)
 	if (size_double_array(array) != (column + 1))
 	{
 		free_double_array(array);
-		exit_with_str("Checker board parameters are not correct.", \
+		exit_with_str("Checkerboard parameters are not correct.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].flag = _checker;
