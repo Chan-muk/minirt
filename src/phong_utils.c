@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static int	hit_shadow(t_hit_array *array, t_ray *ray, t_hit_record *rec)
+int	hit_shadow(t_hit_array *array, t_ray *ray, t_hit_record *rec)
 {
 	int	hit;
 

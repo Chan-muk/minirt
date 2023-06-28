@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static void	_cone_cap_color(t_hit_array *obj, t_hit_record *rec)
+void	_cone_cap_color(t_hit_array *obj, t_hit_record *rec)
 {
 	if (obj->flag == _color)
 		rec->color = obj->color;

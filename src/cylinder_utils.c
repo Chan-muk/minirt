@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static void	_cylinder_cap_color(t_hit_array *cy, t_hit_record *rec)
+void	_cylinder_cap_color(t_hit_array *cy, t_hit_record *rec)
 {
 	if (cy->flag == _color)
 		rec->color = cy->color;

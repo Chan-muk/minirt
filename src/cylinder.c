@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
+void	get_cylinder_data(t_formula *formula, t_hit_array *cy, t_ray *ray)
 {
 	t_vector	r_center;
 	double		vh;

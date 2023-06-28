@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static double	get_fov(char *str)
+double	get_fov(char *str)
 {
 	double	fov;
 

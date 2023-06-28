@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
+void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
 {
 	t_vector	r_center;
 
@@ -24,7 +24,7 @@ static void	get_sphere_data(t_formula *formula, t_hit_array *sp, t_ray *ray)
 	(formula->b * formula->b) - (formula->a * formula->c);
 }
 
-static void	surface_flag(t_hit_array *sp, t_hit_record *rec)
+void	surface_flag(t_hit_array *sp, t_hit_record *rec)
 {
 	if (sp->flag == _color)
 		rec->color = sp->color;

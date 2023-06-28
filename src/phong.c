@@ -13,12 +13,12 @@
 #include "minirt.h"
 #include <fenv.h>
 
-static t_vector	reflect(t_vector v, t_vector n)
+t_vector	reflect(t_vector v, t_vector n)
 {
 	return (vec_sub(v, vec_mul(n, vec_dot(v, n) * 2)));
 }
 
-static t_color	get_specular(t_scene *scene, t_hit_array *light)
+t_color	get_specular(t_scene *scene, t_hit_array *light)
 {
 	t_vector	light_dir;
 	t_vector	view_dir;
@@ -32,7 +32,7 @@ static t_color	get_specular(t_scene *scene, t_hit_array *light)
 	return (vec_mul(vec_mul(light->color, (double)KS), spec));
 }
 
-static t_color	point_light_get(t_scene *scene, t_hit_array *light)
+t_color	point_light_get(t_scene *scene, t_hit_array *light)
 {
 	t_vector	light_dir;
 	t_color		diffuse;

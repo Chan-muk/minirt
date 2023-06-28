@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static int	is_bmp_file(char *file)
+int	is_bmp_file(char *file)
 {
 	if (ft_strlen(file) >= 4 \
 	&& !ft_strncmp(".bmp", &file[ft_strlen(file) - 4], 4))
