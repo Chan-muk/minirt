@@ -12,14 +12,18 @@
 
 #include "minirt.h"
 
-t_color	plane_checkerboard(t_vector p)
+t_color	plane_checkerboard(t_vector p, t_hit_array *pl)
 {
-	double	u;
-	double	v;
+	t_uvbox	o;
 
-	u = fract(p.x * 0.2) - 0.5;
-	v = fract(p.y * 0.4) - 0.5;
-	if (u * v > 0.0)
+	if (vec_len(vec_prod(pl->norm, new_vec(0, 1, 0))) == 0.0)
+		o.stdvec1 = new_vec(0, 0, 1);
+	else
+		o.stdvec1 = unit_vec(vec_prod(pl->norm, new_vec(0, 1, 0)));
+	o.stdvec2 = unit_vec(vec_prod(pl->norm, o.stdvec1));
+	o.u = fract(vec_dot(p, o.stdvec1) * 0.2) - 0.5;
+	o.v = fract(vec_dot(p, o.stdvec2) * 0.2) - 0.5;
+	if (o.u * o.v > 0.0)
 		return (new_vec(1.0, 1.0, 1.0));
 	return (new_vec(0, 0, 0));
 }

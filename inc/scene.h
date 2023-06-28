@@ -113,7 +113,7 @@ t_color		phong_lighting(t_scene *scene);
 int			in_shadow(t_hit_array *objs, t_ray light_ray, double light_len);
 
 /* checker */
-t_color		plane_checkerboard(t_vector p);
+t_color		plane_checkerboard(t_vector p, t_hit_array *pl);
 t_color		shpere_checkerboard(t_vector p, t_hit_array *sp);
 t_color		cylinder_checkerboard_side(t_vector p, t_hit_array *cy);
 t_color		cylinder_checkerboard_cap(t_vector p, t_hit_array *cy);
