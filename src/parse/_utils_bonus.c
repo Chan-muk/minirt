@@ -55,7 +55,7 @@ void	__texture(char **array, t_data *data, int *index, int column)
 		EXIT_FAILURE);
 	}
 	if (is_bmp_file(array[column + 1]) == FAILURE \
-	|| is_bmp_file(array[column + 1]) == FAILURE)
+	|| is_bmp_file(array[column + 2]) == FAILURE)
 		exit_with_str("Check BMP file types.", EXIT_FAILURE);
 	get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
 	get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
