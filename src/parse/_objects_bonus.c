@@ -18,11 +18,11 @@ void	_parse_light(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) != 4)
 	{
 		free_double_array(array);
-		exit_with_str("Error\nThe number of light parameters is wrong.", \
+		exit_with_str("The number of light parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].type = _light;
@@ -39,11 +39,11 @@ void	_parse_plane(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) < 4)
 	{
 		free_double_array(array);
-		exit_with_str("Error\nThe number of plane parameters is wrong.", \
+		exit_with_str("The number of plane parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].type = _plane;
@@ -60,11 +60,11 @@ void	_parse_sphere(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) < 4)
 	{
 		free_double_array(array);
-		exit_with_str("Error\nThe number of sphere parameters is wrong.", \
+		exit_with_str("The number of sphere parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].type = _sphere;
@@ -81,11 +81,11 @@ void	_parse_cylinder(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) < 6)
 	{
 		free_double_array(array);
-		exit_with_str("Error\nThe number of cylinder parameters is wrong.", \
+		exit_with_str("The number of cylinder parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].type = _cylinder;
@@ -104,11 +104,11 @@ void	_parse_cone(char *buffer, t_data *data, int *index)
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)
-		exit_with_str("Error\nMemory problem in parse light.", EXIT_FAILURE);
+		exit_with_str("Memory problem in parse light.", EXIT_FAILURE);
 	if (size_double_array(array) < 6)
 	{
 		free_double_array(array);
-		exit_with_str("Error\nThe number of cone parameters is wrong.", \
+		exit_with_str("The number of cone parameters is wrong.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].type = _cone;

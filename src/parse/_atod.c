@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-static int	white_space_sign_check(char *str, int *index)
+int	white_space_sign_check(char *str, int *index)
 {
 	int	sign;
 
@@ -28,7 +28,7 @@ static int	white_space_sign_check(char *str, int *index)
 	return (sign);
 }
 
-static void	is_double(char *str)
+void	is_double(char *str)
 {
 	int	sign;
 	int	c;
@@ -48,7 +48,7 @@ static void	is_double(char *str)
 		str++;
 	}
 	if (!str || sign > 1 || dot > 1 || c > 0)
-		exit_with_str("Error\nThe Number is incorrect.", EXIT_FAILURE);
+		exit_with_str("The Number is incorrect.", EXIT_FAILURE);
 }
 
 void	init_variable(int *index, int *count, int *d_count, double *number)
@@ -84,6 +84,6 @@ double	ascii_to_double(char *str)
 		(count[1])++;
 	}
 	if (count[0] > 10 || count[1] > 10)
-		exit_with_str("Check the number", EXIT_FAILURE);
+		exit_with_str("Check the precision of number", EXIT_FAILURE);
 	return (sign * number * pow(0.1, count[1]));
 }

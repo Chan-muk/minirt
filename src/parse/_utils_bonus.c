@@ -25,7 +25,7 @@ void	__checker(char **array, t_data *data, int *index, int column)
 	if (size_double_array(array) != (column + 1))
 	{
 		free_double_array(array);
-		exit_with_str("Error\nChecker board parameters are not correct.", \
+		exit_with_str("Checker board parameters are not correct.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].flag = _checker;
@@ -36,7 +36,7 @@ void	__color(char **array, t_data *data, int *index, int column)
 	if (size_double_array(array) != (column + 2))
 	{
 		free_double_array(array);
-		exit_with_str("Error\nColor parameters are not correct.", \
+		exit_with_str("Color parameters are not correct.", \
 		EXIT_FAILURE);
 	}
 	data->scene.world[*index].color = get_color(array[column + 1]);
@@ -51,12 +51,12 @@ void	__texture(char **array, t_data *data, int *index, int column)
 	if (size_double_array(array) != (column + 3))
 	{
 		free_double_array(array);
-		exit_with_str("Error\nTexture parameters are not correct.", \
+		exit_with_str("Texture parameters are not correct.", \
 		EXIT_FAILURE);
 	}
 	if (is_bmp_file(array[column + 1]) == FAILURE \
 	|| is_bmp_file(array[column + 1]) == FAILURE)
-		exit_with_str("Error\nCheck BMP file types.", EXIT_FAILURE);
+		exit_with_str("Check BMP file types.", EXIT_FAILURE);
 	get_bmp_addr(array[column + 1], &(data->scene.world[*index].texture));
 	get_bmp_addr(array[column + 2], &(data->scene.world[*index].bump_map));
 	data->scene.world[*index].flag = _texture;
@@ -71,5 +71,5 @@ void	__check_parameter(char **array, t_data *data, int *index, int column)
 	else if (is_equal(array[column], "TEXTURE"))
 		__texture(array, data, index, column);
 	else
-		exit_with_str("Error\nLast parameter is incorrect.", EXIT_FAILURE);
+		exit_with_str("Last parameter is incorrect.", EXIT_FAILURE);
 }

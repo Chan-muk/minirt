@@ -54,6 +54,7 @@ t_hit_record *rec_backup)
 
 void	exit_with_str(const char *str, int exit_code)
 {
+	ft_putendl_fd("Error", STDERR_FILENO);
 	ft_putendl_fd((char *)str, STDERR_FILENO);
 	exit(exit_code);
 }
