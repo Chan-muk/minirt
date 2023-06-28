@@ -48,11 +48,11 @@ t_color	plane_texture(t_vector p, t_hit_array *pl)
 	o.stdvec2 = unit_vec(vec_prod(pl->norm, o.stdvec1));
 	o.u = fract(vec_dot(p, o.stdvec1) * 0.2);
 	o.v = fract(vec_dot(p, o.stdvec2) * 0.2);
-	o.i = \
-	((int)(pl->texture.w * o.u) + (int)(pl->texture.h * o.v) * pl->texture.w) * 3;
+	o.i = ((int)(pl->texture.w * o.u) + (int)(pl->texture.h * o.v) \
+	* pl->texture.w) * 3;
 	o.addr = pl->texture.addr;
-	return \
-	(new_color(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0));
+	return (new_color(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, \
+	o.addr[o.i] / 255.0));
 }
 
 t_color	shpere_texture(t_vector p, t_hit_array *sp)
@@ -60,7 +60,7 @@ t_color	shpere_texture(t_vector p, t_hit_array *sp)
 	t_uvbox	o;
 
 	o.stdvec1 = new_vec(0, 0, 1);
-	o.stdvec2 =	new_vec(1, 0, 0);
+	o.stdvec2 = new_vec(1, 0, 0);
 	sp->norm = new_vec(0, 1, 0);
 	o.v = (vec_dot(vec_sub(p, sp->center), sp->norm));
 	o.vec_u = unit_vec(vec_sub(p, vec_add(sp->center, vec_mul(sp->norm, o.v))));
@@ -73,11 +73,11 @@ t_color	shpere_texture(t_vector p, t_hit_array *sp)
 		o.i = ((int)(sp->texture.w * o.u) + \
 	(int)(sp->texture.h * o.v + 1) * sp->texture.w) * 3;
 	o.v = 1 - acos(o.v / sp->radius) / M_PI;
-	o.i = \
-	((int)(sp->texture.w * o.u) + (int)(sp->texture.h * o.v) * sp->texture.w) * 3;
+	o.i = ((int)(sp->texture.w * o.u) + (int)(sp->texture.h * o.v) \
+	* sp->texture.w) * 3;
 	o.addr = sp->texture.addr;
-	return (\
-	new_color(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0));
+	return (new_color(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, \
+	o.addr[o.i] / 255.0));
 }
 
 t_color	cylinder_texture_side(t_vector p, t_hit_array *cy)
