@@ -14,7 +14,7 @@
 
 NAME		= miniRT
 
-CC			= cc -g3 -O2
+CC			= cc -O2
 CFLAGS		= -Wall -Wextra -Werror
 RMFLAGS		= -r
 
@@ -72,7 +72,6 @@ fclean:
 	@$(RM) $(RMFLAGS) $(OBJ_DIR)
 	@$(RM) $(RMFLAGS) $(OBJ_B_DIR)
 	@$(MAKE) fclean -C $(LIB_DIR)
-	@$(RM) $(RMFLAGS) $(NAME) minishell.dSYM
 	@echo "make fclean done"
 
 re:
