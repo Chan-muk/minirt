@@ -2,39 +2,20 @@
 
 This project is an introduction to the beautiful world of Raytracing.
 
+## Usage
+
+Supports both macOS and Linux
+
+```
+make
+./miniRT ./rt_files/example.rt
+
+make bonus
+./miniRT ./rt_files/bonus_example.rt
+```
+
 ## Renders
 
-See `doc/renders` for more
+See `/renders` for more
 
 ![temple](https://github.com/Chan-muk/minirt/blob/master/renders/temple.png)
-
-**Usage**
-First clone the repository and the git submodules:
-
-`git clone --recurse-submodules -j8 git@github.com:Hugothms/miniRT.git`
-
-Then make and run the executable:
-
-`make && ./miniRT scenes/test.rt`
-
-Or, you can make and run more conveniently:
-
-`make test`
-
-## How to install
-
-1. Clone the repo:
-
-`git@github.com:nesvoboda/minirt.git --recursive`
-
-1. `cd` into it and `make` to compile it:
-
-`cd minirt && make`
-
-1. Now `./miniRT ./scenes/scene.rt`
-
-There are some scenes in the `scenes` folder that showcase minirt.
-
-## Known Issues
-
-It has been suggested that the color model is slightly inaccurate.
