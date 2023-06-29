@@ -6,7 +6,7 @@ This project is an introduction to the beautiful world of Raytracing.
 
 See `doc/renders` for more
 
-![temple](miniRT%renders/Untitled.png)
+![temple](https://github.com/Chan-muk/minirt/blob/master/renders/temple.png)
 
 **Usage**
 First clone the repository and the git submodules:
