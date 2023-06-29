@@ -35,7 +35,7 @@ COM_OBJ		= $(COM_SRC:.c=.o)
 COM_SRCS	= $(addprefix $(COM_DIR)/, $(COM_SRC))
 
 $(COM_OBJ_DIR)/%.o : $(COM_DIR)/%.c
-	@$(CC) -c $< -o $@ $(IMLX) $(HEADER)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(IMLX) $(HEADER)
 
 $(PAR_OBJ_DIR)/%.o : $(PAR_DIR)/%.c
-	@$(CC) -c $< -o $@ $(IMLX) $(HEADER)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(IMLX) $(HEADER)

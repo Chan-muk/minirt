@@ -85,12 +85,12 @@ int	hit_cone(t_hit_array *cone, t_ray *ray, t_hit_record *rec)
 	if (formula.discriminant < 0.0)
 		return (flag);
 	if (cone_side(cone, ray, rec, formula.root_1))
-		check_data(formula.root_1, &flag, rec, &rec_backup);
+		check_data(&flag, rec, &rec_backup);
 	if (cone_side(cone, ray, rec, formula.root_2))
-		check_data(formula.root_2, &flag, rec, &rec_backup);
+		check_data(&flag, rec, &rec_backup);
 	if (cone_cap(cone, ray, rec, formula.root_1))
-		check_data(formula.root_1, &flag, rec, &rec_backup);
+		check_data(&flag, rec, &rec_backup);
 	if (cone_cap(cone, ray, rec, formula.root_2))
-		check_data(formula.root_2, &flag, rec, &rec_backup);
+		check_data(&flag, rec, &rec_backup);
 	return (flag);
 }

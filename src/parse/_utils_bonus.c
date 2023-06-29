@@ -45,9 +45,6 @@ void	__color(char **array, t_data *data, int *index, int column)
 
 void	__texture(char **array, t_data *data, int *index, int column)
 {
-	void	*ptr;
-	void	*ptr2;
-
 	if (size_double_array(array) != (column + 3))
 	{
 		free_double_array(array);

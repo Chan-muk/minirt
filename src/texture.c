@@ -28,7 +28,7 @@ void	get_bmp_addr(char *path, t_images *img)
 		size = *(unsigned int *)(header + 34);
 	else
 		size = *(unsigned int *)(header + 2) - *(unsigned int *)(header + 10);
-	img->addr = (uint8_t *)malloc(size);
+	img->addr = (unsigned char *)malloc(size);
 	img->w = *(int *)(header + 18);
 	img->h = *(int *)(header + 22);
 	tmp = read(bmp_fd, img->addr, size);

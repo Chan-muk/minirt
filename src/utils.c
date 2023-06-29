@@ -40,8 +40,7 @@ void	data_backup(t_hit_record *rec_backup, t_hit_record *rec)
 	rec_backup->tmin = rec->tmin;
 }
 
-void	check_data(double root, int *flag, t_hit_record *rec, \
-t_hit_record *rec_backup)
+void	check_data(int *flag, t_hit_record *rec, t_hit_record *rec_backup)
 {
 	if (*flag == true && rec_backup->t < rec->t)
 		data_backup(rec, rec_backup);

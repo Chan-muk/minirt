@@ -44,7 +44,7 @@ void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 	t_uvbox	o;
 
 	o.stdvec1 = new_vec(0, 0, 1);
-	o.stdvec2 =	new_vec(1, 0, 0);
+	o.stdvec2 = new_vec(1, 0, 0);
 	sp->norm = new_vec(0, 1, 0);
 	o.v = (vec_dot(vec_sub(p, sp->center), sp->norm));
 	o.vec_u = unit_vec(vec_sub(p, vec_add(sp->center, vec_mul(sp->norm, o.v))));
@@ -60,8 +60,10 @@ void	shpere_bump(t_vector p, t_hit_array *sp, t_hit_record *rec)
 	o.i = ((int)(sp->bump_map.w * o.u) + \
 	(int)(sp->bump_map.h * o.v) * sp->bump_map.w) * 3;
 	o.addr = sp->bump_map.addr;
-	o.bump = new_vec(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0);
-	o.bump = new_vec((o.bump.x - 0.5) * 2, (o.bump.y - 0.5) * 2, (o.bump.z - 0.5) * 2);
+	o.bump = new_vec(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, \
+	o.addr[o.i] / 255.0);
+	o.bump = new_vec((o.bump.x - 0.5) * 2, (o.bump.y - 0.5) * 2, \
+	(o.bump.z - 0.5) * 2);
 	rec->normal = bumprotatevector(rec->normal, o.bump);
 }
 
@@ -79,8 +81,10 @@ void	plane_bump(t_vector p, t_hit_array *pl, t_hit_record *rec)
 	o.i = ((int)(pl->bump_map.w * o.u) + \
 	(int)(pl->bump_map.h * o.v) * pl->bump_map.w) * 3;
 	o.addr = pl->bump_map.addr;
-	o.bump = new_vec(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, o.addr[o.i] / 255.0);
-	o.bump = new_vec((o.bump.x - 0.5) * 2, (o.bump.y - 0.5) * 2, (o.bump.z - 0.5) * 2);
+	o.bump = new_vec(o.addr[o.i + 2] / 255.0, o.addr[o.i + 1] / 255.0, \
+	o.addr[o.i] / 255.0);
+	o.bump = new_vec((o.bump.x - 0.5) * 2, (o.bump.y - 0.5) * 2, \
+	(o.bump.z - 0.5) * 2);
 	rec->normal = bumprotatevector(rec->normal, o.bump);
 }
 
