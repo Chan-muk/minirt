@@ -41,7 +41,7 @@ static void	check_rt_parameter(int fd, t_counts *counts, char *buffer)
 	}
 }
 
-static int	get_hit_array_size(char *file_name)
+static void	pre_check_file(char *file_name)
 {
 	int			fd;
 	t_counts	counts;
@@ -52,14 +52,16 @@ static int	get_hit_array_size(char *file_name)
 	if (fd == FAILURE)
 		exit_with_str("Failed to open RT file.", EXIT_FAILURE);
 	init_counts_data(&counts);
+	buffer = NULL;
 	check_rt_parameter(fd, &counts, buffer);
 	all_count = get_counts_data(counts);
 	if (all_count == 0)
 		exit_with_str("RT File is empty.", EXIT_FAILURE);
+	if (all_count > (OBJ_COUNT + 2))
+		exit_with_str("Too many arguments in RT file.", EXIT_FAILURE);
 	if (counts.amb != 1 || counts.cam != 1 || counts.light < 1)
 		exit_with_str("There are no essential components.", EXIT_FAILURE);
 	close(fd);
-	return (all_count);
 }
 
 static void	check_parameter(char *buffer, t_data *data, int *index)
@@ -88,11 +90,10 @@ static void	check_parameter(char *buffer, t_data *data, int *index)
 void	parse_bonus(char *file_name, t_data *data)
 {
 	int		fd;
-	int		size;
 	int		index;
 	char	*buffer;
 
-	size = get_hit_array_size(file_name);
+	pre_check_file(file_name);
 	fd = open(file_name, O_RDONLY);
 	if (fd == FAILURE)
 		exit_with_str("Failed to open RT file.", EXIT_FAILURE);

@@ -26,9 +26,6 @@ t_ray	ray_primary(t_camera *cam, double u, double v)
 
 t_color	ray_color(t_scene *scene)
 {
-	t_vector		n;
-	double			t;
-
 	scene->rec.tmin = REC_TMIN;
 	scene->rec.tmax = REC_TMAX;
 	if (hit_world(scene))

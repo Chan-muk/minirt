@@ -6,7 +6,7 @@
 #    By: chajung <chajung@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/23 12:04:47 by chajung           #+#    #+#              #
-#    Updated: 2023/04/23 12:04:49 by chajung          ###   ########.fr        #
+#    Updated: 2023/06/28 15:36:08 by chajung          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME		= miniRT
 
-CC			= cc -g3 -O3
+CC			= cc -g3 -O2
 CFLAGS		= -Wall -Wextra -Werror
 RMFLAGS		= -r
 
@@ -37,7 +37,7 @@ SRC_DIR		= src src/parse
 ifeq ($(MAKECMDGOALS), bonus)
 include inc/Makefile_bonus
 $(NAME): $(ALL_OBJS) $(LIB)
-	@$(CC) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
+	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
 	@echo "make bonus done"
 
 $(OBJ_B_DIR):
@@ -47,7 +47,7 @@ $(OBJ_B_DIR):
 else
 include inc/Makefile_mandatory
 $(NAME): $(ALL_OBJS) $(LIB)
-	@$(CC) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
+	@$(CC) $(CFLAGS) $(LIB) $^ -o $@ $(LMLX) $(MLX_DIR) $(FRAMEWORK)
 	@echo "make done"
 
 $(OBJ_DIR):
@@ -78,3 +78,5 @@ fclean:
 re:
 	@$(MAKE) fclean
 	@$(MAKE) all
+
+.PHONY: all clean fclean re bonus

@@ -25,8 +25,6 @@ double	get_fov(char *str)
 void	parse_ambient_lightning(char *buffer, t_scene *scene)
 {
 	char	**array;
-	double	lighting_ratio;
-	t_color	color;
 
 	array = _split(buffer, DELIMITER);
 	if (array == NULL)

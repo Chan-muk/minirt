@@ -1,0 +1,5 @@
+A	0.2							255,255,255
+C	0,0,10 			0,0,-1		90
+L	5,5,10			0.8         255,255,255
+
+co	-2,-1,0			1,1,1 4 6   TEXTURE textures/pebbles.bmp  textures/pebbles_bump.bmp

@@ -49,5 +49,5 @@ void	initialize(int argc, char **argv, t_data *data)
 	data->scene.cam = \
 	set_camera(data->scene.cam_org, data->scene.cam_dir, data->scene.cam_fov);
 	if (init_mlx(&(data->mlx)) == FAILURE)
-		exit_with_str("Initialization failed in init mlx", EXIT_FAILURE);
+		exit_with_str("Initialization failed in init mlx.", EXIT_FAILURE);
 }
