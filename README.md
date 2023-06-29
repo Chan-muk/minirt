@@ -6,7 +6,7 @@ This project is an introduction to the beautiful world of Raytracing.
 
 See `doc/renders` for more
 
-![Untitled](miniRT%204b5d216adc884f35b054cdbcb65eb6ee/Untitled.png)
+![temple](miniRT%renders/Untitled.png)
 
 **Usage**
 First clone the repository and the git submodules:
