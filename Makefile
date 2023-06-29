@@ -72,6 +72,7 @@ fclean:
 	@$(RM) $(RMFLAGS) $(OBJ_DIR)
 	@$(RM) $(RMFLAGS) $(OBJ_B_DIR)
 	@$(MAKE) fclean -C $(LIB_DIR)
+	@$(RM) $(RMFLAGS) $(NAME)
 	@echo "make fclean done"
 
 re:

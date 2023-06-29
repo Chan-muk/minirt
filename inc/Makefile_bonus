@@ -12,7 +12,7 @@
 
 PAR_DIR		= src/parse
 PAR_SRC		= \
-			parse.c parse_bonus.c _scene.c _objects.c _objects_bonus.c \
+			parse_bonus.c _scene.c _objects_bonus.c \
 			_atod.c _split.c _utils0.c _utils1.c _utils_bonus.c
 
 PAR_OBJ_DIR	= obj_b/parse
@@ -24,7 +24,7 @@ PAR_SRCS	= $(addprefix $(PAR_DIR)/, $(PAR_SRC))
 COM_DIR		= src
 COM_SRC		= \
 			main_bonus.c \
-			init.c init_bonus.c cal0.c cal1.c cal2.c scene.c color.c color_utils.c \
+			init_bonus.c cal0.c cal1.c cal2.c scene.c color.c color_utils.c \
 			hit.c phong.c phong_utils.c checker.c texture.c bump.c\
 			plane.c cylinder.c cylinder_utils.c sphere.c cone.c cone_utils.c \
 			hook.c utils.c free.c \
